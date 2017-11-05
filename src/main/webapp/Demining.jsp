@@ -2,20 +2,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Java后端WebSocket的Tomcat实现</title>
+    <title>扫雷小游戏</title>
 </head>
 <body>
-    Welcome<br/>
-    <input id="text" type="text"/>
-    <button onclick="send()">发送消息</button>
-    <hr/>
-    <button onclick="closeWebSocket()">关闭WebSocket连接</button>
-    <hr/>
-    <div id="message"></div>
+<div id="ptest"></div>
+
+
+<script type="text/javascript">
+	var i = 1,j=1;
+	for (i=1; i<=8; i++) {
+		for (j=1; j<=8; j++) {
+    		document.getElementById('ptest').innerHTML += "<button onmousedown=\"send(" + i + "," + j +")\">" + i + j + "</button></div>";
+		}
+		document.getElementById('ptest').innerHTML += "<br/>";
+	}
+</script>
 </body>
+<div id="message"></div>
+<script language="Javascript">
+    document.oncontextmenu = function(){return false;} //禁止右键展开菜单项
+</script>
 <script type="text/javascript" src="out.js"></script>
 <script type="text/javascript">   
-    var user = getParam('username');  
+    var user = getParam("username");  
+    
     //连接发生错误的回调方法
     websocket.onerror = function () {
         setMessageInnerHTML("WebSocket连接发生错误1");
@@ -25,20 +35,27 @@
     websocket.onopen = function () {
         setMessageInnerHTML("WebSocket连接成功2");
         senduser();
+        sendPlayRequest(); //发送玩游戏请求（扫雷）
     }
 
     //接收到消息的回调方法
     websocket.onmessage = function (event) {
-    	//setMessageInnerHTML("接收到消息啦！");
     	var json1 = JSON.parse(event.data);
-    	if (json1.action == 2) {
-    		if (json1.message == "") {     
-            	alert("name is invalid!");
-            	window.location.href="login.jsp";    	
-            } else {
-            	setMessageInnerHTML(event.data);
-            }
-    	}      
+		if (json1.action == 2) {
+			if (json1.message != "惯例发送信息!") {
+				setMessageInnerHTML(json1.message);
+			}
+		}
+		if (json1.action == 1) { //游戏状态的通讯
+			if (json1.start == 0) {
+				//游戏还未开始
+				setMessageInnerHTML("Now has "+json1.playerNum+" in this room, please wait for game start.");
+			} else {
+				//游戏已经开始
+				setMessageInnerHTML("Game has started! Now has "+json1.playerNum+" in this room.");
+			}
+		
+		}
     }
 
     //连接关闭的回调方法
@@ -62,13 +79,21 @@
     }
 
     //发送消息
-    function send() {
+    function send(x,y) {
     	if (user == "") {
     		alert("please login!");
     	} else {
+    		var e=window.event;//获取事件对象
+    	    var clickType=e.button;
+    		if (clickType != 0 && clickType != 2) {
+    			return; //非单独按左右键时屏蔽消息
+    		}
+    	   	document.getElementById('ptest').innerHTML += x+" "+y+" ";
     		var json1 = {};
-        	json1.action = 2; //2表示发送消息
-        	json1.message = document.getElementById('text').value;
+        	json1.action = 3; //3表示正在进行扫雷游戏
+        	json1.clickX = x; //传输点击的位置
+        	json1.clickY = y;
+        	json1.clickType = clickType;
             var messages = JSON.stringify(json1); 
             websocket.send(messages);
     	}	
@@ -76,11 +101,9 @@
     
     //发送你的用户名
     function senduser() {
-    	//user = document.getElementById('user').value;
     	var json1 = {};
     	json1.action = 1; //1表示登录
     	json1.username = user;
-    	//json1.message = null;
     	var messages = JSON.stringify(json1);
     	//setMessageInnerHTML("myname:"+user);
     	websocket.send(messages);
@@ -103,6 +126,15 @@
             }
         }
         return paramValue;
+    }
+    
+    function sendPlayRequest() {
+    	var json1 = {};
+    	json1.action = 4; //4表示请求加入游戏
+    	json1.type = 1; //type为1表示扫雷游戏
+    	var messages = JSON.stringify(json1);
+    	websocket.send(messages);
+    	setMessageInnerHTML("have send play request.");
     }
 </script>
 </html>

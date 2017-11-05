@@ -4,9 +4,9 @@ import java.io.IOException;
 
 public class SendMessage implements Runnable{
 	
-	WebSocketTest wst1;
+	WebSocket wst1;
 	
-	public SendMessage(WebSocketTest w1) {
+	public SendMessage(WebSocket w1) {
 		this.wst1 = w1;
 	}
 	
@@ -19,7 +19,7 @@ public class SendMessage implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			for(WebSocketTest item: wst1.webSocketSet){
+			for(WebSocket item: wst1.webSocketSet){
 				try {
 					item.sendMessage("惯例发送信息!");
 				} catch (IOException e) {

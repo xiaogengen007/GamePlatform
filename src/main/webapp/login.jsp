@@ -28,7 +28,8 @@
     	websocket.send(messages);
     }
 	function inMainWindow() {
-		window.location.href="index.jsp"+"?username="+document.getElementById('username').value;
+		//window.location.href="index.jsp"+"?username="+document.getElementById('username').value;
+		window.location.href="Demining.jsp"+"?username="+document.getElementById('username').value;
 	}
 </script>
 </html>

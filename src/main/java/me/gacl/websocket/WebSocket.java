@@ -12,19 +12,19 @@ import javax.websocket.server.ServerEndpoint;
  * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端
  */
 @ServerEndpoint("/websocket")
-public class WebSocketTest {
+public class WebSocket {
 	//静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
 	private static int onlineCount = 0;
 
 	//concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
-	public static CopyOnWriteArraySet<WebSocketTest> webSocketSet = new CopyOnWriteArraySet<WebSocketTest>();
+	public static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();
 
 	//与某个客户端的连接会话，需要通过它来给客户端发送数据
-	private Session session;
+	public Session session;
 	private static boolean startedthread = false;
-	String username = ""; //姓名
+	Player myPlayer = new Player(); //存储该用户的相关信息
 
-	public WebSocketTest() {
+	public WebSocket() {
 		if (!this.startedthread) {
 			new Thread(new SendMessage(this)).start();
 			this.startedthread = true;
@@ -64,29 +64,38 @@ public class WebSocketTest {
 		System.out.println("来自客户端的消息:" + message);
 		
 		JSONObject json1 = JSONObject.fromObject(message);
-		if (json1.getInt("action") == 1) {
-			this.username = (String) json1.getString("username");
+		if (json1.getInt("action") == 1) { //1为登录或注册
+			this.myPlayer.username = (String) json1.getString("username");
 			try {
-				if (this.username.length() > 5) {
+				if (this.myPlayer.username.length() > 5) {
 					this.sendMessage("");
 				} else {
-					this.sendMessage(this.username+", hello for coming");
+					this.sendMessage(this.myPlayer.username+", hello for coming");
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		if (json1.getInt("action") == 2) {
+		if (json1.getInt("action") == 2) { //2为发消息
 			String mymessage = json1.getString("message");
 			//群发消息
-			for(WebSocketTest item: webSocketSet){
+			for(WebSocket item: webSocketSet){
 				try {
-					item.sendMessage(this.username +": "+ mymessage);
+					item.sendMessage(this.myPlayer.username +": "+ mymessage);
 				} catch (IOException e) {
 					e.printStackTrace();
 					continue;
 				}
+			}
+		}
+		if (json1.getInt("action") == 3) { //3为玩扫雷时发消息
+			
+		}
+		if (json1.getInt("action") == 4) { //4为游戏进入请求
+			int requestNum = json1.getInt("type");
+			if (requestNum == 1) {
+				GameState.distributeRoom(this);
 			}
 		}
 	}
@@ -108,7 +117,11 @@ public class WebSocketTest {
 	 * @throws IOException
 	 */
 	public void sendMessage(String message) throws IOException{
-		this.session.getBasicRemote().sendText(message);
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 2); //2表示发送消息
+		json1.put("message", message);
+		String messages = json1.toString();
+		this.session.getBasicRemote().sendText(messages);
 		//this.session.getAsyncRemote().sendText(message);
 	}
 
@@ -117,10 +130,10 @@ public class WebSocketTest {
 	}
 
 	public static synchronized void addOnlineCount() {
-		WebSocketTest.onlineCount++;
+		WebSocket.onlineCount++;
 	}
 
 	public static synchronized void subOnlineCount() {
-		WebSocketTest.onlineCount--;
+		WebSocket.onlineCount--;
 	}
 }
