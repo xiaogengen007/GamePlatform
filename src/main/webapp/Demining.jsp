@@ -22,6 +22,19 @@
 <script language="Javascript">
     document.oncontextmenu = function(){return false;} //禁止右键展开菜单项
 </script>
+<script language="Javascript">
+	var state = new Array(8);
+	var canClicked = 1; //1表示可以点击
+	for (var i = 0; i < 8; i++) {
+		state[i] = new Array(8);
+	}
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			state[i][j] = 0;
+		}
+		
+	}
+</script>
 <script type="text/javascript" src="out.js"></script>
 <script type="text/javascript">   
     var user = getParam("username");  
@@ -41,7 +54,7 @@
     //接收到消息的回调方法
     websocket.onmessage = function (event) {
     	var json1 = JSON.parse(event.data);
-		if (json1.action == 2) {
+		if (json1.action == 2) { //消息通讯
 			if (json1.message != "惯例发送信息!") {
 				setMessageInnerHTML(json1.message);
 			}
@@ -53,8 +66,25 @@
 			} else {
 				//游戏已经开始
 				setMessageInnerHTML("Game has started! Now has "+json1.playerNum+" in this room.");
+			}		
+		}
+		if (json1.action == 3) { //游戏进行状态通讯
+			if (json1.finished == 1) {
+				setMessageInnerHTML("You have finished this turn click, now complete "+json1.finishNum+" of "+json1.playerNum);
+			} else {
+				setMessageInnerHTML("Please click for this turn, now complete "+json1.finishNum+" of "+json1.playerNum);
 			}
-		
+		}
+		if (json1.action == 4) { //游戏该轮完成后通讯
+			document.getElementById('ptest').innerHTML = "";
+			var i = 1,j=1;
+			for (i=1; i<=8; i++) {
+				for (j=1; j<=8; j++) {
+		    		document.getElementById('ptest').innerHTML += "<button onmousedown=\"send(" + i + "," + j +")\">" + json1.state[i-1][j-1]+ "</button></div>";
+				}
+				document.getElementById('ptest').innerHTML += "<br/>";
+			}
+			setMessageInnerHTML("End of this turn, please select for next turn.");
 		}
     }
 

@@ -9,6 +9,8 @@ public class GameState {
 	public static ArrayList<GameState> games = new ArrayList<GameState>(); //建立一个静态的存储游戏状态的数组
 	ArrayList<WebSocket> players = new ArrayList<WebSocket>(); //存储该局游戏的用户信息
 	boolean isStarted; //记录该局游戏是否已经开始
+	int gameNum = 3; //游戏中的玩家数
+	int finshedNum = 0; //完成本轮操作的人数
 	int gameType;
 	public GameState() {
 		games.add(this); //将该游戏加载入游戏数组中
@@ -72,5 +74,8 @@ public class GameState {
 				e.printStackTrace();
 			}
 		}
+	}
+	public void HandleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
+		
 	}
 }

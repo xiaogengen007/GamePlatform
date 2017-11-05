@@ -90,7 +90,12 @@ public class WebSocket {
 			}
 		}
 		if (json1.getInt("action") == 3) { //3为玩扫雷时发消息
-			
+			if (!this.myPlayer.hasClicked) {
+				int clickX = json1.getInt("clickX"); //用户点击的X值(1-8)
+				int clickY = json1.getInt("clickY"); //用户点击的Y值(1-8)
+				int clickType = json1.getInt("clickType"); //点击类型，0表示左键，2表示右键
+				this.myPlayer.nowGame.HandleDemin(clickX, clickY, clickType, this);
+			}		
 		}
 		if (json1.getInt("action") == 4) { //4为游戏进入请求
 			int requestNum = json1.getInt("type");
