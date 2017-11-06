@@ -1,2 +1,2 @@
 # GamePlatform
-A software done for software engineering
+A software done for software engineering.
