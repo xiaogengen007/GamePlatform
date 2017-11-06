@@ -9,6 +9,13 @@
 
 
 <script type="text/javascript">
+	// firefox does not support window.event
+	if(navigator.userAgent.indexOf('Firefox') >= 0)
+	{
+   		var $E = function(){var c=$E.caller; while(c.caller)c=c.caller; return c.arguments[0]};
+   		window.__defineGetter__("event", $E);
+	}
+
 	var i = 1,j=1;
 	for (i=1; i<=8; i++) {
 		for (j=1; j<=8; j++) {
