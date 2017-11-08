@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title></title>
+	<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<style>
+	html,body{
+		height: 100%;
+		transform-style:preserve-3d;
+		background: linear-gradient(to bottom,blue,#fff);
+		overflow: hidden;
+		background: url(bg.jpg) no-repeat;
+	}
+	.box{
+		transform:perspective(800px) rotatex(30deg);
+		width: 400px;
+		height:400px;
+		margin: 20px auto;
+		border-top: 1px solid #B25F27;
+		border-left: 1px solid #B25F27;
+		box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+		
+	}
+	.block{
+		width: 49px;
+		height: 49px;
+		border-right:1px solid #B25F27;
+		border-bottom:1px solid #B25F27;
+		float: left;
+		box-shadow: 0 0 4px #333 inset;  /*内阴影*/
+		background:  url(cao.jpg);
+		
+	}
+	.show{
+		background:url(dilei.jpg) no-repeat;
+	}
+	.num{
+		background: #ECD0A1;
+		font-size: 18px;
+		/*color: #fff;*/
+		font-weight: bold;
+		text-align: center;
+		line-height: 49px;
+	}
+	.time{
+		width: 50px;
+		height: 50px;
+		border: 1px solid red;
+		text-align: center;
+		line-height: 50px;
+		font-size: 20px;
+		font-weight: bold;
+		font-family: "微软雅黑";
+		position: absolute;
+		right: 20px;
+		top: 50px;
+		background: url(shizhong.jpg) no-repeat;
+		color: #fff;
+	}
+	.flagbox{
+		width: 40px;
+		height: 40px;
+		padding: 5px;
+		background: url(hongqi.jpg) no-repeat;
+		border: 1px solid red;
+		position: absolute;
+		right: 20px;
+		top: 120px;
+		text-align:center;
+		line-height: 50px;
+		font-size: 20px;
+		font-weight: bold;
+		font-family: "微软雅黑";
+		
+	}
+	
+	.flag{
+		background: url(hongqi.jpg) no-repeat;
+	}
+</style>
+<script>
+	$(function(){
+		$(".box").empty();
+		for(var i=0;i<8;i++){
+			for(var j=0;j<8;j++){
+				$("<div></div>").addClass("block")
+				.data("pos",{x:i,y:j}).attr("id",i+"-"+j)
+				.mousedown(mousedownhandler).appendTo(".box");
+			}
+		}
+		$(document).on("contextmenu",false);  //右击浏览器弹出窗口事件 被 contextmenu事件冲掉
+		function mousedownhandler(e){
+			e.preventDefault();
+			pos = $(this).attr('id').split('-');
+			send(e, pos[0], pos[1]);
+			/*
+			if(e.which==1){                   //区分左击和右击事件
+				leftclick.call(this);		  //将this指针保存到leftclick上
+			}else if(e.which==3){
+				rightclick.call(this);        // 将this指针保存到rightclick上
+			}*/
+		}
+	})
+</script>
+<script language="Javascript">
+    document.oncontextmenu = function(){return false;} //禁止右键展开菜单项
+</script>
+<script language="Javascript">
+	var state = new Array(8);
+	var canClicked = 1; //1表示可以点击
+	for (var i = 0; i < 8; i++) {
+		state[i] = new Array(8);
+	}
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			state[i][j] = 0;
+		}
+		
+	}
+</script>
+<script type="text/javascript" src="../out.js"></script>
+<script type="text/javascript">   
+    var user = getParam("username");  
+    
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        setMessageInnerHTML("WebSocket连接发生错误1");
+    };
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        setMessageInnerHTML("WebSocket连接成功2");
+        senduser();
+        sendPlayRequest(); //发送玩游戏请求（扫雷）
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+    	var json1 = JSON.parse(event.data);
+		if (json1.action == 2) { //消息通讯
+			if (json1.message != "惯例发送信息!") {
+				setMessageInnerHTML(json1.message);
+			}
+		}
+		if (json1.action == 1) { //游戏状态的通讯
+			if (json1.start == 0) {
+				//游戏还未开始
+				setMessageInnerHTML("Now has "+json1.playerNum+" in this room, please wait for game start.");
+			} else {
+				//游戏已经开始
+				setMessageInnerHTML("Game has started! Now has "+json1.playerNum+" in this room.");
+			}		
+		}
+		if (json1.action == 3) { //游戏进行状态通讯
+			if (json1.finished == 1) {
+				setMessageInnerHTML("You have finished this turn click, now complete "+json1.finishNum+" of "+json1.playerNum);
+			} else {
+				setMessageInnerHTML("Please click for this turn, now complete "+json1.finishNum+" of "+json1.playerNum);
+			}
+		}
+		if (json1.action == 4) { //游戏该轮完成后通讯
+			/*
+			document.getElementById('ptest').innerHTML = "";
+			var i = 1,j=1;
+			for (i=1; i<=8; i++) {
+				for (j=1; j<=8; j++) {
+		    		document.getElementById('ptest').innerHTML += "<button onmousedown=\"send(" + i + "," + j +")\">" + json1.state[i-1][j-1]+ "</button></div>";
+				}
+				document.getElementById('ptest').innerHTML += "<br/>";
+			}
+			setMessageInnerHTML("End of this turn, please select for next turn.");
+			*/
+			for(var i = 0; i < 8; i++){
+				for(var j = 0; j < 8; j++){
+					$("#"+i+"-"+j).addClass("num").text(json1.state[i][j]);
+				}
+			}
+		}
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        setMessageInnerHTML("WebSocket连接关闭3");
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+    }
+
+    //将消息显示在网页上
+    function setMessageInnerHTML(innerHTML) {
+        //document.getElementById('message').innerHTML += innerHTML + '<br/>';
+    }
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    //发送消息
+    function send(e, x, y) {
+    	if (user == "") {
+    		alert("please login!");
+    	} else {
+    		//var e=window.event;//获取事件对象
+    	    //var clickType=e.button;
+    		if (e.which != 1 && e.which != 3) {
+    			return; //非单独按左右键时屏蔽消息
+    		}
+    	   	//document.getElementById('ptest').innerHTML += x+" "+y+" ";
+    		var json1 = {};
+        	json1.action = 3; //3表示正在进行扫雷游戏
+        	json1.clickX = x; //传输点击的位置
+        	json1.clickY = y;
+        	json1.clickType = e.which - 1;
+            var messages = JSON.stringify(json1); 
+            websocket.send(messages);
+    	}	
+    }
+    
+    //发送你的用户名
+    function senduser() {
+    	var json1 = {};
+    	json1.action = 1; //1表示登录
+    	json1.username = user;
+    	var messages = JSON.stringify(json1);
+    	//setMessageInnerHTML("myname:"+user);
+    	websocket.send(messages);
+    }
+    
+    function getParam(paramName) {
+        paramValue = "";
+        isFound = false;
+        if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+            arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&");
+            i = 0;
+            while (i < arrSource.length && !isFound) {
+                if (arrSource[i].indexOf("=") > 0) {
+                    if (arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase()) {
+                        paramValue = arrSource[i].split("=")[1];
+                        isFound = true;
+                    }
+                }
+                i++;
+            }
+        }
+        return paramValue;
+    }
+    
+    function sendPlayRequest() {
+    	var json1 = {};
+    	json1.action = 4; //4表示请求加入游戏
+    	json1.type = 1; //type为1表示扫雷游戏
+    	var messages = JSON.stringify(json1);
+    	websocket.send(messages);
+    	setMessageInnerHTML("have send play request.");
+    }
+</script>
+<body>
+	<div class="box"></div>
+</body>
+</html>
