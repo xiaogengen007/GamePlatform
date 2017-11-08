@@ -4,13 +4,19 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title></title>
 	<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+	<!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
 	html,body{
 		height: 100%;
 		transform-style:preserve-3d;
-		background: linear-gradient(to bottom,blue,#fff);
 		overflow: hidden;
+	}
+	.fullheight{
+		height: 100%;
+	}
+	.game{
 		background: url(bg.jpg) no-repeat;
 	}
 	.box{
@@ -170,13 +176,13 @@
 				}
 				document.getElementById('ptest').innerHTML += "<br/>";
 			}
-			setMessageInnerHTML("End of this turn, please select for next turn.");
 			*/
 			for(var i = 0; i < 8; i++){
 				for(var j = 0; j < 8; j++){
 					$("#"+i+"-"+j).addClass("num").text(json1.state[i][j]);
 				}
 			}
+			setMessageInnerHTML("End of this turn, please select for next turn.");
 		}
     }
 
@@ -192,7 +198,7 @@
 
     //将消息显示在网页上
     function setMessageInnerHTML(innerHTML) {
-        //document.getElementById('message').innerHTML += innerHTML + '<br/>';
+        document.getElementById('message').innerHTML += innerHTML + '<br/>';
     }
 
     //关闭WebSocket连接
@@ -260,6 +266,13 @@
     }
 </script>
 <body>
-	<div class="box"></div>
+	<div class="row fullheight">
+		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 game fullheight" >
+           <div class="box"></div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fullheight" id="message">
+           messages
+        </div>
+    </div>
 </body>
 </html>
