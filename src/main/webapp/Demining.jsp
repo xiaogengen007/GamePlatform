@@ -30,13 +30,14 @@
     document.oncontextmenu = function(){return false;} //禁止右键展开菜单项
 </script>
 <script language="Javascript">
-	var state = new Array(8);
+	var gridLen = 8;
+	var state = new Array(gridLen);
 	var canClicked = 1; //1表示可以点击
-	for (var i = 0; i < 8; i++) {
-		state[i] = new Array(8);
+	for (var i = 0; i < gridLen; i++) {
+		state[i] = new Array(gridLen);
 	}
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
+	for (var i = 0; i < gridLen; i++) {
+		for (var j = 0; j < gridLen; j++) {
 			state[i][j] = 0;
 		}
 		
@@ -85,8 +86,8 @@
 		if (json1.action == 4) { //游戏该轮完成后通讯
 			document.getElementById('ptest').innerHTML = "";
 			var i = 1,j=1;
-			for (i=1; i<=8; i++) {
-				for (j=1; j<=8; j++) {
+			for (i=1; i<=gridLen; i++) {
+				for (j=1; j<=gridLen; j++) {
 		    		document.getElementById('ptest').innerHTML += "<button onmousedown=\"send(" + i + "," + j +")\">" + json1.state[i-1][j-1]+ "</button></div>";
 				}
 				document.getElementById('ptest').innerHTML += "<br/>";
@@ -128,8 +129,8 @@
     	   	document.getElementById('ptest').innerHTML += x+" "+y+" ";
     		var json1 = {};
         	json1.action = 3; //3表示正在进行扫雷游戏
-        	json1.clickX = x; //传输点击的位置
-        	json1.clickY = y;
+        	json1.clickX = x-1; //传输点击的位置
+        	json1.clickY = y-1;
         	json1.clickType = clickType;
             var messages = JSON.stringify(json1); 
             websocket.send(messages);

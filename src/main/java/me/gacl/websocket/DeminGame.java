@@ -7,18 +7,20 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
 
 public class DeminGame extends GameState{
-	int[][] gridState = new int [8][8]; //0表示还未有人选中，1表示已选过，2表示正在有人选中
+	int gridLen = 8; //雷区的大小
+	int[][] gridState = new int [gridLen][gridLen]; //0表示还未有人选中，1表示已选过，2表示正在有人选中
 	DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
-		for (int i = 0; i < 8; i++) {
-			for (int j= 0; j < 8; j++) {
+		for (int i = 0; i < gridLen; i++) {
+			for (int j= 0; j < gridLen; j++) {
 				gridState[i][j] = 0; 
 			}
 		}
 	}
 	public void HandleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
-		if (!ws.myPlayer.hasClicked && this.gridState[clickX-1][clickY-1] != 1) { //该方格还未选过时响应该次选方格
+		//System.out.println("123");
+		if (this.isStarted && !ws.myPlayer.hasClicked && this.gridState[clickX][clickY] != 1) { //该方格还未选过时响应该次选方格
 			ws.myPlayer.clickX = clickX;
 			ws.myPlayer.clickY = clickY;
 			if (clickType == 0) {
@@ -63,16 +65,16 @@ public class DeminGame extends GameState{
 			if (item.myPlayer.clickType) {
 				type = 1;
 			}
-			this.gridState[item.myPlayer.clickX-1][item.myPlayer.clickY-1] = type;
+			this.gridState[item.myPlayer.clickX][item.myPlayer.clickY] = type;
 			item.myPlayer.hasClicked = false;
 		}
 		this.finshedNum = 0; //完成人数置为0
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示扫雷该轮已经结束
 		ArrayList<ArrayList> arr = new ArrayList<ArrayList>();
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < gridLen; i++) {
 			ArrayList<Integer> arr1 = new ArrayList<Integer>();
-			for (int j = 0; j < 8; j++) {
+			for (int j = 0; j < gridLen; j++) {
 				arr1.add(this.gridState[i][j]);
 			}
 			arr.add(arr1);
