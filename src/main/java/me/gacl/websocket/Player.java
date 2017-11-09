@@ -2,6 +2,7 @@ package me.gacl.websocket;
 
 public class Player {
 	String username;
+	WebSocket myWebsocket = null;
 	int status; //0表示不在进行游戏，1表示在玩扫雷
 	GameState nowGame; //现在正在进行的比赛
 	boolean hasClicked; //表示该轮游戏中是否完成有效点击（针对扫雷）

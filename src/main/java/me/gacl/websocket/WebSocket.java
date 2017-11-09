@@ -22,7 +22,7 @@ public class WebSocket {
 	//与某个客户端的连接会话，需要通过它来给客户端发送数据
 	public Session session;
 	private static boolean startedthread = false;
-	Player myPlayer = new Player(); //存储该用户的相关信息
+	Player myPlayer = null; //存储该用户的相关信息
 
 	public WebSocket() {
 		if (!this.startedthread) {
@@ -49,6 +49,10 @@ public class WebSocket {
 	 */
 	@OnClose
 	public void onClose(){
+		boolean isSuccess = this.myPlayer.nowGame.deletePlayer(this.myPlayer); //试图删除在房间中记录
+		if (!isSuccess) { //未成功时将引用置为空
+			this.myPlayer.myWebsocket = null;
+		}
 		webSocketSet.remove(this);  //从set中删除
 		subOnlineCount();           //在线数减1
 		System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
@@ -65,12 +69,15 @@ public class WebSocket {
 		
 		JSONObject json1 = JSONObject.fromObject(message);
 		if (json1.getInt("action") == 1) { //1为登录或注册
-			this.myPlayer.username = (String) json1.getString("username");
+			String name = (String) json1.getString("username");
 			try {
-				if (this.myPlayer.username.length() > 5) {
+				if (name.length() > 5) {
 					this.sendMessage("");
 				} else {
-					this.sendMessage(this.myPlayer.username+", hello for coming");
+					myPlayer = new Player(); //存储该用户的相关信息
+					this.myPlayer.username = name;
+					this.myPlayer.myWebsocket = this;
+					this.sendMessage(name+", hello for coming");
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -100,7 +107,7 @@ public class WebSocket {
 		if (json1.getInt("action") == 4) { //4为游戏进入请求
 			int requestNum = json1.getInt("type");
 			if (requestNum == 1) {
-				GameState.distributeRoom(this);
+				GameState.distributeRoom(this.myPlayer);
 			}
 		}
 	}

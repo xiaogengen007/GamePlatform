@@ -46,12 +46,14 @@ public class DeminGame extends GameState{
 		String messages1 = json1.toString();
 		json1.put("finished", 0);
 		String messages2 = json1.toString();
-		for (WebSocket item : players) {
+		for (Player item : players) {
 			try {
-				if (item.myPlayer.hasClicked) {
-					item.session.getBasicRemote().sendText(messages1);
-				} else {
-					item.session.getBasicRemote().sendText(messages2);
+				if (item.myWebsocket != null) {
+					if (item.hasClicked) {
+						item.myWebsocket.session.getBasicRemote().sendText(messages1);
+					} else {
+						item.myWebsocket.session.getBasicRemote().sendText(messages2);
+					}
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -60,13 +62,13 @@ public class DeminGame extends GameState{
 		}
 	}
 	public void endOfThisTurn() {
-		for (WebSocket item : players) {
+		for (Player item : players) {
 			int type = 2;
-			if (item.myPlayer.clickType) {
+			if (item.clickType) {
 				type = 1;
 			}
-			this.gridState[item.myPlayer.clickX][item.myPlayer.clickY] = type;
-			item.myPlayer.hasClicked = false;
+			this.gridState[item.clickX][item.clickY] = type;
+			item.hasClicked = false;
 		}
 		this.finshedNum = 0; //完成人数置为0
 		JSONObject json1 = new JSONObject();
@@ -81,9 +83,11 @@ public class DeminGame extends GameState{
 		}
 		json1.put("state", arr);
 		String messages = json1.toString();
-		for (WebSocket item : players) {
+		for (Player item : players) {
 			try {
-				item.session.getBasicRemote().sendText(messages);
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
