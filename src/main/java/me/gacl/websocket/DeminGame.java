@@ -33,7 +33,8 @@ public class DeminGame extends GameState{
 			if (this.finshedNum < this.gameNum) {
 				sendForGameProcess(); //该轮未结束时告知用户进展情况
 			} else {
-				endOfThisTurn(); //完成此轮后进行一些常规操作
+				this.batchHandleTurn();
+				sendEndOfThisTurn(); //完成此轮后进行一些常规操作
 			}
 		}	
 	}
@@ -48,6 +49,7 @@ public class DeminGame extends GameState{
 		String messages2 = json1.toString();
 		for (Player item : players) {
 			try {
+				//System.out.println(item.username);
 				if (item.myWebsocket != null) {
 					if (item.hasClicked) {
 						item.myWebsocket.session.getBasicRemote().sendText(messages1);
@@ -61,7 +63,7 @@ public class DeminGame extends GameState{
 			}
 		}
 	}
-	public void endOfThisTurn() {
+	public void batchHandleTurn() {
 		for (Player item : players) {
 			int type = 2;
 			if (item.clickType) {
@@ -71,6 +73,8 @@ public class DeminGame extends GameState{
 			item.hasClicked = false;
 		}
 		this.finshedNum = 0; //完成人数置为0
+	}
+	public void sendEndOfThisTurn() {	
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示扫雷该轮已经结束
 		ArrayList<ArrayList> arr = new ArrayList<ArrayList>();
@@ -91,6 +95,17 @@ public class DeminGame extends GameState{
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void revisiting(Player ply) { //处理有玩家回到游戏中的情况
+		for (Player item: this.players) {
+			if (item.username.equals(ply.username)) {
+				System.out.println("Has send!");
+				this.sendEndOfThisTurn();
+			} else {
+				System.out.println("No send!");
 			}
 		}
 	}

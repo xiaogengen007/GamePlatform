@@ -60,6 +60,20 @@ public class GameState {
 		ply.nowGame = flow;
 	}
 
+	public static Player SearchFromName(String username) {
+		for (GameState gs: games) {
+			for (Player ply: gs.players) {
+				if (ply.username.equals(username)) {
+					return ply; //找到了该玩家
+				} else {
+					//System.out.println(ply.username + " not " + username);
+				}
+			}
+		}
+		System.out.println("can not find this player!");
+		return null; //否则返回空
+	}
+	
 	public void sendForGameState() {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 1); //1表示发送游戏是否已经开始
@@ -81,7 +95,6 @@ public class GameState {
 			}
 		}
 	}
-	public void HandleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
-		
-	}
+	public void HandleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
+	public void revisiting(Player ply) {}; //处理用户重新进入游戏
 }

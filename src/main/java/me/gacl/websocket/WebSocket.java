@@ -74,9 +74,17 @@ public class WebSocket {
 				if (name.length() > 5) {
 					this.sendMessage("");
 				} else {
-					myPlayer = new Player(); //存储该用户的相关信息
-					this.myPlayer.username = name;
-					this.myPlayer.myWebsocket = this;
+					this.myPlayer = GameState.SearchFromName(name);
+					if (myPlayer == null) {
+						myPlayer = new Player(); //存储该用户的相关信息
+						this.myPlayer.username = name;
+						this.myPlayer.myWebsocket = this; //建立player与websocket的双向连接
+						//System.out.println("I'm not create new!");
+					} else {
+						//刷新该用户的界面，让他顺利回到游戏中
+						this.myPlayer.myWebsocket = this; //建立player与websocket的双向连接
+						this.myPlayer.nowGame.revisiting(this.myPlayer);
+					}
 					this.sendMessage(name+", hello for coming");
 				}
 			} catch (IOException e) {
