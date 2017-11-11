@@ -19,6 +19,9 @@
     Object user = session.getAttribute("user");  
     out.println("欢迎"+user);
     System.out.printf("test");
+    
+    out.println("<script>window.location.href='game.html?username="+ session.getAttribute("user")  +"'</script>");
+    //out.println("<script>window.location.href='minesweeper/mine.html?username="+ session.getAttribute("user")  +"'</script>");
   %>  
   <br/>  
   <form action="#" method="post">  
@@ -26,7 +29,7 @@
   </form>
   
   <script>
-	window.location.href='game.html';
+	window.location.href='game.html?';
   </script>  
     
 </body>  

@@ -21,7 +21,7 @@
     
 </head>
 
-<body>
+<body onload="align()">
 	<script type="text/javascript">
 		if(document.referrer===''){
 		    window.location.href='signin.jsp';
@@ -55,17 +55,59 @@
     
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-8  col-md-8 main" id="players">
+            <div class="col-sm-8 col-md-8 main" id="players">
                 <!--<h1 class="page-header">Dashboard</h1>-->
                 
                 <div class="row placeholders">
-                <!--
-                    <div class="col-xs-6 col-sm-3 placeholder">
+                
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player0">
                         <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
                         <h4>Label</h4>
                         <span class="text-muted">Something else</span>
                     </div>
-                -->
+                    
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player1">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>Label</h4>
+                        <span class="text-muted">Something else</span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player2">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>Label</h4>
+                        <span class="text-muted">Something else</span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player3">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>Label</h4>
+                        <span class="text-muted">Something else</span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player4">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>Label</h4>
+                        <span class="text-muted">Something else</span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player5">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>Label</h4>
+                        <span class="text-muted">Something else</span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player6">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>Label</h4>
+                        <span class="text-muted">Something else</span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player7">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+                        <h4>Label</h4>
+                        <span class="text-muted">Something else</span>
+                    </div>
+                
                     
                 </div>
                 
@@ -93,7 +135,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <!--script src="../../assets/js/vendor/holder.min.js"></script>-->
@@ -110,21 +151,15 @@
             .appendTo('.placeholders');
         }
 
-        function addMessage(){
-            $('<p></p>').append($('#testinput').val()).appendTo('#messagebox');
-
-            var div = document.getElementById('messagebox');
-            div.scrollTop = div.scrollHeight;
+        function align(){
+        	$('#messagebox').height($('#players').height() - $('.input-group').height());
         }
-
-        for(var i = 0; i < 8; i++){
-            addPlayer(i);
-        }
-
-        $('#messagebox').height($('#players').height() - $('.input-group').height());
     </script>
 
     <script type="text/javascript" src="out.js"></script>
+    
+    <script type="text/javascript" src="game.js"></script>
+    
 </body>
 
 </html>
