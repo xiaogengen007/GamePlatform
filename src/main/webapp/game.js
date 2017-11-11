@@ -146,8 +146,17 @@ function startGame(){
 	node.href = 'minesweeper.css';
 	document.getElementsByTagName('head')[0].appendChild(node);
 	
-	$('#players').empty().removeClass('main').addClass('game fullheight');
+	$('#players').empty().removeClass('main').addClass('game');
 	$('<div></div>').addClass('box').appendTo('#players');
+	$('<div></div>').attr('id','progressbardiv').addClass('progress').appendTo('#players');
+	//$('<p></p>').text('test').appendTo('#progressbardiv');
+	//document.getElementById('progressbardiv').innerHTML = 
+	
+	$('<div></div>').attr('id','progressbar')
+	.addClass('progress-bar progress-bar-striped active')
+	.attr('role', 'progressbar').attr('aria-valuenow', '100')
+	.attr('aria-valuemin','0').attr('aria-valuemax','100').css('width','100%')
+	.appendTo('#progressbardiv');
 	
 	$(".box").empty();
 	for(var i=0;i<gridLen;i++){
