@@ -1,9 +1,12 @@
-package me.gacl.websocket;
+package game;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import net.sf.json.JSONObject;
+
+import websocket.WebSocket;
+import player.Player;
 
 public class GameState {
 	public static ArrayList<GameState> games = new ArrayList<GameState>(); //建立一个静态的存储游戏状态的数组
@@ -11,7 +14,10 @@ public class GameState {
 	boolean isStarted; //记录该局游戏是否已经开始
 	int gameNum = 3; //游戏中的玩家数
 	int finshedNum = 0; //完成本轮操作的人数
-	int gameType;
+	int gameType; //游戏类型（1为扫雷）
+	int maxTurnTime; //单轮游戏所允许的最长时间
+	int leftTime; //本轮游戏还剩余的游戏时间
+	
 	public GameState() {
 		games.add(this); //将该游戏加载入游戏数组中
 		isStarted = false;
@@ -31,6 +37,7 @@ public class GameState {
 		}
 		if (players.size() == 3) {
 			this.isStarted = true;
+			
 		}
 		sendForGameState();
 		
@@ -60,7 +67,7 @@ public class GameState {
 		ply.nowGame = flow;
 	}
 
-	public static Player SearchFromName(String username) {
+	public static Player SearchFromName(String username) { //通过用户名搜索用户是否在游戏列表中
 		for (GameState gs: games) {
 			for (Player ply: gs.players) {
 				if (ply.username.equals(username)) {

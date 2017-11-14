@@ -1,4 +1,4 @@
-package me.gacl.websocket;
+package game;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
 
+import websocket.WebSocket;
+import player.Player;
+
 public class DeminGame extends GameState{
 	int gridLen = 8; //雷区的大小
 	int[][] gridState = new int [gridLen][gridLen]; //0表示还未有人选中，1表示已选过，2表示正在有人选中
 	DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
+		this.maxTurnTime = 30; //扫雷游戏设置的一轮游戏时间为30s
 		for (int i = 0; i < gridLen; i++) {
 			for (int j= 0; j < gridLen; j++) {
 				gridState[i][j] = 0; 
@@ -100,6 +104,7 @@ public class DeminGame extends GameState{
 	}
 	
 	public void revisiting(Player ply) { //处理有玩家回到游戏中的情况
+		if (!this.isStarted) return; //游戏还没开始时忽略请求
 		for (Player item: this.players) {
 			if (item.username.equals(ply.username)) {
 				System.out.println("Has send!");

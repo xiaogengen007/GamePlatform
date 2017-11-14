@@ -1,11 +1,15 @@
-package me.gacl.websocket;
+package websocket;
 
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import net.sf.json.JSONObject;
+import player.Player;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+
+import game.GameState;
 
 /**
  * @ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
@@ -22,7 +26,7 @@ public class WebSocket {
 	//与某个客户端的连接会话，需要通过它来给客户端发送数据
 	public Session session;
 	private static boolean startedthread = false;
-	Player myPlayer = null; //存储该用户的相关信息
+	public Player myPlayer = null; //存储该用户的相关信息
 
 	public WebSocket() {
 		if (!this.startedthread) {

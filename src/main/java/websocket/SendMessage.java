@@ -1,4 +1,4 @@
-package me.gacl.websocket;
+package websocket;
 
 import java.io.IOException;
 
