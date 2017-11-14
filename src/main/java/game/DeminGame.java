@@ -16,6 +16,7 @@ public class DeminGame extends GameState{
 		super();
 		this.gameType = 1; //扫雷为类型1
 		this.maxTurnTime = 30; //扫雷游戏设置的一轮游戏时间为30s
+		this.leftTime = new Integer(this.maxTurnTime);
 		for (int i = 0; i < gridLen; i++) {
 			for (int j= 0; j < gridLen; j++) {
 				gridState[i][j] = 0; 
@@ -23,7 +24,7 @@ public class DeminGame extends GameState{
 		}
 	}
 	public void HandleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
-		//System.out.println("123");
+		System.out.println("leftTime: "+ this.leftTime);
 		if (this.isStarted && !ws.myPlayer.hasClicked && this.gridState[clickX][clickY] != 1) { //该方格还未选过时响应该次选方格
 			ws.myPlayer.clickX = clickX;
 			ws.myPlayer.clickY = clickY;
@@ -67,7 +68,7 @@ public class DeminGame extends GameState{
 			}
 		}
 	}
-	public void batchHandleTurn() {
+	public void batchHandleTurn() { //当前轮结束时进行批处理
 		for (Player item : players) {
 			int type = 2;
 			if (item.clickType) {
@@ -75,6 +76,9 @@ public class DeminGame extends GameState{
 			}
 			this.gridState[item.clickX][item.clickY] = type;
 			item.hasClicked = false;
+		}
+		synchronized (this.leftTime) {
+			this.leftTime = this.maxTurnTime;
 		}
 		this.finshedNum = 0; //完成人数置为0
 	}

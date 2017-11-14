@@ -16,7 +16,7 @@ public class GameState {
 	int finshedNum = 0; //完成本轮操作的人数
 	int gameType; //游戏类型（1为扫雷）
 	int maxTurnTime; //单轮游戏所允许的最长时间
-	int leftTime; //本轮游戏还剩余的游戏时间
+	Integer leftTime; //本轮游戏还剩余的游戏时间
 	
 	public GameState() {
 		games.add(this); //将该游戏加载入游戏数组中
@@ -102,6 +102,17 @@ public class GameState {
 			}
 		}
 	}
+	
+	public void refreshTime() { //更新游戏时间
+		synchronized (this.leftTime) { //对时间加上互斥锁
+			if (this.leftTime > 0) {
+				this.leftTime--; //还有时间时减一秒
+			} else {
+				//否则强制结束这一轮
+			}
+		}
+	}
+	
 	public void HandleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
 	public void revisiting(Player ply) {}; //处理用户重新进入游戏
 }

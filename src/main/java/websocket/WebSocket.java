@@ -10,6 +10,7 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 import game.GameState;
+import game.Timer;
 
 /**
  * @ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
@@ -42,7 +43,10 @@ public class WebSocket {
 	public void onOpen(Session session){
 		
 		this.session = session;
-		
+		if (!Timer.hasSet) { //当第一个用户连接时即开始计时器线程
+			new Thread(new Timer()).start();
+			Timer.hasSet = true;
+		}
 		webSocketSet.add(this);     //加入set中
 		addOnlineCount();           //在线数加1
 		System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
