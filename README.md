@@ -1,5 +1,5 @@
 # GamePlatform
-A software done for software engineering.
+A game platform software done for the big job of software engineering.
 
 ## 1. eclipse encoding setting
 
