@@ -25,6 +25,10 @@
 	}
 </script>
 </body>
+<hr/>
+<input id="text" type="text"/>
+<button onclick="sendGame()">发送消息</button>
+<hr/>
 <div id="message"></div>
 <script language="Javascript">
     document.oncontextmenu = function(){return false;} //禁止右键展开菜单项
@@ -62,11 +66,6 @@
     //接收到消息的回调方法
     websocket.onmessage = function (event) {
     	var json1 = JSON.parse(event.data);
-		if (json1.action == 2) { //消息通讯
-			if (json1.message != "惯例发送信息!") {
-				setMessageInnerHTML(json1.message);
-			}
-		}
 		if (json1.action == 1) { //游戏状态的通讯
 			if (json1.start == 0) {
 				//游戏还未开始
@@ -75,6 +74,11 @@
 				//游戏已经开始
 				setMessageInnerHTML("Game has started! Now has "+json1.playerNum+" in this room.");
 			}		
+		}
+		if (json1.action == 2) { //消息通讯
+			if (json1.message != "惯例发送信息!") {
+				setMessageInnerHTML(json1.message);
+			}
 		}
 		if (json1.action == 3) { //游戏进行状态通讯
 			if (json1.finished == 1) {
@@ -93,6 +97,9 @@
 				document.getElementById('ptest').innerHTML += "<br/>";
 			}
 			setMessageInnerHTML("End of this turn, please select for next turn, now left "+json1.leftTime+" seconds.");
+		}
+		if (json1.action == 5) { //游戏中进行聊天
+			setMessageInnerHTML(json1.message);
 		}
     }
 
@@ -142,6 +149,16 @@
     	var json1 = {};
     	json1.action = 1; //1表示登录
     	json1.username = user;
+    	var messages = JSON.stringify(json1);
+    	//setMessageInnerHTML("myname:"+user);
+    	websocket.send(messages);
+    }
+    
+    //在游戏中发送消息
+    function sendGame() {
+    	var json1 = {};
+    	json1.action = 5; //5表示游戏过程中聊天
+    	json1.message = document.getElementById('text').value;
     	var messages = JSON.stringify(json1);
     	//setMessageInnerHTML("myname:"+user);
     	websocket.send(messages);

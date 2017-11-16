@@ -110,6 +110,21 @@ public class GameState {
 		}
 	}
 	
+	public void handleForChating(String message) {
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 5); //5表示游戏中聊天
+		json1.put("message",message); 
+		String messages = json1.toString();
+		for (Player item: players) {
+			try {
+				item.myWebsocket.session.getBasicRemote().sendText(messages);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
 	public void revisiting(Player ply) {}; //处理用户重新进入游戏
 	public void handleLeftTimeZero() {}; //解决时间为零的情况

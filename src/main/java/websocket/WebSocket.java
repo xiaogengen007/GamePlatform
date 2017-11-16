@@ -126,6 +126,12 @@ public class WebSocket {
 				GameState.distributeRoom(this.myPlayer);
 			}
 		}
+		if (json1.getInt("action") == 5) { //5为游戏中聊天
+			if (this.myPlayer.nowGame != null) {
+				String messages = this.myPlayer.username+":"+json1.getString("message");
+				this.myPlayer.nowGame.handleForChating(messages);
+			}
+		}
 	}
 
 	/**
