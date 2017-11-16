@@ -37,7 +37,7 @@ public class GameState {
 		}
 		if (players.size() == 3) {
 			this.isStarted = true;
-			
+			this.leftTime = this.maxTurnTime; //游戏开始时设置剩余时间为最大时间
 		}
 		sendForGameState();
 		

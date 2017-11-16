@@ -24,7 +24,7 @@ public class DeminGame extends GameState{
 		}
 	}
 	public void HandleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
-		System.out.println("leftTime: "+ this.leftTime);
+		//System.out.println("leftTime: "+ this.leftTime);
 		if (this.isStarted && !ws.myPlayer.hasClicked && this.gridState[clickX][clickY] != 1) { //该方格还未选过时响应该次选方格
 			ws.myPlayer.clickX = clickX;
 			ws.myPlayer.clickY = clickY;
@@ -49,6 +49,7 @@ public class DeminGame extends GameState{
 		json1.put("finished", 1); //1表示已经完成
 		json1.put("playerNum", players.size());
 		json1.put("finishNum", this.finshedNum);
+		json1.put("leftTime", this.leftTime); //发送本轮剩余时间
 		String messages1 = json1.toString();
 		json1.put("finished", 0);
 		String messages2 = json1.toString();
@@ -94,6 +95,7 @@ public class DeminGame extends GameState{
 			arr.add(arr1);
 		}
 		json1.put("state", arr);
+		json1.put("leftTime", this.leftTime);
 		String messages = json1.toString();
 		for (Player item : players) {
 			try {
