@@ -11,7 +11,7 @@ import player.Player;
 public class GameState {
 	public static ArrayList<GameState> games = new ArrayList<GameState>(); //建立一个静态的存储游戏状态的数组
 	ArrayList<Player> players = new ArrayList<Player>(); //存储该局游戏的用户信息
-	boolean isStarted; //记录该局游戏是否已经开始
+	int gameStatus; //记录该局游戏的状态（0为未开始，1为游戏中，2为已结束）
 	int gameNum = 3; //游戏中的玩家数
 	int finshedNum = 0; //完成本轮操作的人数
 	int gameType; //游戏类型（1为扫雷）
@@ -20,7 +20,7 @@ public class GameState {
 	
 	public GameState() {
 		games.add(this); //将该游戏加载入游戏数组中
-		isStarted = false;
+		this.gameStatus = 0; //初始时游戏还未开始
 	}
 	public boolean canAddPlayer() { //判断该局游戏中是否可以再加玩家
 		if (players.size() < 3) {
@@ -36,14 +36,14 @@ public class GameState {
 			System.out.println("distribution error!");
 		}
 		if (players.size() == 3) {
-			this.isStarted = true;
+			this.gameStatus = 1; //游戏开始
 			this.leftTime = this.maxTurnTime; //游戏开始时设置剩余时间为最大时间
 		}
 		sendForGameState();
 		
 	}
 	public boolean deletePlayer(Player ply) { //将该玩家退出该局游戏
-		if (!this.isStarted) { //游戏还未开始时可退出游戏
+		if (this.gameStatus == 0) { //游戏还未开始时可退出游戏
 			players.remove(ply);
 			this.sendForGameState();
 			return true;
@@ -84,11 +84,7 @@ public class GameState {
 	public void sendForGameState() {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 1); //1表示发送游戏是否已经开始
-		if (this.isStarted) {
-			json1.put("start", 1); //1表示游戏已经开始了
-		} else {
-			json1.put("start", 0);
-		}
+		json1.put("start", this.gameStatus); //0为未开始，1为开始，2为结束
 		json1.put("playerNum", players.size());
 		String messages = json1.toString();
 		for (Player item : players) {
@@ -109,10 +105,12 @@ public class GameState {
 				this.leftTime--; //还有时间时减一秒
 			} else {
 				//否则强制结束这一轮
+				handleLeftTimeZero();
 			}
 		}
 	}
 	
-	public void HandleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
+	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
 	public void revisiting(Player ply) {}; //处理用户重新进入游戏
+	public void handleLeftTimeZero() {}; //解决时间为零的情况
 }
