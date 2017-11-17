@@ -1,4 +1,6 @@
 var gridLen = 8;
+var tMax = 20;
+var tNow = tMax;
 
 var MessageType = {
 	status : 1,
@@ -11,6 +13,7 @@ var MessageType = {
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
     var json1 = JSON.parse(event.data);
+    console.log(json1.action);
     if (json1.action == MessageType.message) { //消息通讯
         if (json1.message != "惯例发送信息!") {
             setMessageInnerHTML(json1.message);
@@ -19,7 +22,7 @@ websocket.onmessage = function (event) {
     else if (json1.action == 1) { //游戏状态的通讯
     	
     	for(var i = playerArray.length; i < json1.players.length; i++ ){
-    		addplayer(json1.players[i]);
+    		addPlayer(json1.players[i]);
     	}
     	
         if (json1.start == 0) {
@@ -37,6 +40,8 @@ websocket.onmessage = function (event) {
         } else {
             setMessageInnerHTML("Please click for this turn, now complete "+json1.finishNum+" of "+json1.playerNum);
         }
+        tNow = json1.leftTime;
+        timeUpdate(tNow, tMax);
     }
     else if (json1.action == 4) { //游戏该轮完成后通讯
         for(var i = 0; i < gridLen; i++){
@@ -45,8 +50,10 @@ websocket.onmessage = function (event) {
             }
         }
         setMessageInnerHTML("End of this turn, please select for next turn.");
+        tNow = 20;
+        timeUpdate(tNow, tMax);
     }
-    else if (json1.acton == MessageType.chat){
+    else if (json1.action == 5){
     	setMessageInnerHTML(json1.message);
     }
 }
@@ -108,4 +115,11 @@ function startGame(){
 		pos = $(this).attr('id').split('-');
 		send(e, pos[0], pos[1]);
 	}
+	
+	
+	var t = tMax;
+	setInterval(function(){
+		tNow--;
+		timeUpdate(tNow, tMax);
+	}, 1000)
 }

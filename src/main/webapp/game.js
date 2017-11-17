@@ -25,13 +25,11 @@ window.onbeforeunload = function () {
 }
 
 function addMessage(){
-	var text = $('#testinput').val();
-	setMessageInnerHTML(text);
-	var json1 = {
-		action : 1,
-		message : text
-	};
-    websocket.send(JSON.stringify(json1));//send message
+	json1 = {};
+	json1.action = 5; //5表示游戏过程中聊天
+	json1.message = $('#testinput').val();
+	var messages = JSON.stringify(json1);
+    websocket.send(messages);//send message
 }
 
 //将消息显示在网页上
@@ -85,5 +83,5 @@ function sendPlayRequest() {
 
 function addPlayer(player){
 	playerArray.push(player);
-	$('#player' + playerArray.length + ' > h4')[0].text(player.username);
+	$('#player' + playerArray.length + ' > h4').text(player.username);
 }
