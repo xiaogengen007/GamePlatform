@@ -67,12 +67,16 @@
     websocket.onmessage = function (event) {
     	var json1 = JSON.parse(event.data);
 		if (json1.action == 1) { //游戏状态的通讯
+			var playerInfo = "";
+			for (i=0; i<json1.players.length; i++) {
+				playerInfo += json1.players[i].username+" ";
+			}	
 			if (json1.start == 0) {
 				//游戏还未开始
-				setMessageInnerHTML("Now has "+json1.playerNum+" in this room, please wait for game start.");
+				setMessageInnerHTML("Now has "+playerInfo+" in this room, please wait for game start.");
 			} else {
 				//游戏已经开始
-				setMessageInnerHTML("Game has started! Now has "+json1.playerNum+" in this room.");
+				setMessageInnerHTML("Game has started! Now has "+playerInfo+" in this room.");
 			}		
 		}
 		if (json1.action == 2) { //消息通讯
@@ -83,6 +87,11 @@
 		if (json1.action == 3) { //游戏进行状态通讯
 			if (json1.finished == 1) {
 				setMessageInnerHTML("You have finished this turn click, now left "+json1.leftTime+" seconds, complete "+json1.finishNum+" of "+json1.playerNum);
+				var preState = "";
+				for (i=0; i<json1.preState.length; i++) {
+					preState += json1.preState[i].username+":click@("+json1.preState[i].clickX+","+json1.preState[i].clickY+") ";
+				}
+				setMessageInnerHTML(preState);
 			} else {
 				setMessageInnerHTML("Please click for this turn, now left "+json1.leftTime+" seconds, complete "+json1.finishNum+" of "+json1.playerNum);
 			}

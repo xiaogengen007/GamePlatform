@@ -101,10 +101,11 @@ public class DeminGame extends GameState{
 			} else {
 				ws.myPlayer.clickType = false;
 			}
-			this.finshedNum++;
-			if (this.finshedNum < this.gameNum) {
+			this.finishedNum++;
+			if (this.finishedNum < this.gameNum) {
 				sendForGameProcess(); //该轮未结束时告知用户进展情况
 			} else {
+				this.sendForGameProcess();
 				this.batchHandleTurn();
 				sendEndOfThisTurn(); //完成此轮后进行一些常规操作
 			}
@@ -114,13 +115,26 @@ public class DeminGame extends GameState{
 	public void sendForGameProcess() {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 3); //3表示扫雷该轮仍处于进行状态
-		json1.put("finished", 1); //1表示已经完成
+		json1.put("finished", 0); //0表示还未完成
 		json1.put("playerNum", players.size());
-		json1.put("finishNum", this.finshedNum);
+		json1.put("finishNum", this.finishedNum);
 		json1.put("leftTime", this.leftTime); //发送本轮剩余时间
-		String messages1 = json1.toString();
-		json1.put("finished", 0);
-		String messages2 = json1.toString();
+		String messages2 = json1.toString(); //传给没有完成click的玩家
+		json1.put("finished", 1);
+		//发送已经完成的用户click信息
+		JSONArray jsar1 = new JSONArray();
+		for (Player item: players) {
+			if (item.hasClicked) {
+				JSONObject json2 = new JSONObject();
+				json2.put("clickType",item.clickType);
+				json2.put("clickX", item.clickX);
+				json2.put("clickY", item.clickY);
+				json2.put("username", item.username);
+				jsar1.add(json2);
+			}
+		}
+		json1.put("preState", jsar1);
+		String messages1 = json1.toString(); //传给已经完成click的玩家
 		for (Player item : players) {
 			try {
 				//System.out.println(item.username);
@@ -150,7 +164,7 @@ public class DeminGame extends GameState{
 		synchronized (this.leftTime) {
 			this.leftTime = this.maxTurnTime;
 		}
-		this.finshedNum = 0; //完成人数置为0
+		this.finishedNum = 0; //完成人数置为0
 	}
 	
 	public void sendEndOfThisTurn() {	
@@ -227,6 +241,8 @@ public class DeminGame extends GameState{
 				}
 			}
 		}
+		this.finishedNum = this.gameNum;
+		this.sendForGameProcess();
 		this.batchHandleTurn();
 		this.sendEndOfThisTurn();
 	}
