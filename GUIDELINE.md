@@ -17,6 +17,23 @@
 | 4      | finish one turn(Demin) | state,leftTime                           |
 | 5      | chat in game           | message                                  |
 
+more information
+
+- action 1: players(array,store the players info in the room) ; 
+
+  players[i]: 
+
+  - username
+
+- action 3: preState(array, only to the players finished this turn); 
+
+  preState[i]:
+
+  - username
+  - clickType(1 for click left button, 0 for click right button)
+  - clickX(0~7)
+  - clickY(0~7)
+
 ##### Browser to Server
 
 | action | function               | part                    |
