@@ -9,13 +9,13 @@
 
 ##### Server to Browser
 
-| action | function               | part                                  |
-| ------ | ---------------------- | ------------------------------------- |
-| 1      | game status            | start,playerNum                       |
-| 2      | send message           | message                               |
-| 3      | state in game          | finished,leftTime,finishNum,playerNum |
-| 4      | finish one turn(Demin) | state,leftTime                        |
-| 5      | chat in game           | message                               |
+| action | function               | part                                     |
+| ------ | ---------------------- | ---------------------------------------- |
+| 1      | game status            | start,players                            |
+| 2      | send message           | message                                  |
+| 3      | state in game          | finished,leftTime,finishNum,playerNum,(preState) |
+| 4      | finish one turn(Demin) | state,leftTime                           |
+| 5      | chat in game           | message                                  |
 
 ##### Browser to Server
 

@@ -3,6 +3,8 @@ package game;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
+
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import websocket.WebSocket;
@@ -13,7 +15,7 @@ public class GameState {
 	ArrayList<Player> players = new ArrayList<Player>(); //存储该局游戏的用户信息
 	int gameStatus; //记录该局游戏的状态（0为未开始，1为游戏中，2为已结束）
 	int gameNum = 3; //游戏中的玩家数
-	int finshedNum = 0; //完成本轮操作的人数
+	int finishedNum = 0; //完成本轮操作的人数
 	int gameType; //游戏类型（1为扫雷）
 	int maxTurnTime; //单轮游戏所允许的最长时间
 	Integer leftTime; //本轮游戏还剩余的游戏时间
@@ -85,7 +87,13 @@ public class GameState {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 1); //1表示发送游戏是否已经开始
 		json1.put("start", this.gameStatus); //0为未开始，1为开始，2为结束
-		json1.put("playerNum", players.size());
+		JSONArray jsar1 = new JSONArray(); //存储各用户的信息
+		for (Player item: players) {
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			jsar1.add(json2);
+		}
+		json1.put("players", jsar1);
 		String messages = json1.toString();
 		for (Player item : players) {
 			try {
