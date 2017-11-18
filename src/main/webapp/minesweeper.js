@@ -13,7 +13,6 @@ var MessageType = {
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
     var json1 = JSON.parse(event.data);
-    console.log(json1.action);
     if (json1.action == MessageType.message) { //消息通讯
         if (json1.message != "惯例发送信息!") {
             setMessageInnerHTML(json1.message);
@@ -101,6 +100,8 @@ function startGame(){
 	.attr('aria-valuemin','0').attr('aria-valuemax','100').css('width','100%')
 	.appendTo('#progressbardiv');
 	
+	$('<div></div>').addClass('row placeholders').attr('id','playerlist').appendTo('#players');
+	
 	$(".box").empty();
 	for(var i=0;i<gridLen;i++){
 		for(var j=0;j<gridLen;j++){
@@ -108,6 +109,15 @@ function startGame(){
 			.data("pos",{x:i,y:j}).attr("id",i+"-"+j)
 			.mousedown(mousedownhandler).appendTo(".box");
 		}
+	}
+	
+	for(var i = 1; i <= playerArray.length; i++){
+		var img = $('<img></img>').addClass("img-responsive")
+		.attr('src',"data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==")
+		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
+		var label = $('<h4></h4>').text(playerArray[i-1].username);
+		$('<div></div>').addClass("col-xs-3 col-sm-1 placeholder").attr('id','player' + i)
+		.append(img).append(label).appendTo('#playerlist');
 	}
 	//$(document).on("contextmenu",false);  //右击浏览器弹出窗口事件 被 contextmenu事件冲掉
 	function mousedownhandler(e){
