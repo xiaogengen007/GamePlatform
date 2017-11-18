@@ -161,7 +161,7 @@ public class DeminGame extends GameState{
 	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
 		//System.out.println("leftTime: "+ this.leftTime);
-		if (this.gameStatus == 1 && !ws.myPlayer.hasClicked && this.gridClicked[clickX][clickY] != 1) { //该方格还未选过时响应该次选方格
+		if (this.gameStatus == 1 && !ws.myPlayer.hasClicked && this.gridClicked[clickX][clickY] != 1 && this.gridClicked[clickX][clickY] != 2) { //该方格还未选过时响应该次选方格
 			synchronized (ws.myPlayer) {
 				if (ws.myPlayer.hasClicked) {
 					return; //被系统自动处理后即退出
@@ -330,7 +330,8 @@ public class DeminGame extends GameState{
 				Random ran = new Random(); //设置随机数种子
 				int index = Math.abs(ran.nextInt()) % count; //随机选择一个位置
 				for (int i = 0; i < this.gridLen*this.gridLen; i++) {
-					if (this.gridClicked[i/this.gridLen][i%this.gridLen] != 1) {
+					if (this.gridClicked[i/this.gridLen][i%this.gridLen] != 1 &&
+							this.gridClicked[i/this.gridLen][i%this.gridLen] != 2) {
 						if (index == 0) {
 							item.clickX = i / this.gridLen;
 							item.clickY = i % this.gridLen;
