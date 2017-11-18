@@ -12,12 +12,14 @@ public class Player {
 	public int clickX; //该轮中点击位置的横坐标
 	public int clickY; //该轮中点击位置的纵坐标
 	public boolean clickType; //true为左键，false为右键
+	public int score; //游戏中的积分
 	public Player() {
 		username = "";
 		status = 0;
 		hasClicked = false;
 		clickX = -1;
 		clickY = -1;
+		this.score = 0; //初始化游戏积分为零
 	}
 	void setName(String name) {
 		this.username = name;

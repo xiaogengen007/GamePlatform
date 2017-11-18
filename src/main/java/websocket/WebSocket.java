@@ -82,7 +82,7 @@ public class WebSocket {
 				if (name.length() > 5) {
 					this.sendMessage("");
 				} else {
-					this.myPlayer = GameState.SearchFromName(name);
+					this.myPlayer = GameState.searchFromName(name);
 					if (myPlayer == null) {
 						myPlayer = new Player(); //存储该用户的相关信息
 						this.myPlayer.username = name;

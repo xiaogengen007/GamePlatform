@@ -14,33 +14,48 @@
 | 1      | game status            | start,players,(...)                      |
 | 2      | send message           | message                                  |
 | 3      | state in game          | finished,leftTime,finishNum,playerNum,(preState) |
-| 4      | finish one turn(Demin) | state,leftTime,leftMine                  |
+| 4      | finish one turn(Demin) | state,leftTime,leftMine,players          |
 | 5      | chat in game           | message                                  |
 
 more information
 
-- action 1: players(array,store the players info in the room) ; 
+- action 1: 
 
-  players[i]: 
+  - players(array,store the players info in the room) ; 
 
-  - username
+  ​       players[i]: 
 
-  (...)
+  ​	- username
 
-  - for demine game: totalMine
+  - totalMine: only for demining game
 
-- action 3: preState(array, only to the players finished this turn); 
+- action 3: 
 
-  preState[i]:
+  - preState(array, only to the players finished this turn); 
 
-  - username
-  - clickType(1 for click left button, 0 for click right button)
-  - clickX(0~7)
-  - clickY(0~7)
+  ​       preState[i]:
 
-- action 4: state(2 dim vector, for the grids' state)
+  ​	- username
 
-  state[i]\[j](an integer): 0~8 for the neighbor bomb's number, 9 for rightly signing the bomb, 10 for wrongly clicking the bomb, -1 for none clicked this grid
+  ​	- clickType(1 for click left button, 0 for click right button)
+
+  ​	- clickX(0~7)
+
+  ​	- clickY(0~7)
+
+- action 4: 
+
+  - state(2 dim vector, for the grids' state)
+
+    state[i]\[j](an integer): 0~8 for the neighbor bomb's number, 9 for rightly signing the bomb, 10 for wrongly clicking the bomb, -1 for none clicked this grid
+
+  - players(array, to tell the players' score)
+
+    players[i]:
+
+    \- username
+
+    \- score
 
 ##### Browser to Server
 

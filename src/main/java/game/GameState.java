@@ -40,9 +40,11 @@ public class GameState {
 		if (players.size() == 3) {
 			this.gameStatus = 1; //游戏开始
 			this.leftTime = this.maxTurnTime; //游戏开始时设置剩余时间为最大时间
+			for (Player item: players) { //将每个人的积分置为0
+				item.score = 0;
+			}
 		}
-		sendForGameState();
-		
+		sendForGameState();		
 	}
 	public boolean deletePlayer(Player ply) { //将该玩家退出该局游戏
 		if (this.gameStatus == 0) { //游戏还未开始时可退出游戏
@@ -69,7 +71,7 @@ public class GameState {
 		ply.nowGame = flow;
 	}
 
-	public static Player SearchFromName(String username) { //通过用户名搜索用户是否在游戏列表中
+	public static Player searchFromName(String username) { //通过用户名搜索用户是否在游戏列表中
 		for (GameState gs: games) {
 			for (Player ply: gs.players) {
 				if (ply.username.equals(username)) {

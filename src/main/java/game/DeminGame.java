@@ -11,7 +11,8 @@ import websocket.WebSocket;
 import player.Player;
 
 public class DeminGame extends GameState{
-	int gridLen = 8; //雷区的大小
+	private static final int gridLen = 8; //雷区的大小
+	private static final int scorePerGrid = 6; //每轮单格的加分
 	int[][] gridClicked = new int [gridLen][gridLen]; //0表示还未有人选中，1表示左键，2表示右键
 	boolean[][] isMine = new boolean [gridLen][gridLen]; //每个格子是否为地雷
 	int[][] gridState = new int [gridLen][gridLen];  //0~8为地雷数，9为标红雷，10为误踩雷
@@ -20,7 +21,7 @@ public class DeminGame extends GameState{
 	DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
-		this.maxTurnTime = 20; //扫雷游戏设置的一轮游戏时间为30s
+		this.maxTurnTime = 5; //扫雷游戏设置的一轮游戏时间为30s
 		this.leftTime = new Integer(this.maxTurnTime);
 		for (int i = 0; i < gridLen; i++) {
 			for (int j= 0; j < gridLen; j++) {
@@ -110,6 +111,24 @@ public class DeminGame extends GameState{
 	
 	boolean gameOver() { //判断现在游戏是否已经结束
 		if (leftNoneClicked() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	boolean clickRight(Player ply) { //判断用户这次点击是不是正确
+		if ((ply.clickType && !this.isMine[ply.clickX][ply.clickY]) || 
+				(!ply.clickType && this.isMine[ply.clickX][ply.clickY])) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	boolean clickRight(boolean clickType, int clickX, int clickY) { //判断用户这次点击是不是正确（重载）
+		if ((clickType && !this.isMine[clickX][clickY]) || 
+				(!clickType && this.isMine[clickX][clickY])) {
 			return true;
 		} else {
 			return false;
@@ -225,6 +244,15 @@ public class DeminGame extends GameState{
 					this.gridState[item.clickX][item.clickY] = 10;
 				}
 			}
+			if (this.clickRight(item)) {
+				int countThis = 0; //记录点击这个地方 的人数
+				for (Player item2: players) {
+					if (item2.clickX == item.clickX && item2.clickY == item.clickY && this.clickRight(item2)) {
+						countThis++;
+					}
+				}
+				item.score += this.scorePerGrid / countThis;
+			}
 		}
 		synchronized (this.leftTime) {
 			this.leftTime = this.maxTurnTime;
@@ -236,7 +264,7 @@ public class DeminGame extends GameState{
 	public void sendEndOfThisTurn() {	
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示扫雷该轮已经结束
-		ArrayList<ArrayList> arr = new ArrayList<ArrayList>();
+		ArrayList<ArrayList> arr = new ArrayList<ArrayList>(); //记录棋局形态
 		for (int i = 0; i < gridLen; i++) {
 			ArrayList<Integer> arr1 = new ArrayList<Integer>();
 			for (int j = 0; j < gridLen; j++) {
@@ -248,9 +276,17 @@ public class DeminGame extends GameState{
 			}
 			arr.add(arr1);
 		}
+		JSONArray jsar1 = new JSONArray(); //记录玩家得分情况
+		for (Player item: players) {
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			json2.put("score", item.score);
+			jsar1.add(json2);
+		}
 		json1.put("state", arr);
 		json1.put("leftTime", this.leftTime);
 		json1.put("leftMine", this.leftMine);
+		json1.put("players", jsar1);
 		String messages = json1.toString();
 		for (Player item : players) {
 			try {
@@ -268,10 +304,10 @@ public class DeminGame extends GameState{
 		if (this.gameStatus == 0) return; //游戏还没开始时忽略请求
 		for (Player item: this.players) {
 			if (item.username.equals(ply.username)) {
-				System.out.println("Has send!");
+				//System.out.println("Has send!");
 				this.sendEndOfThisTurn();
 			} else {
-				System.out.println("No send!");
+				//System.out.println("No send!");
 			}
 		}
 	}
