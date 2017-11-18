@@ -140,4 +140,5 @@ public class GameState {
 	public void revisiting(Player ply) {} //处理用户重新进入游戏
 	public void handleLeftTimeZero() {} //解决时间为零的情况
 	public void sendForMyGameState(JSONObject json) {} //发送每个游戏状态特殊的部分
+	public void sendAfterGame() {} //游戏后返回玩家游戏结果
 }

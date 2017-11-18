@@ -74,10 +74,15 @@
 			if (json1.start == 0) {
 				//游戏还未开始
 				setMessageInnerHTML("Now has "+playerInfo+" in this room, please wait for game start.");
-			} else {
-				//游戏已经开始
+			} 
+			if (json1.start == 1) {
+				//游戏正在进行
 				setMessageInnerHTML("Game has started! Now has "+playerInfo+" in this room,the totalMine is "+json1.totalMine+".");
 			}		
+			if (json1.start == 2) {
+				//游戏已经结束
+				setMessageInnerHTML("Game has finished!");
+			}
 		}
 		if (json1.action == 2) { //消息通讯
 			if (json1.message != "惯例发送信息!") {
@@ -115,6 +120,14 @@
 		}
 		if (json1.action == 5) { //游戏中进行聊天
 			setMessageInnerHTML(json1.message);
+		}
+		if (json1.action == 6) { //游戏结束时的通讯
+			setMessageInnerHTML("This game has finished! Following is the rank:");
+			var ranks = "";
+			for (i=0; i<json1.players.length; i++) {
+				ranks = json1.players[i].username + ": " + json1.players[i].rank;
+				setMessageInnerHTML(ranks);
+			}
 		}
     }
 

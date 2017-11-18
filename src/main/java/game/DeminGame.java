@@ -21,7 +21,7 @@ public class DeminGame extends GameState{
 	DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
-		this.maxTurnTime = 5; //扫雷游戏设置的一轮游戏时间为30s
+		this.maxTurnTime = 1; //扫雷游戏设置的一轮游戏时间为30s
 		this.leftTime = new Integer(this.maxTurnTime);
 		for (int i = 0; i < gridLen; i++) {
 			for (int j= 0; j < gridLen; j++) {
@@ -181,8 +181,7 @@ public class DeminGame extends GameState{
 				sendForGameProcess(); //该轮未结束时告知用户进展情况
 			} else {
 				this.sendForGameProcess();
-				this.batchHandleTurn();
-				sendEndOfThisTurn(); //完成此轮后进行一些常规操作
+				this.batchHandleTurn(); //完成此轮后进行一些常规操作
 			}
 		}	
 	}
@@ -259,8 +258,45 @@ public class DeminGame extends GameState{
 		}
 		this.leftMine = this.calculateLeftMine(); //更新剩余的雷数
 		this.finishedNum = 0; //完成人数置为0
+		if (this.gameOver()) {
+			this.gameStatus = 2; //检查游戏是否已经结束了
+		}
+		this.sendEndOfThisTurn();
+		if (this.gameStatus == 2) { //游戏结束之后，将游戏结果返回给玩家
+			sendAfterGame();
+		}
 	}
 	
+	public void sendAfterGame() { //游戏后返回玩家游戏结果
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 6); //6表示游戏结束时所发送的消息
+		JSONArray jsar1 = new JSONArray(); //存储用户信息和排名
+		for (Player item: players) {
+			int rank = 1;
+			for (Player item2: players) {
+				if (item2.score > item.score) {
+					rank++; //当有玩家排名比item高时，item的排名会向后移一位
+				}
+			}
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			json2.put("rank", rank);
+			jsar1.add(json2);
+		}
+		json1.put("players", jsar1);
+		String messages = json1.toString();
+		for (Player item : players) {
+			try {
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void sendEndOfThisTurn() {	
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示扫雷该轮已经结束
@@ -313,8 +349,8 @@ public class DeminGame extends GameState{
 	}
 	
 	public void handleLeftTimeZero() { //解决时间为零的情况
-		if (this.gameStatus == 0) {
-			return; //游戏还没开始时直接跳过
+		if (this.gameStatus != 1) {
+			return; //游戏为处在进行状态时直接跳过
 		}
 		for (Player item: players) {
 			if (!item.hasClicked) {
@@ -352,7 +388,6 @@ public class DeminGame extends GameState{
 		this.finishedNum = this.gameNum;
 		this.sendForGameProcess();
 		this.batchHandleTurn();
-		this.sendEndOfThisTurn();
 	}
 	
 	public void sendForMyGameState(JSONObject json) {

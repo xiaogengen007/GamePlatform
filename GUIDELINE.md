@@ -16,6 +16,7 @@
 | 3      | state in game          | finished,leftTime,finishNum,playerNum,(preState) |
 | 4      | finish one turn(Demin) | state,leftTime,leftMine,players          |
 | 5      | chat in game           | message                                  |
+| 6      | game result            | players                                  |
 
 more information
 
@@ -56,6 +57,16 @@ more information
     \- username
 
     \- score
+
+- action 6:
+
+  - players(array, send the finally rank of players)
+
+    players[i]:
+
+    \- username
+
+    \- rank
 
 ##### Browser to Server
 
