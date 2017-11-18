@@ -105,7 +105,7 @@
 				}
 				document.getElementById('ptest').innerHTML += "<br/>";
 			}
-			setMessageInnerHTML("End of this turn, please select for next turn, now left "+json1.leftTime+" seconds.");
+			setMessageInnerHTML("End of this turn, please select for next turn, now left "+json1.leftTime+" seconds with "+json1.leftMine +" left mines.");
 		}
 		if (json1.action == 5) { //游戏中进行聊天
 			setMessageInnerHTML(json1.message);

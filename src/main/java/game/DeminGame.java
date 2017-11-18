@@ -114,11 +114,23 @@ public class DeminGame extends GameState{
 		}
 	}
 	
+	int calculateLeftMine() { //计算剩余的雷数
+		int count = 0;
+		for (int i = 0; i < this.gridLen; i++) {
+			for (int j = 0; j < this.gridLen; j++) {
+				if (this.gridClicked[i][j] != 1 && this.gridClicked[i][j] != 2 && this.isMine[i][j]) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
 	int leftNoneClicked() { //在该轮之前还未被点击方格的个数
 		int count = 0;
 		for (int i = 0; i < this.gridLen; i++) {
 			for (int j = 0; j < this.gridLen; j++) {
-				if (this.gridClicked[i][j] != 1) {
+				if (this.gridClicked[i][j] != 1 && this.gridClicked[i][j] != 2) {
 					count++;
 				}
 			}
@@ -215,6 +227,7 @@ public class DeminGame extends GameState{
 		synchronized (this.leftTime) {
 			this.leftTime = this.maxTurnTime;
 		}
+		this.leftMine = this.calculateLeftMine(); //更新剩余的雷数
 		this.finishedNum = 0; //完成人数置为0
 	}
 	
@@ -235,6 +248,7 @@ public class DeminGame extends GameState{
 		}
 		json1.put("state", arr);
 		json1.put("leftTime", this.leftTime);
+		json1.put("leftMine", this.leftMine);
 		String messages = json1.toString();
 		for (Player item : players) {
 			try {
