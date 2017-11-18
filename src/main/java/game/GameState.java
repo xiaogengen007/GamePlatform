@@ -94,6 +94,7 @@ public class GameState {
 			jsar1.add(json2);
 		}
 		json1.put("players", jsar1);
+		this.sendForMyGameState(json1); //发送每种游戏额外的东西
 		String messages = json1.toString();
 		for (Player item : players) {
 			try {
@@ -134,6 +135,7 @@ public class GameState {
 	}
 	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
-	public void revisiting(Player ply) {}; //处理用户重新进入游戏
-	public void handleLeftTimeZero() {}; //解决时间为零的情况
+	public void revisiting(Player ply) {} //处理用户重新进入游戏
+	public void handleLeftTimeZero() {} //解决时间为零的情况
+	public void sendForMyGameState(JSONObject json) {} //发送每个游戏状态特殊的部分
 }

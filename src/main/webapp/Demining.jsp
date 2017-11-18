@@ -76,7 +76,7 @@
 				setMessageInnerHTML("Now has "+playerInfo+" in this room, please wait for game start.");
 			} else {
 				//游戏已经开始
-				setMessageInnerHTML("Game has started! Now has "+playerInfo+" in this room.");
+				setMessageInnerHTML("Game has started! Now has "+playerInfo+" in this room,the totalMine is "+json1.totalMine+".");
 			}		
 		}
 		if (json1.action == 2) { //消息通讯

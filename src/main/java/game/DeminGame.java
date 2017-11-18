@@ -15,6 +15,7 @@ public class DeminGame extends GameState{
 	int[][] gridClicked = new int [gridLen][gridLen]; //0表示还未有人选中，1表示左键，2表示右键
 	boolean[][] isMine = new boolean [gridLen][gridLen]; //每个格子是否为地雷
 	int[][] gridState = new int [gridLen][gridLen];  //0~8为地雷数，9为标红雷，10为误踩雷
+	int totalMine; //地雷总数
 	int leftMine; //剩余地雷数
 	DeminGame() {
 		super();
@@ -37,6 +38,7 @@ public class DeminGame extends GameState{
 		int possible = high_bound - low_bound + 1; //设置雷数的区间大小
 		Random random = new Random(); //设置随机数种子
 		this.leftMine = low_bound + Math.abs(random.nextInt())%possible; //设置雷的数目
+		this.totalMine = this.leftMine;
 		for (int i = 0; i < leftMine; i++) {
 			int nums = this.gridLen * this.gridLen - i; //所有可能取到的位置数
 			int index = Math.abs(random.nextInt()) % nums;
@@ -314,5 +316,9 @@ public class DeminGame extends GameState{
 		this.sendForGameProcess();
 		this.batchHandleTurn();
 		this.sendEndOfThisTurn();
+	}
+	
+	public void sendForMyGameState(JSONObject json) {
+		json.put("totalMine", this.totalMine); //需要额外发送总地雷数
 	}
 }
