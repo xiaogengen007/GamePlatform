@@ -12,7 +12,7 @@ import player.Player;
 
 public class DeminGame extends GameState{
 	int gridLen = 8; //雷区的大小
-	int[][] gridClicked = new int [gridLen][gridLen]; //0表示还未有人选中，1表示已选过
+	int[][] gridClicked = new int [gridLen][gridLen]; //0表示还未有人选中，1表示左键，2表示右键
 	boolean[][] isMine = new boolean [gridLen][gridLen]; //每个格子是否为地雷
 	int[][] gridState = new int [gridLen][gridLen];  //0~8为地雷数，9为标红雷，10为误踩雷
 	int leftMine; //剩余地雷数
@@ -59,6 +59,48 @@ public class DeminGame extends GameState{
 					this.gridState[i][j] = 9; //有雷的话默认为标红雷
 				} else {
 					//否则计数周围有多少个雷
+					int count = 0;
+					if (i > 0) {
+						if (this.isMine[i-1][j]) {
+							count++;
+						}
+					}
+					if (i < this.gridLen - 1) {
+						if (this.isMine[i+1][j]) {
+							count++;
+						}
+					}
+					if (j > 0) {
+						if (this.isMine[i][j-1]) {
+							count++;
+						}
+					}
+					if (j < this.gridLen - 1) {
+						if (this.isMine[i][j+1]) {
+							count++;
+						}
+					}
+					if (i > 0 && j > 0) {
+						if (this.isMine[i-1][j-1]) {
+							count++;
+						}
+					}
+					if (i > 0 && j < this.gridLen - 1) {
+						if (this.isMine[i-1][j+1]) {
+							count++;
+						}
+					}
+					if (i < this.gridLen - 1 && j > 0) {
+						if (this.isMine[i+1][j-1]) {
+							count++;
+						}
+					}
+					if (i < this.gridLen - 1 && j < this.gridLen - 1) {
+						if (this.isMine[i+1][j+1]) {
+							count++;
+						}
+					}
+					this.gridState[i][j] = count;
 				}
 			}
 		}
@@ -126,7 +168,11 @@ public class DeminGame extends GameState{
 		for (Player item: players) {
 			if (item.hasClicked) {
 				JSONObject json2 = new JSONObject();
-				json2.put("clickType",item.clickType);
+				if (item.clickType) {
+					json2.put("clickType",1);
+				} else {
+					json2.put("clickType",0);
+				}
 				json2.put("clickX", item.clickX);
 				json2.put("clickY", item.clickY);
 				json2.put("username", item.username);
@@ -160,6 +206,11 @@ public class DeminGame extends GameState{
 			}
 			this.gridClicked[item.clickX][item.clickY] = type;
 			item.hasClicked = false;
+			if (this.isMine[item.clickX][item.clickY]) {
+				if (type == 1) { //将雷踩错时，则修改输出类型为10
+					this.gridState[item.clickX][item.clickY] = 10;
+				}
+			}
 		}
 		synchronized (this.leftTime) {
 			this.leftTime = this.maxTurnTime;
@@ -174,7 +225,11 @@ public class DeminGame extends GameState{
 		for (int i = 0; i < gridLen; i++) {
 			ArrayList<Integer> arr1 = new ArrayList<Integer>();
 			for (int j = 0; j < gridLen; j++) {
-				arr1.add(this.gridClicked[i][j]);
+				if (this.gridClicked[i][j] == 0) { //还未点击时输出-1
+					arr1.add(-1);
+				} else {
+					arr1.add(this.gridState[i][j]);
+				}
 			}
 			arr.add(arr1);
 		}
