@@ -8,7 +8,9 @@ var MessageType = {
 	state : 3,
 	turnFinished : 4,
 	chat : 5
-}
+};
+
+var actionArray = Array();
 
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
@@ -53,8 +55,22 @@ websocket.onmessage = function (event) {
         }
         tNow = json1.leftTime;
         timeUpdate(tNow, tMax);
+        
+        for(var i = actionArray.length; i < json1.preState.length; i++){
+        	actionArray.push(json1.preState[i]);
+        	var img = $('<img></img>').addClass("img-responsive")
+    		.attr('src',"data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==")
+    		.attr('height','50').attr('width','50').attr('alt',"Generic placeholder thumbnail");
+    		$('<div></div>').addClass("col-xs-12 placeholder")
+    		.append(img).appendTo("#"+json1.preState[i].clickX+"-"+json1.preState[i].clickY);
+        }
     }
     else if (json1.action == 4) { //游戏该轮完成后通讯
+    	
+    	for(var i = 0; i < actionArray.length; i++){
+    		$("#"+actionArray[i].clickX+"-"+actionArray[i].clickY).empty();
+    	}
+    	
         for(var i = 0; i < gridLen; i++){
             for(var j = 0; j < gridLen; j++){
             	if(json1.state[i][j] >= 0){
@@ -77,6 +93,7 @@ websocket.onmessage = function (event) {
         setMessageInnerHTML("End of this turn, please select for next turn.");
         tNow = 20;
         timeUpdate(tNow, tMax);
+        actionArray.splice(0, actionArray.length);
     }
     else if (json1.action == 5){
     	setMessageInnerHTML(json1.message);
