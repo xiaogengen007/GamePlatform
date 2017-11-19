@@ -57,6 +57,7 @@
   	function showModal(){
   		$('#myModal').modal({backdrop: 'static', keyboard: false});
   	}
+  	$(function(){$('#myModal').on('hide.bs.modal', function(){console.log('close modal');});});
   </script>
   
 </body>  
