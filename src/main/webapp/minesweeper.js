@@ -60,9 +60,9 @@ websocket.onmessage = function (event) {
         	actionArray.push(json1.preState[i]);
         	var img = $('<img></img>').addClass("img-responsive")
     		.attr('src',"data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==")
-    		.attr('height','50').attr('width','50').attr('alt',"Generic placeholder thumbnail");
-    		$('<div></div>').addClass("col-xs-4 placeholder")
-    		.append(img).appendTo("#"+json1.preState[i].clickX+"-"+json1.preState[i].clickY+' > .row');
+    		.attr('height','16').attr('width','16').attr('alt',"Generic placeholder thumbnail");
+    		$('<div></div>').addClass("placeholder").css('float','left')
+    		.append(img).appendTo("#"+json1.preState[i].clickX+"-"+json1.preState[i].clickY);
         }
     }
     else if (json1.action == 4) { //游戏该轮完成后通讯
@@ -148,11 +148,11 @@ function startGame(){
 	$(".box").empty();
 	for(var i=0;i<gridLen;i++){
 		for(var j=0;j<gridLen;j++){
-			var innerBlock = $("<div></div>").addClass('row');
+			//var innerBlock = $("<div></div>").addClass('row');
 			
 			$("<div></div>").addClass("block")
 			.data("pos",{x:i,y:j}).attr("id",i+"-"+j)
-			.mousedown(mousedownhandler).append(innerBlock).
+			.mousedown(mousedownhandler).
 			appendTo(".box");
 		}
 	}
