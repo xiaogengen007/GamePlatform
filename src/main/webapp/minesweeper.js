@@ -27,11 +27,23 @@ websocket.onmessage = function (event) {
         if (json1.start == 0) {
             //游戏还未开始
             setMessageInnerHTML("Now has "+json1.players.length+" in this room, please wait for game start.");
-        } else {
+        } 
+        else if (json1.start == 1) {
             //游戏已经开始
             setMessageInnerHTML("Game has started! Now has "+json1.players.length+" in this room.");
             startGame();
-        }		
+        }
+        else if (json1.start == 2) {
+        	setMessageInnerHTML("Game has finished!");
+        }
+        else if (json1.action == 6) { //游戏结束时的通讯
+			setMessageInnerHTML("This game has finished! Following is the rank:");
+			var ranks = "";
+			for (i=0; i<json1.players.length; i++) {
+				ranks = json1.players[i].username + ": " + json1.players[i].rank;
+				setMessageInnerHTML(ranks);
+			}
+		}
     }
     else if (json1.action == 3) { //游戏进行状态通讯
         if (json1.finished == 1) {
@@ -45,7 +57,21 @@ websocket.onmessage = function (event) {
     else if (json1.action == 4) { //游戏该轮完成后通讯
         for(var i = 0; i < gridLen; i++){
             for(var j = 0; j < gridLen; j++){
-                $("#"+i+"-"+j).addClass("num").text(json1.state[i][j]);
+            	if(json1.state[i][j] >= 0){
+            		if(json1.state[i][j] == 0){
+            			$("#"+i+"-"+j).addClass("num").text('');
+            		}
+            		else if (json1.state[i][j] < 9){
+            			$("#"+i+"-"+j).addClass("num").text(json1.state[i][j]);
+            		}
+            		else if (json1.state[i][j] == 9){
+            			$("#"+i+"-"+j).addClass("num").text('△');
+            		}
+            		else{
+            			$("#"+i+"-"+j).addClass("num").text('✸');
+            		}
+            	}
+                
             }
         }
         setMessageInnerHTML("End of this turn, please select for next turn.");

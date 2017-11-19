@@ -21,7 +21,7 @@ public class DeminGame extends GameState{
 	DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
-		this.maxTurnTime = 1; //扫雷游戏设置的一轮游戏时间为30s
+		this.maxTurnTime = 20; //扫雷游戏设置的一轮游戏时间为20s
 		this.leftTime = new Integer(this.maxTurnTime);
 		for (int i = 0; i < gridLen; i++) {
 			for (int j= 0; j < gridLen; j++) {
