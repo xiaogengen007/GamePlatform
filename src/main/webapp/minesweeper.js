@@ -133,6 +133,11 @@ function startGame(){
 	node.href = 'minesweeper.css';
 	document.getElementsByTagName('head')[0].appendChild(node);
 	
+	node = document.createElement('link');
+	node.rel = 'stylesheet';
+	node.href = 'loading.css';
+	document.getElementsByTagName('head')[0].appendChild(node);
+	
 	$('#players').empty().removeClass('main').addClass('game');
 	$('<div></div>').addClass('box').appendTo('#players');
 	$('<div></div>').attr('id','progressbardiv').addClass('progress').appendTo('#players');
@@ -162,8 +167,12 @@ function startGame(){
 		.attr('src',"data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==")
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
 		var label = $('<h4></h4>').text(playerArray[i-1].username);
+		var object1 = $('<div></div>').addClass('object').attr('id','object_one');
+		var object2 = $('<div></div>').addClass('object').attr('id','object_two');
+		var object3 = $('<div></div>').addClass('object').attr('id','object_three');
+		var loading = $('<div></div>').attr('id','loading').append(object1).append(object2).append(object3);
 		$('<div></div>').addClass("col-xs-3 col-sm-1 placeholder").attr('id','player' + i)
-		.append(img).append(label).appendTo('#playerlist');
+		.append(loading).append(img).append(label).appendTo('#playerlist');
 	}
 	//$(document).on("contextmenu",false);  //右击浏览器弹出窗口事件 被 contextmenu事件冲掉
 	function mousedownhandler(e){
