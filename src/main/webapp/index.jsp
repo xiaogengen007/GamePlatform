@@ -32,7 +32,7 @@
   -->
   
   <button onclick="gotoGame()">扫雷</button>
-  <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">开始演示模态框</button>
+  <button class="btn btn-primary btn-lg" onclick="showModal()">开始演示模态框</button>
 	<!-- 模态框（Modal） -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
@@ -52,6 +52,12 @@
   
   <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <script>
+  	function showModal(){
+  		$('#myModal').modal({backdrop: 'static', keyboard: false});
+  	}
+  </script>
   
 </body>  
 </html>  
