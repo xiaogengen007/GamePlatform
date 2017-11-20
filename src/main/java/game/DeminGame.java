@@ -21,7 +21,7 @@ public class DeminGame extends GameState{
 	DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
-		this.maxTurnTime = 20; //扫雷游戏设置的一轮游戏时间为20s
+		this.maxTurnTime = 1; //扫雷游戏设置的一轮游戏时间为20s
 		this.leftTime = new Integer(this.maxTurnTime);
 		for (int i = 1; i < gridLen+1; i++) {
 			for (int j= 1; j < gridLen+1; j++) {
@@ -63,44 +63,13 @@ public class DeminGame extends GameState{
 				} else {
 					//否则计数周围有多少个雷
 					int count = 0;
-					if (i > 1) {
-						if (this.isMine[i-1][j]) {
-							count++;
-						}
-					}
-					if (i < this.gridLen) {
-						if (this.isMine[i+1][j]) {
-							count++;
-						}
-					}
-					if (j > 1) {
-						if (this.isMine[i][j-1]) {
-							count++;
-						}
-					}
-					if (j < this.gridLen) {
-						if (this.isMine[i][j+1]) {
-							count++;
-						}
-					}
-					if (i > 1 && j > 1) {
-						if (this.isMine[i-1][j-1]) {
-							count++;
-						}
-					}
-					if (i > 1 && j < this.gridLen) {
-						if (this.isMine[i-1][j+1]) {
-							count++;
-						}
-					}
-					if (i < this.gridLen && j > 1) {
-						if (this.isMine[i+1][j-1]) {
-							count++;
-						}
-					}
-					if (i < this.gridLen && j < this.gridLen) {
-						if (this.isMine[i+1][j+1]) {
-							count++;
+					for (int k = i-1; k <= i+1; k++) {
+						for (int l = j-1; l <= j+1; l++) {
+							if (k > 0 && k <= this.gridLen && l > 0 && l <= this.gridLen) {
+								if (this.isMine[k][l]) {
+									count++;
+								}							
+							}
 						}
 					}
 					this.gridState[i][j] = count;
