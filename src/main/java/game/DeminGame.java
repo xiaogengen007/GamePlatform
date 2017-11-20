@@ -13,9 +13,9 @@ import player.Player;
 public class DeminGame extends GameState{
 	private static final int gridLen = 8; //雷区的大小
 	private static final int scorePerGrid = 6; //每轮单格的加分
-	int[][] gridClicked = new int [gridLen][gridLen]; //0表示还未有人选中，1表示左键，2表示右键
-	boolean[][] isMine = new boolean [gridLen][gridLen]; //每个格子是否为地雷
-	int[][] gridState = new int [gridLen][gridLen];  //0~8为地雷数，9为标红雷，10为误踩雷
+	int[][] gridClicked = new int [gridLen+2][gridLen+2]; //0表示还未有人选中，1表示左键，2表示右键
+	boolean[][] isMine = new boolean [gridLen+2][gridLen+2]; //每个格子是否为地雷
+	int[][] gridState = new int [gridLen+2][gridLen+2];  //0~8为地雷数，9为标红雷，10为误踩雷
 	int totalMine; //地雷总数
 	int leftMine; //剩余地雷数
 	DeminGame() {
@@ -23,8 +23,8 @@ public class DeminGame extends GameState{
 		this.gameType = 1; //扫雷为类型1
 		this.maxTurnTime = 20; //扫雷游戏设置的一轮游戏时间为20s
 		this.leftTime = new Integer(this.maxTurnTime);
-		for (int i = 0; i < gridLen; i++) {
-			for (int j= 0; j < gridLen; j++) {
+		for (int i = 1; i < gridLen+1; i++) {
+			for (int j= 1; j < gridLen+1; j++) {
 				gridClicked[i][j] = 0; 
 				this.gridState[i][j] = 0;
 				this.isMine[i][j] = false; //默认都不是地雷
@@ -44,8 +44,8 @@ public class DeminGame extends GameState{
 			int nums = this.gridLen * this.gridLen - i; //所有可能取到的位置数
 			int index = Math.abs(random.nextInt()) % nums;
 			for (int j = 0; j < this.gridLen*this.gridLen; j++) {
-				int x = j / this.gridLen;
-				int y = j % this.gridLen;
+				int x = j / this.gridLen + 1;
+				int y = j % this.gridLen + 1;
 				if (!this.isMine[x][y]) {
 					if (index == 0) {
 						this.isMine[x][y] = true;
@@ -56,49 +56,49 @@ public class DeminGame extends GameState{
 				}
 			}		
 		}
-		for (int i = 0; i < this.gridLen; i++) {
-			for (int j = 0; j < this.gridLen; j++) {
+		for (int i = 1; i < this.gridLen + 1; i++) {
+			for (int j = 1; j < this.gridLen + 1; j++) {
 				if (this.isMine[i][j]) {
 					this.gridState[i][j] = 9; //有雷的话默认为标红雷
 				} else {
 					//否则计数周围有多少个雷
 					int count = 0;
-					if (i > 0) {
+					if (i > 1) {
 						if (this.isMine[i-1][j]) {
 							count++;
 						}
 					}
-					if (i < this.gridLen - 1) {
+					if (i < this.gridLen) {
 						if (this.isMine[i+1][j]) {
 							count++;
 						}
 					}
-					if (j > 0) {
+					if (j > 1) {
 						if (this.isMine[i][j-1]) {
 							count++;
 						}
 					}
-					if (j < this.gridLen - 1) {
+					if (j < this.gridLen) {
 						if (this.isMine[i][j+1]) {
 							count++;
 						}
 					}
-					if (i > 0 && j > 0) {
+					if (i > 1 && j > 1) {
 						if (this.isMine[i-1][j-1]) {
 							count++;
 						}
 					}
-					if (i > 0 && j < this.gridLen - 1) {
+					if (i > 1 && j < this.gridLen) {
 						if (this.isMine[i-1][j+1]) {
 							count++;
 						}
 					}
-					if (i < this.gridLen - 1 && j > 0) {
+					if (i < this.gridLen && j > 1) {
 						if (this.isMine[i+1][j-1]) {
 							count++;
 						}
 					}
-					if (i < this.gridLen - 1 && j < this.gridLen - 1) {
+					if (i < this.gridLen && j < this.gridLen) {
 						if (this.isMine[i+1][j+1]) {
 							count++;
 						}
@@ -118,8 +118,8 @@ public class DeminGame extends GameState{
 	}
 	
 	boolean clickRight(Player ply) { //判断用户这次点击是不是正确
-		if ((ply.clickType && !this.isMine[ply.clickX][ply.clickY]) || 
-				(!ply.clickType && this.isMine[ply.clickX][ply.clickY])) {
+		if ((ply.clickType && !this.isMine[ply.clickX+1][ply.clickY+1]) || 
+				(!ply.clickType && this.isMine[ply.clickX+1][ply.clickY+1])) {
 			return true;
 		} else {
 			return false;
@@ -127,8 +127,8 @@ public class DeminGame extends GameState{
 	}
 	
 	boolean clickRight(boolean clickType, int clickX, int clickY) { //判断用户这次点击是不是正确（重载）
-		if ((clickType && !this.isMine[clickX][clickY]) || 
-				(!clickType && this.isMine[clickX][clickY])) {
+		if ((clickType && !this.isMine[clickX+1][clickY+1]) || 
+				(!clickType && this.isMine[clickX+1][clickY+1])) {
 			return true;
 		} else {
 			return false;
@@ -137,8 +137,8 @@ public class DeminGame extends GameState{
 	
 	int calculateLeftMine() { //计算剩余的雷数
 		int count = 0;
-		for (int i = 0; i < this.gridLen; i++) {
-			for (int j = 0; j < this.gridLen; j++) {
+		for (int i = 1; i < this.gridLen+1; i++) {
+			for (int j = 1; j < this.gridLen+1; j++) {
 				if (this.gridClicked[i][j] != 1 && this.gridClicked[i][j] != 2 && this.isMine[i][j]) {
 					count++;
 				}
@@ -149,8 +149,8 @@ public class DeminGame extends GameState{
 	
 	int leftNoneClicked() { //在该轮之前还未被点击方格的个数
 		int count = 0;
-		for (int i = 0; i < this.gridLen; i++) {
-			for (int j = 0; j < this.gridLen; j++) {
+		for (int i = 1; i < this.gridLen+1; i++) {
+			for (int j = 1; j < this.gridLen+1; j++) {
 				if (this.gridClicked[i][j] != 1 && this.gridClicked[i][j] != 2) {
 					count++;
 				}
@@ -161,7 +161,7 @@ public class DeminGame extends GameState{
 	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
 		//System.out.println("leftTime: "+ this.leftTime);
-		if (this.gameStatus == 1 && !ws.myPlayer.hasClicked && this.gridClicked[clickX][clickY] != 1 && this.gridClicked[clickX][clickY] != 2) { //该方格还未选过时响应该次选方格
+		if (this.gameStatus == 1 && !ws.myPlayer.hasClicked && this.gridClicked[clickX+1][clickY+1] != 1 && this.gridClicked[clickX+1][clickY+1] != 2) { //该方格还未选过时响应该次选方格
 			synchronized (ws.myPlayer) {
 				if (ws.myPlayer.hasClicked) {
 					return; //被系统自动处理后即退出
@@ -236,11 +236,11 @@ public class DeminGame extends GameState{
 			if (item.clickType) {
 				type = 1;
 			}
-			this.gridClicked[item.clickX][item.clickY] = type;
+			this.gridClicked[item.clickX+1][item.clickY+1] = type;
 			item.hasClicked = false;
-			if (this.isMine[item.clickX][item.clickY]) {
+			if (this.isMine[item.clickX+1][item.clickY+1]) {
 				if (type == 1) { //将雷踩错时，则修改输出类型为10
-					this.gridState[item.clickX][item.clickY] = 10;
+					this.gridState[item.clickX+1][item.clickY+1] = 10;
 				}
 			}
 			if (this.clickRight(item)) {
@@ -301,9 +301,9 @@ public class DeminGame extends GameState{
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示扫雷该轮已经结束
 		ArrayList<ArrayList> arr = new ArrayList<ArrayList>(); //记录棋局形态
-		for (int i = 0; i < gridLen; i++) {
+		for (int i = 1; i < gridLen+1; i++) {
 			ArrayList<Integer> arr1 = new ArrayList<Integer>();
-			for (int j = 0; j < gridLen; j++) {
+			for (int j = 1; j < gridLen+1; j++) {
 				if (this.gridClicked[i][j] == 0) { //还未点击时输出-1
 					arr1.add(-1);
 				} else {
@@ -366,8 +366,8 @@ public class DeminGame extends GameState{
 				Random ran = new Random(); //设置随机数种子
 				int index = Math.abs(ran.nextInt()) % count; //随机选择一个位置
 				for (int i = 0; i < this.gridLen*this.gridLen; i++) {
-					if (this.gridClicked[i/this.gridLen][i%this.gridLen] != 1 &&
-							this.gridClicked[i/this.gridLen][i%this.gridLen] != 2) {
+					if (this.gridClicked[i/this.gridLen+1][i%this.gridLen+1] != 1 &&
+							this.gridClicked[i/this.gridLen+1][i%this.gridLen+1] != 2) {
 						if (index == 0) {
 							item.clickX = i / this.gridLen;
 							item.clickY = i % this.gridLen;
