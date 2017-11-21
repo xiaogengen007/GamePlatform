@@ -21,7 +21,7 @@ public class DeminGame extends GameState{
 	DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
-		this.maxTurnTime = 1; //扫雷游戏设置的一轮游戏时间为20s
+		this.maxTurnTime = 5; //扫雷游戏设置的一轮游戏时间为20s
 		this.leftTime = new Integer(this.maxTurnTime);
 		for (int i = 1; i < gridLen+1; i++) {
 			for (int j= 1; j < gridLen+1; j++) {
@@ -39,6 +39,7 @@ public class DeminGame extends GameState{
 		int possible = high_bound - low_bound + 1; //设置雷数的区间大小
 		Random random = new Random(); //设置随机数种子
 		this.leftMine = low_bound + Math.abs(random.nextInt())%possible; //设置雷的数目
+		//this.leftMine = 10;
 		this.totalMine = this.leftMine;
 		for (int i = 0; i < leftMine; i++) {
 			int nums = this.gridLen * this.gridLen - i; //所有可能取到的位置数
@@ -200,16 +201,19 @@ public class DeminGame extends GameState{
 	}
 	
 	public void batchHandleTurn() { //当前轮结束时进行批处理
+		ArrayList<GridPosition> zeroList = new ArrayList<GridPosition>(); //记录周边雷数为0的非雷格点的位置
 		for (Player item : players) {
 			int type = 2;
 			if (item.clickType) {
 				type = 1;
 			}
-			this.gridClicked[item.clickX+1][item.clickY+1] = type;
+			int X = item.clickX + 1;
+			int Y = item.clickY + 1;
+			this.gridClicked[X][Y] = type;
 			item.hasClicked = false;
-			if (this.isMine[item.clickX+1][item.clickY+1]) {
+			if (this.isMine[X][Y]) {
 				if (type == 1) { //将雷踩错时，则修改输出类型为10
-					this.gridState[item.clickX+1][item.clickY+1] = 10;
+					this.gridState[X][Y] = 10;
 				}
 			}
 			if (this.clickRight(item)) {
@@ -221,15 +225,42 @@ public class DeminGame extends GameState{
 				}
 				item.score += this.scorePerGrid / countThis;
 			}
+			if (!this.isMine[X][Y] &&
+					this.gridState[X][Y] == 0) {
+				zeroList.add(new GridPosition(X, Y));
+			}
 		}
 		synchronized (this.leftTime) {
 			this.leftTime = this.maxTurnTime;
+		}
+		//打开0周边的方格
+		while (true) {
+			if (zeroList.isEmpty()) {
+				break; //无法拓展时，停止搜索
+			}
+			GridPosition gptmp = zeroList.remove(0); //取出第一个元素进行处理
+			int x = gptmp.girdX;
+			int y = gptmp.gridY;
+			for (int i = x-1; i <= x+1; i++) {
+				for (int j = y-1; j <= y+1; j++) {
+					if (i > 0 && i <= this.gridLen && j > 0 && j <= this.gridLen) {
+						if (this.gridClicked[i][j] != 1 && this.gridClicked[i][j] != 2) { //还未打开过
+							if (this.gridState[i][j] == 0) {
+								zeroList.add(new GridPosition(i, j));
+							}
+						}
+						this.gridClicked[i][j] = 1; //标记其已经被click了
+					}
+					
+				}
+			}
 		}
 		this.leftMine = this.calculateLeftMine(); //更新剩余的雷数
 		this.finishedNum = 0; //完成人数置为0
 		if (this.gameOver()) {
 			this.gameStatus = 2; //检查游戏是否已经结束了
 		}
+		System.out.println("leftNoneclick:"+this.leftNoneClicked());
 		this.sendEndOfThisTurn();
 		if (this.gameStatus == 2) { //游戏结束之后，将游戏结果返回给玩家
 			sendAfterGame();
@@ -361,5 +392,14 @@ public class DeminGame extends GameState{
 	
 	public void sendForMyGameState(JSONObject json) {
 		json.put("totalMine", this.totalMine); //需要额外发送总地雷数
+	}
+	
+	class GridPosition {
+		public int girdX; //1~gridLen
+		public int gridY; //1~gridLen
+		public GridPosition(int X, int Y) {
+			this.girdX = X;
+			this.gridY = Y;
+		}
 	}
 }
