@@ -38,15 +38,15 @@ websocket.onmessage = function (event) {
         else if (json1.start == 2) {
         	setMessageInnerHTML("Game has finished!");
         }
-        else if (json1.action == 6) { //游戏结束时的通讯
-			setMessageInnerHTML("This game has finished! Following is the rank:");
-			var ranks = "";
-			for (i=0; i<json1.players.length; i++) {
-				ranks = json1.players[i].username + ": " + json1.players[i].rank;
-				setMessageInnerHTML(ranks);
-			}
-		}
     }
+    else if (json1.action == 6) { //游戏结束时的通讯
+		setMessageInnerHTML("This game has finished! Following is the rank:");
+		var ranks = "";
+		for (i=0; i<json1.players.length; i++) {
+			ranks = json1.players[i].username + ": " + json1.players[i].rank;
+			setMessageInnerHTML(ranks);
+		}
+	}
     else if (json1.action == 3) { //游戏进行状态通讯
         if (json1.finished == 1) {
             setMessageInnerHTML("You have finished this turn click, now complete "+json1.finishNum+" of "+json1.playerNum);
