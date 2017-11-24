@@ -341,7 +341,9 @@ public class DeminGame extends GameState{
 		for (Player item: this.players) {
 			if (item.username.equals(ply.username)) {
 				//System.out.println("Has send!");
+				this.sendForGameState();
 				this.sendEndOfThisTurn();
+				this.sendForGameProcess();
 			} else {
 				//System.out.println("No send!");
 			}
