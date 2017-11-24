@@ -394,6 +394,8 @@ public class DeminGame extends GameState{
 	
 	public void sendForMyGameState(JSONObject json) {
 		json.put("totalMine", this.totalMine); //需要额外发送总地雷数
+		json.put("gridLen", this.gridLen); //雷区的大小
+		json.put("maxTime", this.maxTurnTime); //单轮最长时间
 	}
 	
 	class GridPosition {

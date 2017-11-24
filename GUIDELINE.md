@@ -29,6 +29,8 @@ more information
   ​	- username
 
   - totalMine: only for demining game
+  - gridLen: only for demining game
+  - maxTime: only for demining game
 
 - action 3: 
 
