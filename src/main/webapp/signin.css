@@ -1,6 +1,9 @@
 body {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  background-image:url('background_signin.png');
+  background-repeat:no-repeat;
+  background-size:cover;
+  padding-top: 200px;
+  padding-bottom: 200px;
   background-color: #eee;
 }
 
@@ -9,7 +12,10 @@ body {
   padding: 15px;
   margin: 0 auto;
 }
-.form-signin .form-signin-heading,
+.form-signin .form-signin-heading, {
+  font-size: 50px;
+  font-color: #eee;
+}
 .form-signin .checkbox {
   margin-bottom: 10px;
 }

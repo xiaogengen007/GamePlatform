@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>玩吧 Signin Page</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -27,25 +27,36 @@
   <body>
 
     <div class="container">
-
       <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
+        <h2 class="form-signin-heading"><font color="white">Please sign in</font></h2>
         <label for="inputUsername" class="sr-only">User name</label>
         <input type="email" id="inputUsername" class="form-control" placeholder="User name" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <div class="checkbox">
           <label>
-            <input type="checkbox" value="remember-me"> Remember me
+            <input type="checkbox" value="remember-me"><font color="LightSteelBlue">Remember me</font>
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="inMainWindow()">Sign in</button>
       </form>
-
+<svg width="320" height="200" xmlns="http://www.w3.org/2000/svg">
+      <text font-family="microsoft yahei" font-size="40" y="160" x="200" font-color="Gold"  z-index:999>玩吧
+     
+        <animate attributeName="opacity" from="1" to="0" begin="0s" dur="3s" repeatCount="indefinite" />
+      </text>
+    </svg>
     </div> <!-- /container -->
     
+    
+
+
+    
+
+    
+    
     <script type="text/javascript">
-		//发送你的用户名
+	    //发送用户名
 	    function senduser() {
 	    	user = document.getElementById('user').value;
 	    	var json1 = {};
@@ -56,10 +67,17 @@
 	    	//setMessageInnerHTML("myname:"+user);
 	    	websocket.send(messages);
 	    }
-		function inMainWindow() {
-			//window.location.href="index.jsp"+"?username="+document.getElementById('username').value;
-			window.location.href="minesweeper/mine.html"+"?username="+document.getElementById('inputUsername').value;
-		}
+
+      //转到游戏选择界面
+      function inMainWindow() {
+        //window.location.href="index.jsp"+"?username="+document.getElementById('username').value;
+        window.location.href="gamepage/test/test.html"+"?username="+document.getElementById('inputUsername').value;
+      }
+      /*
+  		function inMainWindow() {
+  			//window.location.href="index.jsp"+"?username="+document.getElementById('username').value;
+  			window.location.href="minesweeper/mine.html"+"?username="+document.getElementById('inputUsername').value;
+  		}*/
 	</script>
 
   </body>
