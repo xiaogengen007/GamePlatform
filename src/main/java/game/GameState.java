@@ -9,6 +9,7 @@ import net.sf.json.JSONObject;
 
 import websocket.WebSocket;
 import player.Player;
+import player.Player.DeminPlayer;
 
 public class GameState {
 	public static ArrayList<GameState> games = new ArrayList<GameState>(); //建立一个静态的存储游戏状态的数组
@@ -40,8 +41,10 @@ public class GameState {
 		if (players.size() == 3) {
 			this.gameStatus = 1; //游戏开始
 			this.leftTime = this.maxTurnTime; //游戏开始时设置剩余时间为最大时间
-			for (Player item: players) { //将每个人的积分置为0
-				item.score = 0;
+			if (this.gameType == 1) { //对于扫雷游戏，将用户积分设为0
+				for (Player item: players) { //将每个人的积分置为0
+					item.deminPlayer.score = 0;
+				}
 			}
 		}
 		sendForGameState();		

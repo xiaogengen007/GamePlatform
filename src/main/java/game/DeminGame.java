@@ -88,8 +88,8 @@ public class DeminGame extends GameState{
 	}
 	
 	boolean clickRight(Player ply) { //判断用户这次点击是不是正确
-		if ((ply.clickType && !this.isMine[ply.clickX+1][ply.clickY+1]) || 
-				(!ply.clickType && this.isMine[ply.clickX+1][ply.clickY+1])) {
+		if ((ply.deminPlayer.clickType && !this.isMine[ply.deminPlayer.clickX+1][ply.deminPlayer.clickY+1]) || 
+				(!ply.deminPlayer.clickType && this.isMine[ply.deminPlayer.clickX+1][ply.deminPlayer.clickY+1])) {
 			return true;
 		} else {
 			return false;
@@ -131,20 +131,20 @@ public class DeminGame extends GameState{
 	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
 		//System.out.println("leftTime: "+ this.leftTime);
-		if (this.gameStatus == 1 && !ws.myPlayer.hasClicked && this.gridClicked[clickX+1][clickY+1] != 1 && this.gridClicked[clickX+1][clickY+1] != 2) { //该方格还未选过时响应该次选方格
+		if (this.gameStatus == 1 && !ws.myPlayer.deminPlayer.hasClicked && this.gridClicked[clickX+1][clickY+1] != 1 && this.gridClicked[clickX+1][clickY+1] != 2) { //该方格还未选过时响应该次选方格
 			synchronized (ws.myPlayer) {
-				if (ws.myPlayer.hasClicked) {
+				if (ws.myPlayer.deminPlayer.hasClicked) {
 					return; //被系统自动处理后即退出
 				} else {
-					ws.myPlayer.hasClicked = true; //完成该轮扫雷工作
+					ws.myPlayer.deminPlayer.hasClicked = true; //完成该轮扫雷工作
 				}
 			}
-			ws.myPlayer.clickX = clickX;
-			ws.myPlayer.clickY = clickY;
+			ws.myPlayer.deminPlayer.clickX = clickX;
+			ws.myPlayer.deminPlayer.clickY = clickY;
 			if (clickType == 0) {
-				ws.myPlayer.clickType = true;
+				ws.myPlayer.deminPlayer.clickType = true;
 			} else {
-				ws.myPlayer.clickType = false;
+				ws.myPlayer.deminPlayer.clickType = false;
 			}
 			this.finishedNum++;
 			if (this.finishedNum < this.gameNum) {
@@ -168,15 +168,15 @@ public class DeminGame extends GameState{
 		//发送已经完成的用户click信息
 		JSONArray jsar1 = new JSONArray();
 		for (Player item: players) {
-			if (item.hasClicked) {
+			if (item.deminPlayer.hasClicked) {
 				JSONObject json2 = new JSONObject();
-				if (item.clickType) {
+				if (item.deminPlayer.clickType) {
 					json2.put("clickType",1);
 				} else {
 					json2.put("clickType",0);
 				}
-				json2.put("clickX", item.clickX);
-				json2.put("clickY", item.clickY);
+				json2.put("clickX", item.deminPlayer.clickX);
+				json2.put("clickY", item.deminPlayer.clickY);
 				json2.put("username", item.username);
 				jsar1.add(json2);
 			}
@@ -187,7 +187,7 @@ public class DeminGame extends GameState{
 			try {
 				//System.out.println(item.username);
 				if (item.myWebsocket != null) {
-					if (item.hasClicked) {
+					if (item.deminPlayer.hasClicked) {
 						item.myWebsocket.session.getBasicRemote().sendText(messages1);
 					} else {
 						item.myWebsocket.session.getBasicRemote().sendText(messages2);
@@ -204,13 +204,13 @@ public class DeminGame extends GameState{
 		ArrayList<GridPosition> zeroList = new ArrayList<GridPosition>(); //记录周边雷数为0的非雷格点的位置
 		for (Player item : players) {
 			int type = 2;
-			if (item.clickType) {
+			if (item.deminPlayer.clickType) {
 				type = 1;
 			}
-			int X = item.clickX + 1;
-			int Y = item.clickY + 1;
+			int X = item.deminPlayer.clickX + 1;
+			int Y = item.deminPlayer.clickY + 1;
 			this.gridClicked[X][Y] = type;
-			item.hasClicked = false;
+			item.deminPlayer.hasClicked = false;
 			if (this.isMine[X][Y]) {
 				if (type == 1) { //将雷踩错时，则修改输出类型为10
 					this.gridState[X][Y] = 10;
@@ -219,11 +219,11 @@ public class DeminGame extends GameState{
 			if (this.clickRight(item)) {
 				int countThis = 0; //记录点击这个地方 的人数
 				for (Player item2: players) {
-					if (item2.clickX == item.clickX && item2.clickY == item.clickY && this.clickRight(item2)) {
+					if (item2.deminPlayer.clickX == item.deminPlayer.clickX && item2.deminPlayer.clickY == item.deminPlayer.clickY && this.clickRight(item2)) {
 						countThis++;
 					}
 				}
-				item.score += this.scorePerGrid / countThis;
+				item.deminPlayer.score += this.scorePerGrid / countThis;
 			}
 			if (!this.isMine[X][Y] &&
 					this.gridState[X][Y] == 0) {
@@ -274,7 +274,7 @@ public class DeminGame extends GameState{
 		for (Player item: players) {
 			int rank = 1;
 			for (Player item2: players) {
-				if (item2.score > item.score) {
+				if (item2.deminPlayer.score > item.deminPlayer.score) {
 					rank++; //当有玩家排名比item高时，item的排名会向后移一位
 				}
 			}
@@ -316,7 +316,7 @@ public class DeminGame extends GameState{
 		for (Player item: players) {
 			JSONObject json2 = new JSONObject();
 			json2.put("username", item.username);
-			json2.put("score", item.score);
+			json2.put("score", item.deminPlayer.score);
 			jsar1.add(json2);
 		}
 		json1.put("state", arr);
@@ -355,12 +355,12 @@ public class DeminGame extends GameState{
 			return; //游戏为处在进行状态时直接跳过
 		}
 		for (Player item: players) {
-			if (!item.hasClicked) {
+			if (!item.deminPlayer.hasClicked) {
 				synchronized (item) {
-					if (item.hasClicked) {
+					if (item.deminPlayer.hasClicked) {
 						continue;
 					} else {
-						item.hasClicked = true;
+						item.deminPlayer.hasClicked = true;
 					}
 				}
 				//进行自动操作处理
@@ -371,8 +371,8 @@ public class DeminGame extends GameState{
 					if (this.gridClicked[i/this.gridLen+1][i%this.gridLen+1] != 1 &&
 							this.gridClicked[i/this.gridLen+1][i%this.gridLen+1] != 2) {
 						if (index == 0) {
-							item.clickX = i / this.gridLen;
-							item.clickY = i % this.gridLen;
+							item.deminPlayer.clickX = i / this.gridLen;
+							item.deminPlayer.clickY = i % this.gridLen;
 							break;
 						} else {
 							index--;
@@ -381,9 +381,9 @@ public class DeminGame extends GameState{
 				}
 				int clickTypes = Math.abs(ran.nextInt()) % 2;
 				if (clickTypes == 1) {
-					item.clickType = true;
+					item.deminPlayer.clickType = true;
 				} else {
-					item.clickType = false;
+					item.deminPlayer.clickType = false;
 				}
 			}
 		}

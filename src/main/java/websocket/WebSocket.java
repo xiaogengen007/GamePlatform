@@ -113,7 +113,7 @@ public class WebSocket {
 			}
 		}
 		if (json1.getInt("action") == 3) { //3为玩扫雷时发消息
-			if (!this.myPlayer.hasClicked) {
+			if (!this.myPlayer.deminPlayer.hasClicked) {
 				int clickX = json1.getInt("clickX"); //用户点击的X值(1-8)
 				int clickY = json1.getInt("clickY"); //用户点击的Y值(1-8)
 				int clickType = json1.getInt("clickType"); //点击类型，0表示左键，2表示右键
