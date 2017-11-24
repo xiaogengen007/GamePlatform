@@ -174,7 +174,7 @@ function startGame(){
 		$('<div></div>').addClass("col-xs-3 col-sm-1 placeholder").attr('id','player' + i)
 		.append(loading).append(img).append(label).appendTo('#playerlist');
 	}
-	//$(document).on("contextmenu",false);  //右击浏览器弹出窗口事件 被 contextmenu事件冲掉
+	
 	function mousedownhandler(e){
 		e.preventDefault();
 		pos = $(this).attr('id').split('-');
