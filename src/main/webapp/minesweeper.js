@@ -1,6 +1,6 @@
-var gridLen = 8;
-var tMax = 20;
-var tNow = tMax;
+var gridLen;
+var tMax;
+var tNow;
 
 var MessageType = {
 	status : 1,
@@ -25,6 +25,10 @@ websocket.onmessage = function (event) {
     	for(var i = playerArray.length; i < json1.players.length; i++ ){
     		addPlayer(json1.players[i]);
     	}
+    	
+    	gridLen = json1.gridLen;
+        tMax = json1.maxTime;
+        tNow = tMax;
     	
         if (json1.start == 0) {
             //游戏还未开始
