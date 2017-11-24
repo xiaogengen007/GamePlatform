@@ -50,6 +50,7 @@ websocket.onmessage = function (event) {
 			ranks = json1.players[i].username + ": " + json1.players[i].rank;
 			setMessageInnerHTML(ranks);
 		}
+		$('#myModal').modal({backdrop: 'static', keyboard: false});
 	}
     else if (json1.action == 3) { //游戏进行状态通讯
         if (json1.finished == 1) {
@@ -95,7 +96,7 @@ websocket.onmessage = function (event) {
             }
         }
         setMessageInnerHTML("End of this turn, please select for next turn.");
-        tNow = 20;
+        tNow = tMax;
         timeUpdate(tNow, tMax);
         actionArray.splice(0, actionArray.length);
     }
@@ -185,8 +186,7 @@ function startGame(){
 		send(e, pos[0], pos[1]);
 	}
 	
-	
-	var t = tMax;
+	//var t = tMax;
 	setInterval(function(){
 		tNow--;
 		timeUpdate(tNow, tMax);
