@@ -49,10 +49,13 @@ websocket.onmessage = function (event) {
     	clearInterval(timerCode);
     	timeUpdate(1, 1);
 		setMessageInnerHTML("This game has finished! Following is the rank:");
-		var ranks = "";
+		
 		for (i=0; i<json1.players.length; i++) {
-			ranks = json1.players[i].username + ": " + json1.players[i].rank;
-			setMessageInnerHTML(ranks);
+			for(j = 0; j < playerArray.length; j++){
+				if(playerArray[j].username == json1.players[i].username){
+					addRank(playerArray[j], json1.players[i].rank);
+				}
+			}
 		}
 		$('#myModal').modal({backdrop: 'static', keyboard: false});
 	}

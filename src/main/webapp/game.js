@@ -87,3 +87,12 @@ function addPlayer(player){
 	playerArray.push(player);
 	$('#player' + playerArray.length + ' > h4').text(player.username);
 }
+
+function addRank(player, rank){
+	var c1 = $('<span></span>').attr('title',rank.toString()).addClass('column1').text(rank.toString());
+	var img = $('<img></img>').attr('src', player.thumbnail).attr('width', '40').attr('height', '40');
+	var c2 = $('<span></span>').addClass('column2').append(img);
+	var c3 = $('<span></span>').addClass('column3').text(player.username);
+	var c4 = $('<span></span>').addClass('column4').text(player.score.toString());
+	$('<section></section>').addClass('rank').append(c1).append(c2).append(c3).append(c4).appendTo('#gdt');
+}
