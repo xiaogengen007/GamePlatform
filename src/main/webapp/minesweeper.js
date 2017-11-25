@@ -1,6 +1,7 @@
 var gridLen;
 var tMax;
 var tNow;
+var timerCode;
 
 var MessageType = {
 	status : 1,
@@ -44,6 +45,8 @@ websocket.onmessage = function (event) {
         }
     }
     else if (json1.action == 6) { //游戏结束时的通讯
+    	clearInterval(timerCode);
+    	timeUpdate(1, 1);
 		setMessageInnerHTML("This game has finished! Following is the rank:");
 		var ranks = "";
 		for (i=0; i<json1.players.length; i++) {
@@ -63,8 +66,15 @@ websocket.onmessage = function (event) {
         console.log(json1.preState.length);
         for(var i = actionArray.length; i < json1.preState.length; i++){
         	actionArray.push(json1.preState[i]);
+        	var thumbnail;
+        	for(var j = 0; j < playerArray.length; j++){
+        		if(playerArray[j].username == json1.preState[i].username){
+        			thumbnail = playerArray[j].thumbnail;
+        		}
+        	}
+        	
         	var img = $('<img></img>').addClass("img-responsive")
-    		.attr('src',"data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==")
+    		.attr('src',thumbnail)
     		.attr('height','16').attr('width','16').attr('alt',"Generic placeholder thumbnail");
     		$('<div></div>').addClass("placeholder").css('float','left')
     		.append(img).appendTo("#"+json1.preState[i].clickX+"-"+json1.preState[i].clickY);
@@ -169,7 +179,7 @@ function startGame(){
 	
 	for(var i = 1; i <= playerArray.length; i++){
 		var img = $('<img></img>').addClass("img-responsive")
-		.attr('src',"data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==")
+		.attr('src',playerArray[i-1].thumbnail)
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
 		var label = $('<h4></h4>').text(playerArray[i-1].username);
 		var object1 = $('<div></div>').addClass('object').attr('id','object_one');
@@ -186,8 +196,7 @@ function startGame(){
 		send(e, pos[0], pos[1]);
 	}
 	
-	//var t = tMax;
-	setInterval(function(){
+	timerCode = setInterval(function(){
 		tNow--;
 		timeUpdate(tNow, tMax);
 	}, 1000)

@@ -82,6 +82,8 @@ function sendPlayRequest() {
 }
 
 function addPlayer(player){
+	player.score = 0;
+	player.thumbnail = "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
 	playerArray.push(player);
 	$('#player' + playerArray.length + ' > h4').text(player.username);
 }
