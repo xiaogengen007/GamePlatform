@@ -22,7 +22,6 @@
     //System.out.printf("test");
     
     out.println("<script>function gotoGame(){window.location.href='game.html?username="+ session.getAttribute("user")  +"'};</script>");
-    //out.println("<script>window.location.href='minesweeper/mine.html?username="+ session.getAttribute("user")  +"'</script>");
   %>  
   <br/>  
   <!--

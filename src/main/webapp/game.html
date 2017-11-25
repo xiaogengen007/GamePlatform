@@ -16,15 +16,15 @@
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="wait.css" rel="stylesheet">
-    <link href="ranklist.css" rel="stylesheet">
+    <link href="css/wait.css" rel="stylesheet">
+    <link href="css/ranklist.css" rel="stylesheet">
     
 </head>
 
 <body onload="align()">
 	<script type="text/javascript">
 		if(document.referrer===''){
-		    //window.location.href='signin.jsp';
+		    window.location.href='signin.jsp';
 		}
 	</script>
     
@@ -170,16 +170,16 @@
         }
     </script>
 
-    <script type="text/javascript" src="out.js"></script>
+    <script type="text/javascript" src="js/out.js"></script>
     
-    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
     
     <script> 
     	var oHead = document.getElementsByTagName('body').item(0); 
     	var gameScript= document.createElement("script"); 
     	gameScript.type = "text/javascript";
     	//TODO: select other games
-    	gameScript.src = "minesweeper" + ".js"; 
+    	gameScript.src = "js/"+"minesweeper" + ".js"; 
     	document.getElementsByTagName('body')[0].appendChild(gameScript); 
 	</script>
 	

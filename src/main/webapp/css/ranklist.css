@@ -42,19 +42,19 @@
 }
 .column1[title="1"]{ 
   color:#fff; 
-  background:url(images/r1.png) no-repeat; 
+  background:url(../images/r1.png) no-repeat; 
   background-position-x:center; 
   background-position-y:200%; 
   background-size: auto 95%;}
 .column1[title="2"]{ 
   color:#fff; 
-  background:url(images/r2.png) no-repeat; 
+  background:url(../images/r2.png) no-repeat; 
   background-position-x:center; 
   background-position-y:200%; 
   background-size: auto 95%;}
 .column1[title="3"]{ 
   color:#fff; 
-  background:url(images/r3.png) no-repeat; 
+  background:url(../images/r3.png) no-repeat; 
   background-position-x:center; 
   background-position-y:200%; 
   background-size: auto 95%;

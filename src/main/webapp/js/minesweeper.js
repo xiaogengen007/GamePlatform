@@ -2,6 +2,7 @@ var gridLen;
 var tMax;
 var tNow;
 var timerCode;
+var totalMine;
 
 var MessageType = {
 	status : 1,
@@ -30,7 +31,7 @@ websocket.onmessage = function (event) {
     	gridLen = json1.gridLen;
         tMax = json1.maxTime;
         tNow = tMax;
-        numMineUpdate(json1.totalMine);
+        totalMine = json1.totalMine;
     	
         if (json1.start == 0) {
             //游戏还未开始
@@ -155,12 +156,12 @@ function numMineUpdate(numMine){
 function startGame(){
 	var node = document.createElement('link');
 	node.rel = 'stylesheet';
-	node.href = 'minesweeper.css';
+	node.href = 'css/minesweeper.css';
 	document.getElementsByTagName('head')[0].appendChild(node);
 	
 	node = document.createElement('link');
 	node.rel = 'stylesheet';
-	node.href = 'loading.css';
+	node.href = 'css/loading.css';
 	document.getElementsByTagName('head')[0].appendChild(node);
 	
 	$('#players').empty().removeClass('main').addClass('game');
@@ -211,4 +212,6 @@ function startGame(){
 		tNow--;
 		timeUpdate(tNow, tMax);
 	}, 1000)
+	
+	numMineUpdate(totalMine);
 }
