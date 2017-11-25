@@ -30,6 +30,7 @@ websocket.onmessage = function (event) {
     	gridLen = json1.gridLen;
         tMax = json1.maxTime;
         tNow = tMax;
+        numMineUpdate(json1.totalMine);
     	
         if (json1.start == 0) {
             //游戏还未开始
@@ -109,6 +110,8 @@ websocket.onmessage = function (event) {
         tNow = tMax;
         timeUpdate(tNow, tMax);
         actionArray.splice(0, actionArray.length);
+        numMineUpdate(json1.leftMine);
+    	
     }
     else if (json1.action == 5){
     	setMessageInnerHTML(json1.message);
@@ -141,6 +144,10 @@ function timeUpdate(timeNow, timeMax){
     progressBar.style.width = percentage + '%';
 }
 
+function numMineUpdate(numMine){
+	$('.flagbox').text('剩余地雷: ' + numMine);
+}
+
 //开始游戏，更新html，引用对应的css
 function startGame(){
 	var node = document.createElement('link');
@@ -155,6 +162,7 @@ function startGame(){
 	
 	$('#players').empty().removeClass('main').addClass('game');
 	$('<div></div>').addClass('box').appendTo('#players');
+	$('<div></div>').addClass('flagbox').appendTo('#players');
 	$('<div></div>').attr('id','progressbardiv').addClass('progress').appendTo('#players');
 	
 	$('<div></div>').attr('id','progressbar')
