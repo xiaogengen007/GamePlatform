@@ -17,6 +17,7 @@
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="wait.css" rel="stylesheet">
+    <link href="ranklist.css" rel="stylesheet">
     
 </head>
 
@@ -133,18 +134,22 @@
     </div>
     
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	    <div class="modal-dialog">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-	                <h4 class="modal-title" id="myModalLabel">游戏结束</h4>
-	            </div>
-	            <div class="modal-body"></div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-	            </div>
-	        </div><!-- /.modal-content -->
-	    </div><!-- /.modal -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <article id="rankList">
+                        <span id="myRank">游戏结束</span>
+                        <div id="gdt">
+                            
+                        </div>
+                        <div class="buttons"> 
+                                <a href="playGame.html">再来一局</a>
+                                <a href="playGame.html">返回大厅</a>
+                        </div>
+                    </article>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
 	</div>
     
     <!-- Bootstrap core JavaScript
