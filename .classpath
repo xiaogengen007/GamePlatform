@@ -34,5 +34,6 @@
 	<classpathentry kind="lib" path="lib/json/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/json/ezmorph-1.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/json/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="lib/db/sqlite-jdbc-3.21.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
