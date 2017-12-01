@@ -8,7 +8,7 @@ public class PlayerManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:test.db");
+			c = DriverManager.getConnection("jdbc:sqlite:gameplatform.db");
 			c.setAutoCommit(false);
 			//System.out.println("Open database successfully");
 			
@@ -33,7 +33,7 @@ public class PlayerManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:test.db");
+			c = DriverManager.getConnection("jdbc:sqlite:gameplatform.db");
 			c.setAutoCommit(false);
 			//System.out.println("Open database successfully");
 			
@@ -43,4 +43,6 @@ public class PlayerManager {
 			ResultSet rs = stmt.executeQuery(sql);
 		}
 	}
+
+
 }
