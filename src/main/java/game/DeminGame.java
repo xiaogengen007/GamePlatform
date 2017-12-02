@@ -79,6 +79,12 @@ public class DeminGame extends GameState{
 		}
 	}
 	
+	public void initPlayers() { //初始化玩家的操作
+		for (Player item: players) {
+			item.deminPlayer.setPlayer();
+		}
+	}
+	
 	boolean gameOver() { //判断现在游戏是否已经结束
 		if (leftNoneClicked() == 0) {
 			return true;

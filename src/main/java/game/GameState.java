@@ -41,11 +41,7 @@ public class GameState {
 		if (players.size() == 3) {
 			this.gameStatus = 1; //游戏开始
 			this.leftTime = this.maxTurnTime; //游戏开始时设置剩余时间为最大时间
-			if (this.gameType == 1) { //对于扫雷游戏，将用户积分设为0
-				for (Player item: players) { //将每个人的积分置为0
-					item.deminPlayer.score = 0;
-				}
-			}
+			this.initPlayers();
 		}
 		sendForGameState();		
 	}
@@ -144,4 +140,5 @@ public class GameState {
 	public void handleLeftTimeZero() {} //解决时间为零的情况
 	public void sendForMyGameState(JSONObject json) {} //发送每个游戏状态特殊的部分
 	public void sendAfterGame() {} //游戏后返回玩家游戏结果
+	public void initPlayers() {} //初始化玩家的信息
 }
