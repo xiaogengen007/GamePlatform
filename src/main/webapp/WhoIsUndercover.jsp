@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>扫雷小游戏</title>
+    <title>谁是卧底小游戏</title>
 </head>
 <body>
 <div id="ptest"></div>
