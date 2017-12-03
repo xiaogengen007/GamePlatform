@@ -127,7 +127,9 @@ public class GameState {
 		String messages = json1.toString();
 		for (Player item: players) {
 			try {
-				item.myWebsocket.session.getBasicRemote().sendText(messages);
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
