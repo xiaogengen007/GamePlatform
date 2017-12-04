@@ -214,7 +214,7 @@
     function sendPlayRequest() {
     	var json1 = {};
     	json1.action = 4; //4表示请求加入游戏
-    	json1.type = 1; //type为1表示扫雷游戏
+    	json1.type = 2; //type为2表示谁是卧底游戏
     	var messages = JSON.stringify(json1);
     	websocket.send(messages);
     	setMessageInnerHTML("have send play request.");
