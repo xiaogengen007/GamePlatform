@@ -9,7 +9,7 @@
 
 
 <script type="text/javascript">
-	var playerNum = 3;
+	var playerNum = 4;
 	var state = new Array(8); //多生成一些防止不够用
 	// firefox does not support window.event
 	if(navigator.userAgent.indexOf('Firefox') >= 0)
@@ -25,6 +25,7 @@
 </script>
 </body>
 <hr/>
+<div id="keyword">您的关键词：</div>
 <input id="gametext" type="text"/>
 <button onclick="send()">本轮发言</button>
 <hr/>
@@ -70,7 +71,7 @@
 			} 
 			if (json1.start == 1) {
 				//游戏正在进行
-				setMessageInnerHTML("Game has started! Now has "+playerInfo+" in this room,the totalMine is "+json1.totalMine+".");
+				setMessageInnerHTML("Game has started! Now has "+playerInfo+" in this room.");
 			}		
 			if (json1.start == 2) {
 				//游戏已经结束
@@ -121,6 +122,10 @@
 				ranks = json1.players[i].username + ": " + json1.players[i].rank;
 				setMessageInnerHTML(ranks);
 			}
+		}
+		if (json1.action == 7) { //游戏状态的额外传输
+			var keywords = json1.keyword;
+			document.getElementById('keyword').innerHTML = "您的关键词："+keywords;
 		}
     }
 

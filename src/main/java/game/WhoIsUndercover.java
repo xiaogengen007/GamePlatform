@@ -1,5 +1,6 @@
 package game;
 
+import java.io.IOException;
 import java.util.Random;
 
 import net.sf.json.JSONObject;
@@ -65,5 +66,38 @@ public class WhoIsUndercover extends GameState{
 		
 	public void sendForMyGameState(JSONObject json) {
 		json.put("maxTime", this.maxTurnTime); //单轮最长时间
+	}
+	
+	public void sendElseGameState() { //在游戏开始时还需发送的其他部分（个性化处理）
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 7); //7为输出游戏中的额外状态传输
+		json1.put("keyword", this.friendString);
+		String msg = json1.toString();
+		for (int i = 0; i < players.size(); i++) {
+			if (this.isFriend[i]) {
+				if (this.players.get(i).myWebsocket != null) {
+					try {
+						this.players.get(i).myWebsocket.session.getBasicRemote().sendText(msg);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		json1.put("keyword", this.undercoverString);
+		msg = json1.toString();
+		for (int i = 0; i < players.size(); i++) {
+			if (!this.isFriend[i]) {
+				if (this.players.get(i).myWebsocket != null) {
+					try {
+						this.players.get(i).myWebsocket.session.getBasicRemote().sendText(msg);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 }

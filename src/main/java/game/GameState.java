@@ -26,7 +26,7 @@ public class GameState {
 		this.gameStatus = 0; //初始时游戏还未开始
 	}
 	public boolean canAddPlayer() { //判断该局游戏中是否可以再加玩家
-		if (players.size() < 3) {
+		if (players.size() < this.gameNum) {
 			return true;
 		} else {
 			return false;
