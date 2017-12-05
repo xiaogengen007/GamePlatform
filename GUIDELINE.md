@@ -70,7 +70,7 @@ more information
 
   ​
 
-#####action 6:
+##### action 6:
 
 - for all game:
   - players(array, send the finally rank of players, for players[i]:
