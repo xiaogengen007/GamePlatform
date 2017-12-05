@@ -162,6 +162,9 @@ public class DeminGame extends GameState{
 		}	
 	}
 	
+	/*
+	 * 发送在一轮游戏当中的进度
+	 */
 	public void sendForGameProcess() {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 3); //3表示扫雷该轮仍处于进行状态

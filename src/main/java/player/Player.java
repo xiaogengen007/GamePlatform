@@ -41,6 +41,7 @@ public class Player {
 		public boolean isUndercover; //是否为卧底
 		public boolean isSubmit; //这轮是否提交
 		public boolean isAlive; //是否已经阵亡
+		public String thisTurnMsg; //该轮玩家发言
 		UndercoverPlayer() {
 			this.isSubmit = false;
 			this.isAlive = true;

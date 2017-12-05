@@ -3,6 +3,7 @@ package game;
 import java.io.IOException;
 import java.util.Random;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import player.Player;
 import websocket.WebSocket;
@@ -10,8 +11,7 @@ import websocket.WebSocket;
 public class WhoIsUndercover extends GameState{
 	String friendString = ""; //友方的词汇
 	String undercoverString = ""; //卧底的词汇
-	String[] gameMsg; //游戏中大家的消息
-	boolean[] finishTurn; //该轮游戏已完成发言
+	int gameProcess; //游戏当前的进程，0表示发言环节，1表示投票环节
 	WhoIsUndercover() {
 		super();
 		this.gameType = 2; //2表示谁是卧底
@@ -20,9 +20,7 @@ public class WhoIsUndercover extends GameState{
 		this.leftTime = new Integer(this.maxTurnTime);
 		this.friendString = "大佬";
 		this.undercoverString = "大神";
-		this.gameMsg = new String [this.gameNum];
-		this.finishTurn = new boolean [this.gameNum];
-		this.initGame(); //初始化游戏
+		this.gameProcess = 0; //初始化为发言阶段
 	}
 	
 	/*
@@ -46,8 +44,8 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	public void initFinishTurn() { //初始化为都未完成该轮游戏
-		for (int i = 0; i < this.gameNum; i++) {
-				this.finishTurn[i] = false;
+		for (int i = 0; i < this.players.size(); i++) {
+			players.get(i).ucPlayer.isSubmit = false;
 		}
 	}
 	
@@ -57,12 +55,108 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
+	/*
+	 * 获取当前存活的玩家数
+	 */
+	public int getAliveNum() {
+		int countAlive = 0;
+		for (Player item: players) {
+			if (item.ucPlayer.isAlive) {
+				countAlive++;
+			}
+		}
+		return countAlive;
+	}
+	
+	/*
+	 * 获取本轮完成发送消息的玩家数
+	 */
+	public int getSubmitNum() {
+		int countAlive = 0;
+		for (Player item: players) {
+			if (item.ucPlayer.isAlive && item.ucPlayer.isSubmit) {
+				countAlive++;
+			}
+		}
+		return countAlive;
+	}
+	
+	/*
+	 * 判断大家是否都完成该轮发言
+	 */
+	public boolean finishThisTurn() {
+		boolean hasFinished = true;
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).ucPlayer.isAlive 
+					&& !players.get(i).ucPlayer.isSubmit) {
+				hasFinished = false;
+				break;
+			}
+		}
+		return hasFinished;
+	}
+	
 	public void handleUndercover(String message, WebSocket ws) { //完成谁是卧底中的游戏响应
-		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit) {
-			
+		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
+				&& ws.myPlayer.ucPlayer.isAlive) { //判断该玩家是否有"说话"的权力
+			ws.myPlayer.ucPlayer.thisTurnMsg = message;
+			this.sendForGameProcess();
+			if (finishThisTurn()) { //该轮结束时进入投票模式
+				
+			}
 		}
 	}
+	
+	/*
+	 * 发送在一轮游戏当中的进度
+	 */
+	public void sendForGameProcess() {
+		JSONObject json1 = new JSONObject();
+		if (this.gameProcess == 0) {
+			System.out.println("has send game process for undercover");
+			JSONArray jsar1 = new JSONArray();
+			for (Player item: players) {
+				if (item.ucPlayer.isAlive && item.ucPlayer.isSubmit) { //只统计活着的玩家说了什么
+					JSONObject json2 = new JSONObject();
+					json2.put("username", item.username);
+					json2.put("message", item.ucPlayer.thisTurnMsg);
+					jsar1.add(json2);
+				}
+			}
+			json1.put("action", 3);
+			json1.put("leftTime", this.leftTime);
+			json1.put("playerNum", this.gameNum);
+			json1.put("aliveNum", this.getAliveNum());
+			json1.put("submitNum", this.getSubmitNum());
+			json1.put("finished", 0); //0表示还未提交，1表示完成提交，2表示已经死亡
+			String message0 = json1.toString();
+			json1.put("finished", 1);
+			json1.put("preMessage", jsar1);
+			String message1 = json1.toString();
+			json1.put("finished", 2);
+			String message2 = json1.toString();
+			for (Player item: players) {
+				if (item.myWebsocket != null) {
+					try {
+						if (!item.ucPlayer.isAlive) {
+							item.myWebsocket.session.getBasicRemote().sendText(message2);
+						} else {
+							if (item.ucPlayer.isSubmit) {
+								item.myWebsocket.session.getBasicRemote().sendText(message1);
+							} else {
+								item.myWebsocket.session.getBasicRemote().sendText(message0);
+							}
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 		
+	}
+	
 	public void sendForMyGameState(JSONObject json) {
 		json.put("maxTime", this.maxTurnTime); //单轮最长时间
 	}

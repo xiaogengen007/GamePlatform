@@ -13,7 +13,7 @@
 | ------ | ---------------------- | ---------------------------------------- |
 | 1      | game status            | start,players,(...)                      |
 | 2      | send message           | message                                  |
-| 3      | state in game          | finished,leftTime,finishNum,playerNum,(preState) |
+| 3      | state in game          | finished,leftTime,finishNum,playerNum,(...) |
 | 4      | finish one turn(Demin) | state,leftTime,leftMine,players          |
 | 5      | chat in game           | message                                  |
 | 6      | game result            | players                                  |

@@ -140,7 +140,8 @@ public class WebSocket {
 		}
 		if (json1.getInt("action") == 6) { //6表示谁是卧底游戏中发送本轮发言
 			if (this.myPlayer.nowGame != null) {
-				
+				String messages = json1.getString("message");
+				this.myPlayer.nowGame.handleUndercover(messages, this);
 			}
 		}
 	}

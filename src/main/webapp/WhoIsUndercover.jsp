@@ -84,12 +84,8 @@
 			}
 		}
 		if (json1.action == 3) { //游戏进行状态通讯
-			if (json1.finished == 1) {
-				setMessageInnerHTML("You have finished this turn click, now left "+json1.leftTime+" seconds, complete "+json1.finishNum+" of "+json1.playerNum);
-
-			} else {
-				setMessageInnerHTML("Please click for this turn, now left "+json1.leftTime+" seconds, complete "+json1.finishNum+" of "+json1.playerNum);
-			}
+			var messages = JSON.stringify(json1);
+			setMessageInnerHTML(messages);
 		}
 		if (json1.action == 4) { //游戏该轮完成后通讯
 			document.getElementById('ptest').innerHTML = "";
