@@ -9,15 +9,15 @@
 
 ##### Server to Browser
 
-| action | function               | part                                     |
-| ------ | ---------------------- | ---------------------------------------- |
-| 1      | game status            | start,players,(...)                      |
-| 2      | send message           | message                                  |
-| 3      | state in game          | finished,leftTime,finishNum,playerNum,(...) |
-| 4      | finish one turn(Demin) | state,leftTime,leftMine,players          |
-| 5      | chat in game           | message                                  |
-| 6      | game result            | players                                  |
-| 7      | other game state       |                                          |
+| action | function               | part                              |
+| ------ | ---------------------- | --------------------------------- |
+| 1      | game status            | start,players,(...)               |
+| 2      | send message           | message                           |
+| 3      | state in game          | finished,leftTime,playerNum,(...) |
+| 4      | finish one turn(Demin) | state,leftTime,leftMine,players   |
+| 5      | chat in game           | message                           |
+| 6      | game result            | players                           |
+| 7      | other game state       |                                   |
 
 more information
 
@@ -35,6 +35,11 @@ more information
 
 - action 3: 
 
+  for demining game:
+
+  - finishNum
+
+
   - preState(array, only to the players finished this turn); 
 
   ​       preState[i]:
@@ -46,6 +51,18 @@ more information
   ​	- clickX(0~7)
 
   ​	- clickY(0~7)
+
+  for undercover game:
+
+  - aliveNum
+
+  - submitNum
+
+  - preMessage(array, only to the players submitted for this turn or has not been alive)
+
+    \- username
+
+    \- message
 
 - action 4: 
 

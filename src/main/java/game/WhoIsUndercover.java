@@ -100,6 +100,7 @@ public class WhoIsUndercover extends GameState{
 		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
 				&& ws.myPlayer.ucPlayer.isAlive) { //判断该玩家是否有"说话"的权力
 			ws.myPlayer.ucPlayer.thisTurnMsg = message;
+			ws.myPlayer.ucPlayer.isSubmit = true;
 			this.sendForGameProcess();
 			if (finishThisTurn()) { //该轮结束时进入投票模式
 				

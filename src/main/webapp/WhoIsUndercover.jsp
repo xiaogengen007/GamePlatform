@@ -11,6 +11,7 @@
 <script type="text/javascript">
 	var playerNum = 4;
 	var state = new Array(8); //多生成一些防止不够用
+	var playerName = new Array(8);
 	// firefox does not support window.event
 	if(navigator.userAgent.indexOf('Firefox') >= 0)
 	{
@@ -20,7 +21,7 @@
 
 	var i = 1,j=1;
 	for (i=1; i<=playerNum; i++) {
-    	document.getElementById('ptest').innerHTML += "<div id=\"" + i +"\">" + i + "</div><br/>";
+    	document.getElementById('ptest').innerHTML += "<div>" + i + "</div><br/>";
 	}
 </script>
 </body>
@@ -71,6 +72,10 @@
 			} 
 			if (json1.start == 1) {
 				//游戏正在进行
+				playerNum = json1.players.length;
+				for (i=0; i<json1.players.length; i++) {
+					playerName[i] = json1.players[i].username;
+				}
 				setMessageInnerHTML("Game has started! Now has "+playerInfo+" in this room.");
 			}		
 			if (json1.start == 2) {
@@ -86,6 +91,20 @@
 		if (json1.action == 3) { //游戏进行状态通讯
 			var messages = JSON.stringify(json1);
 			setMessageInnerHTML(messages);
+			if (json1.finished != 0) { //不是为非完成的用户
+				for (i=0; i<playerNum; i++) {
+					state[i] = "";
+				}
+				for (i=0; i<json1.preMessage.length; i++) {
+					for (var j=0; j<playerNum; j++) {
+						if (json1.preMessage[i].username == playerName[j]) {						
+							state[j] = json1.preMessage[i].message;
+						} 
+					}	
+				}
+				writeNormal();
+			}
+			
 		}
 		if (json1.action == 4) { //游戏该轮完成后通讯
 			document.getElementById('ptest').innerHTML = "";
@@ -140,7 +159,16 @@
     function closeWebSocket() {
         websocket.close();
     }
-
+ 
+    //在非投票时更新界面
+    function writeNormal() {
+    	document.getElementById('ptest').innerHTML = "";
+    	for (i=0; i<playerNum; i++) {
+        	document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"</div><br/>";
+    	}
+    }
+    
+    
     //发送消息
     function send() {
     	var json1 = {};
