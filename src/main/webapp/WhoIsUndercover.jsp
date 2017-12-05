@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
 	var playerNum = 3;
-	var state = new Array(playerNum);
+	var state = new Array(8); //多生成一些防止不够用
 	// firefox does not support window.event
 	if(navigator.userAgent.indexOf('Firefox') >= 0)
 	{
@@ -25,8 +25,11 @@
 </script>
 </body>
 <hr/>
+<input id="gametext" type="text"/>
+<button onclick="send()">本轮发言</button>
+<hr/>
 <input id="text" type="text"/>
-<button onclick="sendGame()">发送消息</button>
+<button onclick="sendGame()">聊天</button>
 <hr/>
 <div id="message"></div>
 <script language="Javascript">
@@ -142,24 +145,13 @@
     }
 
     //发送消息
-    function send(x,y) {
-    	if (user == "") {
-    		alert("please login!");
-    	} else {
-    		var e=window.event;//获取事件对象
-    	    var clickType=e.button;
-    		if (clickType != 0 && clickType != 2) {
-    			return; //非单独按左右键时屏蔽消息
-    		}
-    	   	document.getElementById('ptest').innerHTML += x+" "+y+" ";
-    		var json1 = {};
-        	json1.action = 3; //3表示正在进行扫雷游戏
-        	json1.clickX = x-1; //传输点击的位置
-        	json1.clickY = y-1;
-        	json1.clickType = clickType;
-            var messages = JSON.stringify(json1); 
-            websocket.send(messages);
-    	}	
+    function send() {
+    	var json1 = {};
+    	json1.action = 6; //6表示谁是卧底游戏过程中用户发送本轮发言
+    	json1.message = document.getElementById('gametext').value;
+    	var messages = JSON.stringify(json1);
+    	//setMessageInnerHTML("myname:"+user);
+    	websocket.send(messages);
     }
     
     //发送你的用户名
