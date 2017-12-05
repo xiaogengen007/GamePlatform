@@ -17,7 +17,7 @@ public class GameState {
 	int gameStatus; //记录该局游戏的状态（0为未开始，1为游戏中，2为已结束）
 	int gameNum = 3; //游戏中的玩家数
 	int finishedNum = 0; //完成本轮操作的人数
-	int gameType; //游戏类型（1为扫雷）
+	int gameType; //游戏类型（1为扫雷,2为谁是卧底）
 	int maxTurnTime; //单轮游戏所允许的最长时间
 	Integer leftTime; //本轮游戏还剩余的游戏时间
 	
@@ -54,18 +54,22 @@ public class GameState {
 			return false;
 		}
 	}
-	public static void distributeRoom(Player ply) { //为玩家分配房间
+	public static void distributeRoom(Player ply, int gameType) { //为玩家分配房间
 		if (ply.nowGame != null) return; //之前已经在一个房间里，则不用分配
 		GameState flow = null;
 		for (int i = 0; i < games.size(); i++) {
 			flow = games.get(i);
-			if (flow.canAddPlayer()) {
+			if (flow.canAddPlayer() && flow.gameType == gameType) {
 				ply.nowGame = flow;
 				flow.addPlayer(ply);
 				return;
 			}
 		}
-		flow = new DeminGame();
+		if (gameType == 1) {
+			flow = new DeminGame();
+		} else {
+			flow = new WhoIsUndercover();
+		}
 		flow.addPlayer(ply);
 		ply.nowGame = flow;
 	}

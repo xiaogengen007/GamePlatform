@@ -9,6 +9,8 @@
 
 
 <script type="text/javascript">
+	var playerNum = 3;
+	var state = new Array(playerNum);
 	// firefox does not support window.event
 	if(navigator.userAgent.indexOf('Firefox') >= 0)
 	{
@@ -17,11 +19,8 @@
 	}
 
 	var i = 1,j=1;
-	for (i=1; i<=8; i++) {
-		for (j=1; j<=8; j++) {
-    		document.getElementById('ptest').innerHTML += "<button onmousedown=\"send(" + i + "," + j +")\">" + i + j + "</button></div>";
-		}
-		document.getElementById('ptest').innerHTML += "<br/>";
+	for (i=1; i<=playerNum; i++) {
+    	document.getElementById('ptest').innerHTML += "<div id=\"" + i +"\">" + i + "</div><br/>";
 	}
 </script>
 </body>
@@ -34,18 +33,9 @@
     document.oncontextmenu = function(){return false;} //禁止右键展开菜单项
 </script>
 <script language="Javascript">
-	var gridLen = 8;
-	var state = new Array(gridLen);
-	var canClicked = 1; //1表示可以点击
-	for (var i = 0; i < gridLen; i++) {
-		state[i] = new Array(gridLen);
-	}
-	for (var i = 0; i < gridLen; i++) {
-		for (var j = 0; j < gridLen; j++) {
-			state[i][j] = 0;
-		}
-		
-	}
+	
+	
+
 </script>
 <script type="text/javascript" src="js/out.js"></script>
 <script type="text/javascript">   
@@ -60,7 +50,7 @@
     websocket.onopen = function () {
         setMessageInnerHTML("WebSocket连接成功2");
         senduser();
-        sendPlayRequest(); //发送玩游戏请求（扫雷）
+        sendPlayRequest(); //发送玩游戏请求（谁是卧底）
     }
 
     //接收到消息的回调方法

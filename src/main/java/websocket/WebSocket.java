@@ -128,11 +128,8 @@ public class WebSocket {
 		}
 		if (json1.getInt("action") == 4) { //4为游戏进入请求
 			int requestNum = json1.getInt("type");
-			if (requestNum == 1) {
-				GameState.distributeRoom(this.myPlayer);
-			}
-			if (requestNum == 2) {
-				System.out.println("OK");
+			if (requestNum == 1 || requestNum == 2) {
+				GameState.distributeRoom(this.myPlayer, requestNum);
 			}
 		}
 		if (json1.getInt("action") == 5) { //5为游戏中聊天

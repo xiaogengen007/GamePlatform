@@ -1,5 +1,6 @@
 package game;
 
+import net.sf.json.JSONObject;
 import player.Player;
 
 public class WhoIsUndercover extends GameState{
@@ -9,6 +10,7 @@ public class WhoIsUndercover extends GameState{
 		super();
 		this.gameType = 2; //2表示谁是卧底
 		this.maxTurnTime = 30;
+		this.leftTime = new Integer(this.maxTurnTime);
 		this.friendString = "大佬";
 		this.undercoverString = "大神";
 	}
@@ -19,4 +21,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
+	public void sendForMyGameState(JSONObject json) {
+		json.put("maxTime", this.maxTurnTime); //单轮最长时间
+	}
 }
