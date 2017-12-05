@@ -17,6 +17,7 @@
 | 4      | finish one turn(Demin) | state,leftTime,leftMine,players          |
 | 5      | chat in game           | message                                  |
 | 6      | game result            | players                                  |
+| 7      | other game state       |                                          |
 
 more information
 
@@ -70,13 +71,20 @@ more information
 
     \- rank
 
+- action 7: for different game might have different value
+
+  for who is undercover game:
+
+  - keyword
+
 ##### Browser to Server
 
-| action | function               | part                    |
-| ------ | ---------------------- | ----------------------- |
-| 1      | register or log in     | username                |
-| 2      | send message           | message                 |
-| 3      | click in demining game | clickX,clickY,clickType |
-| 4      | play request           | type                    |
-| 5      | chat in game           | message                 |
+| action | function                         | part                    |
+| ------ | -------------------------------- | ----------------------- |
+| 1      | register or log in               | username                |
+| 2      | send message                     | message                 |
+| 3      | click in demining game           | clickX,clickY,clickType |
+| 4      | play request                     | type                    |
+| 5      | chat in game                     | message                 |
+| 6      | send message for undercover game | message                 |
 

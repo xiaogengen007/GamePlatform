@@ -115,6 +115,9 @@ public class GameState {
 				e.printStackTrace();
 			}
 		}
+		if (this.gameStatus == 1) {
+			this.sendElseGameState();
+		}
 	}
 	
 	public void refreshTime() { //更新游戏时间

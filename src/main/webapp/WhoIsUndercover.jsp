@@ -86,11 +86,7 @@
 		if (json1.action == 3) { //游戏进行状态通讯
 			if (json1.finished == 1) {
 				setMessageInnerHTML("You have finished this turn click, now left "+json1.leftTime+" seconds, complete "+json1.finishNum+" of "+json1.playerNum);
-				var preState = "";
-				for (i=0; i<json1.preState.length; i++) {
-					preState += json1.preState[i].username+":click@("+json1.preState[i].clickX+","+json1.preState[i].clickY+") ";
-				}
-				setMessageInnerHTML(preState);
+
 			} else {
 				setMessageInnerHTML("Please click for this turn, now left "+json1.leftTime+" seconds, complete "+json1.finishNum+" of "+json1.playerNum);
 			}
