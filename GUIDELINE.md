@@ -100,9 +100,10 @@ more information
   - playerNum
   - aliveNum
   - alive (0 for not alive, 1 for alive)
-  - messages (array, to tell the message sent by the alive players), for preMessage[i]
+  - messages (array, to tell the message sent by the alive players), for messages[i]
     - username
     - message
+    - canVoted (0 for cannot be voted, 1 for can)
 
 
 

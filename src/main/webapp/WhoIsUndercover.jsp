@@ -13,6 +13,7 @@
 	var isVoting = 0; //初始时不是投票环节
 	var state = new Array(8); //多生成一些防止不够用
 	var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
+	var canVoted = new Array(8); //记录各玩家能否被投票
 	var playerName = new Array(8);
 	// firefox does not support window.event
 	if(navigator.userAgent.indexOf('Firefox') >= 0)
@@ -154,6 +155,7 @@
 				for (var j=0; j<playerNum; j++) {
 					if (json1.messages[i].username == playerName[j]) {						
 						state[j] = json1.messages[i].message;
+						canVoted[j] = json1.messages[i].canVoted; //1为可以被投票，0为不可以
 					} 
 				}	
 			}
@@ -193,7 +195,7 @@
     function writeAfterSpeechProcess() {
     	document.getElementById('ptest').innerHTML = "";
     	for (i=0; i<playerNum; i++) {
-    		if (alive[i] == 1) { //或者需要让他可以被投票
+    		if (alive[i] == 1 && canVoted[i] == 1) { //或者需要让他可以被投票
     			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"<button onmousedown=\"sendVote(" + i +")\">他是卧底 </button></div><br/>";
     		} else {
     			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"</div><br/>";

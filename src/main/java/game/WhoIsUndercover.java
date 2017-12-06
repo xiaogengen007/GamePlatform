@@ -192,6 +192,11 @@ public class WhoIsUndercover extends GameState{
 				JSONObject json2 = new JSONObject();
 				json2.put("username", item.username);
 				json2.put("message", item.ucPlayer.thisTurnMsg);
+				if (item.ucPlayer.canbeVoted) {
+					json2.put("canVoted", 1); //1表示可以被投票
+				} else {
+					json2.put("canVoted", 0);
+				}
 				jsar1.add(json2);
 			}
 		}
