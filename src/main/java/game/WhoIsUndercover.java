@@ -224,6 +224,8 @@ public class WhoIsUndercover extends GameState{
 			this.players.get(maxIndex).ucPlayer.isAlive = false; //设置该人已经死亡
 			this.players.get(maxIndex).ucPlayer.canbeVoted = false;
 			//这里需要判断游戏是否已经结束
+		} else {
+			
 		}
 	}
 	
@@ -245,6 +247,46 @@ public class WhoIsUndercover extends GameState{
 		json1.put("voteResult", jsar1);
 		json1.put("diePlayer", players.get(maxIndex).username);
 		json1.put("resultType", 1); //在分出胜负时type为1
+		String msg = json1.toString();
+		System.out.println("send voting message:"+msg);
+		for (Player item: players) {
+			if (item.myWebsocket != null) {
+				try {
+					item.myWebsocket.session.getBasicRemote().sendText(msg);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	/*
+	 * 该轮游戏发言阶段结束之后向玩家们发送消息
+	 */
+	public void sendEndOfVoteForNextVoting(int[] countVoted, ArrayList<Integer> votedMax) {
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
+		JSONArray jsar1 = new JSONArray();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).ucPlayer.canbeVoted) {
+				JSONObject json2 = new JSONObject();
+				json2.put("votedName", players.get(i).username);
+				json2.put("votedNum", countVoted[i]);
+				jsar1.add(json2);
+			}
+		}
+		JSONArray jsar2 = new JSONArray();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).ucPlayer.canbeVoted) {
+				JSONObject json2 = new JSONObject();
+				json2.put("nextVotedIndex", i);
+				jsar2.add(json2);
+			}
+		}
+		json1.put("voteResult", jsar1);
+		json1.put("nextVoted", jsar2);
+		json1.put("resultType", 2); //在未分出胜负时type为2
 		String msg = json1.toString();
 		System.out.println("send voting message:"+msg);
 		for (Player item: players) {
