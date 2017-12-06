@@ -111,6 +111,7 @@ public class WhoIsUndercover extends GameState{
 			this.sendForGameProcess();
 			if (finishThisTurn()) { //该轮结束时进入投票模式
 				this.batchHandleTurn();
+				this.sendEndOfThisTurn();
 			}
 		}
 	}
@@ -127,7 +128,42 @@ public class WhoIsUndercover extends GameState{
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
 	public void sendEndOfThisTurn() {
-		
+		System.out.println("have send after this speech turn for undercover game.");
+		JSONObject json1 = new JSONObject();
+		JSONArray jsar1 = new JSONArray();
+		for (Player item: players) {
+			if (item.ucPlayer.isAlive) { //只统计活着的玩家说了什么
+				JSONObject json2 = new JSONObject();
+				json2.put("username", item.username);
+				json2.put("message", item.ucPlayer.thisTurnMsg);
+				jsar1.add(json2);
+			}
+		}
+		json1.put("action", 8); //该轮发言阶段结束之后的游戏状态消息发送（这表明已经进入了投票阶段）
+		json1.put("leftTime", this.leftTime);
+		json1.put("playerNum", this.gameNum);
+		json1.put("aliveNum", this.getAliveNum()); 
+		JSONArray jsar2 = new JSONArray(); //记录各玩家是否还活着
+		for (Player item: players) {
+			if (item.ucPlayer.isAlive) {
+				jsar2.add(1); //0表示还未存活，1表示还存活
+			} else {
+				jsar2.add(0);
+			}
+		}
+		json1.put("alive", jsar2);
+		json1.put("messages", jsar1);
+		String message = json1.toString();
+		for (Player item: players) {
+			if (item.myWebsocket != null) {
+				try {
+					item.myWebsocket.session.getBasicRemote().sendText(message);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	/*
@@ -176,8 +212,7 @@ public class WhoIsUndercover extends GameState{
 					}
 				}
 			}
-		}
-		
+		}	
 	}
 	
 	public void sendForMyGameState(JSONObject json) {

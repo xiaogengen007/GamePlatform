@@ -9,15 +9,16 @@
 
 ##### Server to Browser
 
-| action | function               | part                              |
-| ------ | ---------------------- | --------------------------------- |
-| 1      | game status            | start,players,(...)               |
-| 2      | send message           | message                           |
-| 3      | state in game          | finished,leftTime,playerNum,(...) |
-| 4      | finish one turn(Demin) | state,leftTime,leftMine,players   |
-| 5      | chat in game           | message                           |
-| 6      | game result            | players                           |
-| 7      | other game state       |                                   |
+| action | function           | part                              |
+| ------ | ------------------ | --------------------------------- |
+| 1      | game status        | start,players,(...)               |
+| 2      | send message       | message                           |
+| 3      | state in game      | finished,leftTime,playerNum,(...) |
+| 4      | finish one turn    |                                   |
+| 5      | chat in game       | message                           |
+| 6      | game result        | players                           |
+| 7      | other game state   |                                   |
+| 8      | finish one process |                                   |
 
 more information
 
@@ -88,6 +89,21 @@ more information
 
 - for who is undercover game:
   - keyword
+
+
+
+
+##### action 8: 
+
+- for undercover game: to be sent after finishing speech process
+  - leftTime
+  - playerNum
+  - aliveNum
+  - alive (0 for not alive, 1 for alive)
+  - messages (array, to tell the message sent by the alive players), for preMessage[i]
+    - username
+    - message
+
 
 
 

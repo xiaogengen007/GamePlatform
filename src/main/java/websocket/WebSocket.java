@@ -30,10 +30,10 @@ public class WebSocket {
 	public Player myPlayer = null; //存储该用户的相关信息
 
 	public WebSocket() {
-		if (!this.startedthread) {
+/*		if (!this.startedthread) {
 			new Thread(new SendMessage(this)).start();
 			this.startedthread = true;
-		}
+		} */
 	}
 	/**
 	 * 连接建立成功调用的方法
@@ -58,7 +58,7 @@ public class WebSocket {
 	@OnClose
 	public void onClose(){
 		boolean isSuccess = false;
-		if (this.myPlayer.nowGame != null) {
+		if (this.myPlayer != null && this.myPlayer.nowGame != null) {
 			isSuccess = this.myPlayer.nowGame.deletePlayer(this.myPlayer); //试图删除在房间中记录
 		}
 

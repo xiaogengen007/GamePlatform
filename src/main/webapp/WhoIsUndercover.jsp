@@ -10,7 +10,9 @@
 
 <script type="text/javascript">
 	var playerNum = 4;
+	var isVoting = 0; //初始时不是投票环节
 	var state = new Array(8); //多生成一些防止不够用
+	var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
 	var playerName = new Array(8);
 	// firefox does not support window.event
 	if(navigator.userAgent.indexOf('Firefox') >= 0)
@@ -138,6 +140,25 @@
 			var keywords = json1.keyword;
 			document.getElementById('keyword').innerHTML = "您的关键词："+keywords;
 		}
+		if (json1.action == 8) { //发言阶段结束时的发言记录
+			isVoting = 1; //进入投票环节
+			var messages = JSON.stringify(json1);
+			setMessageInnerHTML(messages);
+			for (i=0; i<playerNum; i++) {
+				state[i] = ""; //初始化
+			}
+			for (i=0; i<json1.alive.length; i++) {
+				alive[i] = json1.alive[i];
+			}
+			for (i=0; i<json1.messages.length; i++) {
+				for (var j=0; j<playerNum; j++) {
+					if (json1.messages[i].username == playerName[j]) {						
+						state[j] = json1.messages[i].message;
+					} 
+				}	
+			}
+			writeAfterSpeechProcess();	
+		}
     }
 
     //连接关闭的回调方法
@@ -168,15 +189,37 @@
     	}
     }
     
+    //在发言阶段结束后更新界面
+    function writeAfterSpeechProcess() {
+    	document.getElementById('ptest').innerHTML = "";
+    	for (i=0; i<playerNum; i++) {
+    		if (alive[i] == 1) { //或者需要让他可以被投票
+    			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i];
+    			document.getElementById('ptest').innerHTML += "<button onmousedown=\"sendVote(" + i +")\">他是卧底 </button></div><br/>"
+    		} else {
+    			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"</div><br/>";
+    		}
+        	
+    	}
+    }
     
     //发送消息
     function send() {
-    	var json1 = {};
-    	json1.action = 6; //6表示谁是卧底游戏过程中用户发送本轮发言
-    	json1.message = document.getElementById('gametext').value;
-    	var messages = JSON.stringify(json1);
-    	//setMessageInnerHTML("myname:"+user);
-    	websocket.send(messages);
+    	if (isVoting == 0) { //不是投票环节采允许发言
+        	var json1 = {};
+        	json1.action = 6; //6表示谁是卧底游戏过程中用户发送本轮发言
+        	json1.message = document.getElementById('gametext').value;
+        	var messages = JSON.stringify(json1);
+        	//setMessageInnerHTML("myname:"+user);
+        	websocket.send(messages);
+    	} else {
+    		alert("can not speech in voting process!");
+    	}
+    }
+    
+    //发送投票信息
+    function sendVote(num) {
+    	alert("succeed vote "+playerName[num]);
     }
     
     //发送你的用户名
