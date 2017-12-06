@@ -86,6 +86,7 @@ function addPlayer(player){
 	player.score = 0;
 	playerArray.push(player);
 	$('#player' + playerArray.length + ' > h4').text(player.username);
+	$('#player' + playerArray.length + ' > img').css('opacity','1.0');
 }
 
 function addRank(player, rank){
