@@ -28,11 +28,16 @@ more information
   - players(array,store the players info in the room) ,for players[i]
     - username
 
-- for demining game
+- for demining game:
 
-  - totalMine: only for demining game
-  - gridLen: only for demining game
-  - maxTime: only for demining game
+  - totalMine
+  - gridLen
+  - maxTime
+
+- for undercover game:
+
+  - maxTime
+  - maxVoteTime
 
   ​
 

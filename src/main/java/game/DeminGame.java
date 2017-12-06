@@ -209,7 +209,10 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	public void batchHandleTurn() { //当前轮结束时进行批处理
+	/*
+	 * 当前轮结束时进行批处理
+	 */
+	public void batchHandleTurn() { 
 		ArrayList<GridPosition> zeroList = new ArrayList<GridPosition>(); //记录周边雷数为0的非雷格点的位置
 		for (Player item : players) {
 			int type = 2;
@@ -276,7 +279,12 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	public void sendAfterGame() { //游戏后返回玩家游戏结果
+	/*
+	 * 游戏后返回玩家游戏结果(包括排名，积分变化等)
+	 * (non-Javadoc)
+	 * @see game.GameState#sendAfterGame()
+	 */
+	public void sendAfterGame() { 
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 6); //6表示游戏结束时所发送的消息
 		JSONArray jsar1 = new JSONArray(); //存储用户信息和排名
@@ -306,6 +314,9 @@ public class DeminGame extends GameState{
 		}
 	}
 
+	/*
+	 * 该轮游戏结束之后向玩家们发送消息
+	 */
 	public void sendEndOfThisTurn() {	
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示扫雷该轮已经结束

@@ -12,11 +12,13 @@ public class WhoIsUndercover extends GameState{
 	String friendString = ""; //友方的词汇
 	String undercoverString = ""; //卧底的词汇
 	int gameProcess; //游戏当前的进程，0表示发言环节，1表示投票环节
+	public int maxVotingTime;
 	WhoIsUndercover() {
 		super();
 		this.gameType = 2; //2表示谁是卧底
 		this.gameNum = 4; //设置玩家数为4人
 		this.maxTurnTime = 30;
+		this.maxVotingTime = 15; //设置投票环节最长时间为15秒
 		this.leftTime = new Integer(this.maxTurnTime);
 		this.friendString = "大佬";
 		this.undercoverString = "大神";
@@ -96,16 +98,36 @@ public class WhoIsUndercover extends GameState{
 		return hasFinished;
 	}
 	
-	public void handleUndercover(String message, WebSocket ws) { //完成谁是卧底中的游戏响应
+	/*
+	 * 完成谁是卧底中的游戏响应,在非投票阶段
+	 * (non-Javadoc)
+	 * @see game.GameState#handleUndercover(java.lang.String, websocket.WebSocket)
+	 */
+	public void handleUndercover(String message, WebSocket ws) { 
 		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
 				&& ws.myPlayer.ucPlayer.isAlive) { //判断该玩家是否有"说话"的权力
 			ws.myPlayer.ucPlayer.thisTurnMsg = message;
 			ws.myPlayer.ucPlayer.isSubmit = true;
 			this.sendForGameProcess();
 			if (finishThisTurn()) { //该轮结束时进入投票模式
-				
+				this.batchHandleTurn();
 			}
 		}
+	}
+	
+	/*
+	 * 当前轮结束时进行批处理(从发言阶段->投票阶段)
+	 */
+	public void batchHandleTurn() { 
+		this.gameProcess = 1; //1表示进入投票环节
+		this.leftTime = this.maxVotingTime;
+	}
+	
+	/*
+	 * 该轮游戏发言阶段结束之后向玩家们发送消息
+	 */
+	public void sendEndOfThisTurn() {
+		
 	}
 	
 	/*
@@ -160,6 +182,7 @@ public class WhoIsUndercover extends GameState{
 	
 	public void sendForMyGameState(JSONObject json) {
 		json.put("maxTime", this.maxTurnTime); //单轮最长时间
+		json.put("maxVoteTime", this.maxVotingTime); //单轮投票最长时间
 	}
 	
 	/*
