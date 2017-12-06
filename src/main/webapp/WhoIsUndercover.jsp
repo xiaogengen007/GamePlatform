@@ -194,8 +194,7 @@
     	document.getElementById('ptest').innerHTML = "";
     	for (i=0; i<playerNum; i++) {
     		if (alive[i] == 1) { //或者需要让他可以被投票
-    			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i];
-    			document.getElementById('ptest').innerHTML += "<button onmousedown=\"sendVote(" + i +")\">他是卧底 </button></div><br/>"
+    			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"<button onmousedown=\"sendVote(" + i +")\">他是卧底 </button></div><br/>";
     		} else {
     			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"</div><br/>";
     		}

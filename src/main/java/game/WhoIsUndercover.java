@@ -13,6 +13,10 @@ public class WhoIsUndercover extends GameState{
 	String undercoverString = ""; //卧底的词汇
 	int gameProcess; //游戏当前的进程，0表示发言环节，1表示投票环节
 	public int maxVotingTime;
+	
+	/*
+	 * 构造函数，完成一些基本的参数配置
+	 */
 	WhoIsUndercover() {
 		super();
 		this.gameType = 2; //2表示谁是卧底
@@ -115,6 +119,15 @@ public class WhoIsUndercover extends GameState{
 			}
 		}
 	}
+	
+	/*
+	 * 完成投票阶段谁是卧底中的游戏响应
+	 * (non-Javadoc)
+	 * @see game.GameState#handleUndercoverVoting(java.lang.String, websocket.WebSocket)
+	 */
+	public void handleUndercoverVoting(String username, WebSocket ws) {
+		
+	} 
 	
 	/*
 	 * 当前轮结束时进行批处理(从发言阶段->投票阶段)
