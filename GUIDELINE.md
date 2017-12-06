@@ -117,4 +117,5 @@ more information
 | 4      | play request                     | type                    |
 | 5      | chat in game                     | message                 |
 | 6      | send message for undercover game | message                 |
+| 7      | send vote info for undercover    | vote                    |
 

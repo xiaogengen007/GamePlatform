@@ -62,6 +62,20 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	/*
+	 * 在投票之前初始化，让大家都还没投票
+	 */
+	public void initBeforeVoting() {
+		for (Player item: players) {
+			item.ucPlayer.hasVoted = false;
+			if (item.ucPlayer.isAlive) {
+				item.ucPlayer.canbeVoted = true;
+			} else {
+				item.ucPlayer.canbeVoted = false;
+			}
+		}
+	}
+	
+	/*
 	 * 获取当前存活的玩家数
 	 */
 	public int getAliveNum() {
@@ -72,6 +86,32 @@ public class WhoIsUndercover extends GameState{
 			}
 		}
 		return countAlive;
+	}
+	
+	/*
+	 * 获取当前已经投票的玩家数（对投票阶段适用）
+	 */
+	public int getVotedNum() {
+		int countVoted = 0;
+		for (Player item: players) {
+			if (item.ucPlayer.hasVoted) {
+				countVoted++;
+			}
+		}
+		return countVoted;
+	}
+	
+	/*
+	 * 判断当前投票是否已经完成
+	 */
+	public boolean finishVote() {
+		boolean hasVoted = true;
+		for (Player item: players) {
+			if (item.ucPlayer.isAlive && !item.ucPlayer.hasVoted) {
+				hasVoted = false;
+			}
+		}
+		return hasVoted;
 	}
 	
 	/*
@@ -126,7 +166,9 @@ public class WhoIsUndercover extends GameState{
 	 * @see game.GameState#handleUndercoverVoting(java.lang.String, websocket.WebSocket)
 	 */
 	public void handleUndercoverVoting(String username, WebSocket ws) {
-		
+		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.hasVoted) { //还未投票时才处理
+			
+		}
 	} 
 	
 	/*
@@ -135,6 +177,7 @@ public class WhoIsUndercover extends GameState{
 	public void batchHandleTurn() { 
 		this.gameProcess = 1; //1表示进入投票环节
 		this.leftTime = this.maxVotingTime;
+		this.initBeforeVoting(); //在投票前完成相关初始化工作
 	}
 	
 	/*

@@ -218,6 +218,11 @@
     
     //发送投票信息
     function sendVote(num) {
+    	var json1 = {};
+    	json1.action = 7; //7表示发送投票信息
+    	json1.vote = num; //num从0~playerNum-1,且只能投给活着的人
+    	var messages = JSON.stringify(json1);
+    	websocket.send(messages);
     	alert("succeed vote "+playerName[num]);
     }
     

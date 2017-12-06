@@ -42,13 +42,20 @@ public class Player {
 		public boolean isSubmit; //这轮是否提交
 		public boolean isAlive; //是否已经阵亡
 		public String thisTurnMsg; //该轮玩家发言
+		public boolean hasVoted; //是否已经投票
+		public int votedPlayer; //投票认为为卧底人的index
+		public boolean canbeVoted; //能被投票
 		UndercoverPlayer() {
 			this.isSubmit = false;
 			this.isAlive = true;
+			this.hasVoted = false;
+			this.canbeVoted = true;
 		}
 		public void setPlayer() {
 			this.isSubmit = false;
 			this.isAlive = true;
+			this.hasVoted = false;
+			this.canbeVoted = true;
 		}
 	}
 }
