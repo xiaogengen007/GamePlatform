@@ -3,12 +3,12 @@ package db;
 import java.sql.*;
 
 public class PlayerManager {
-	public static void recordPlayer(String plyName, String plyKey) {
-		Connection c = null;
-		Statement stmt = null;
+	public static boolean recordPlayer(String plyName, String plyKey) { //记录新的玩家
+		Connection c = null; //与数据库的连接
+		Statement stmt = null; //SQL语句环境
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:Gameplatform.db");
 			c.setAutoCommit(false);
 			//System.out.println("Open database successfully");
 			
@@ -20,20 +20,21 @@ public class PlayerManager {
 			stmt.close();
 			c.commit();
 			c.close();
+			return true;
 			
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ":" + e.getMessage());
-			System.exit(0);
+			return false;
 		}
 		//System.out.println("Records create successfully");
 	}
-	
-	public static boolean checkLogin(String plyName, String inputKey) {
+	/*
+	public static boolean checkLogin(String plyName, String inputKey) { //检查登录
 		Connection c = null;
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:Gameplatform.db");
 			c.setAutoCommit(false);
 			//System.out.println("Open database successfully");
 			
@@ -43,6 +44,6 @@ public class PlayerManager {
 			ResultSet rs = stmt.executeQuery(sql);
 		}
 	}
-
+	*/
 
 }
