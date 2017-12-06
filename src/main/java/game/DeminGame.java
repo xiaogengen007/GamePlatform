@@ -79,6 +79,12 @@ public class DeminGame extends GameState{
 		}
 	}
 	
+	public void initPlayers() { //初始化玩家的操作
+		for (Player item: players) {
+			item.deminPlayer.setPlayer();
+		}
+	}
+	
 	boolean gameOver() { //判断现在游戏是否已经结束
 		if (leftNoneClicked() == 0) {
 			return true;
@@ -156,6 +162,9 @@ public class DeminGame extends GameState{
 		}	
 	}
 	
+	/*
+	 * 发送在一轮游戏当中的进度
+	 */
 	public void sendForGameProcess() {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 3); //3表示扫雷该轮仍处于进行状态

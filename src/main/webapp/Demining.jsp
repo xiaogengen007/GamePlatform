@@ -47,7 +47,7 @@
 		
 	}
 </script>
-<script type="text/javascript" src="out.js"></script>
+<script type="text/javascript" src="js/out.js"></script>
 <script type="text/javascript">   
     var user = getParam("username");  
     

@@ -9,74 +9,91 @@
 
 ##### Server to Browser
 
-| action | function               | part                                     |
-| ------ | ---------------------- | ---------------------------------------- |
-| 1      | game status            | start,players,(...)                      |
-| 2      | send message           | message                                  |
-| 3      | state in game          | finished,leftTime,finishNum,playerNum,(preState) |
-| 4      | finish one turn(Demin) | state,leftTime,leftMine,players          |
-| 5      | chat in game           | message                                  |
-| 6      | game result            | players                                  |
+| action | function               | part                              |
+| ------ | ---------------------- | --------------------------------- |
+| 1      | game status            | start,players,(...)               |
+| 2      | send message           | message                           |
+| 3      | state in game          | finished,leftTime,playerNum,(...) |
+| 4      | finish one turn(Demin) | state,leftTime,leftMine,players   |
+| 5      | chat in game           | message                           |
+| 6      | game result            | players                           |
+| 7      | other game state       |                                   |
 
 more information
 
-- action 1: 
+##### action 1: 
 
-  - players(array,store the players info in the room) ; 
+- for all game:
 
-  ​       players[i]: 
+  - players(array,store the players info in the room) ,for players[i]
+    - username
 
-  ​	- username
+- for demining game
 
   - totalMine: only for demining game
   - gridLen: only for demining game
   - maxTime: only for demining game
 
-- action 3: 
+  ​
 
-  - preState(array, only to the players finished this turn); 
 
-  ​       preState[i]:
 
-  ​	- username
+##### action 3:
 
-  ​	- clickType(1 for click left button, 0 for click right button)
+- for demining game:
+  - finishNum
+  - preState(array, only to the players finished this turn), for preState[i]:
+    - username
+    - clickType(1 for click left button, 0 for click right button)
+    - clickX(0~7)
+    - clickY(0~7)
 
-  ​	- clickX(0~7)
 
-  ​	- clickY(0~7)
+- for undercover game:
+  - aliveNum
+  - submitNum
+  - preMessage(array, only to the players submitted for this turn or has not been alive), for preMessage[i]
+    - username
+    - message
 
-- action 4: 
+
+
+##### action 4: 
+
+- for demining game:
 
   - state(2 dim vector, for the grids' state)
+  - state[i]\[j](an integer): 0~8 for the neighbor bomb's number, 9 for rightly signing the bomb, 10 for wrongly clicking the bomb, -1 for none clicked this grid
+  - players(array, to tell the players' score), for players[i]:
+    - username
+    - score
 
-    state[i]\[j](an integer): 0~8 for the neighbor bomb's number, 9 for rightly signing the bomb, 10 for wrongly clicking the bomb, -1 for none clicked this grid
+  ​
 
-  - players(array, to tell the players' score)
+##### action 6:
 
-    players[i]:
+- for all game:
+  - players(array, send the finally rank of players, for players[i]:
+    - username
+    - rank
 
-    \- username
+​
 
-    \- score
+##### action 7: for different game might have different value
 
-- action 6:
+- for who is undercover game:
+  - keyword
 
-  - players(array, send the finally rank of players)
 
-    players[i]:
-
-    \- username
-
-    \- rank
 
 ##### Browser to Server
 
-| action | function               | part                    |
-| ------ | ---------------------- | ----------------------- |
-| 1      | register or log in     | username                |
-| 2      | send message           | message                 |
-| 3      | click in demining game | clickX,clickY,clickType |
-| 4      | play request           | type                    |
-| 5      | chat in game           | message                 |
+| action | function                         | part                    |
+| ------ | -------------------------------- | ----------------------- |
+| 1      | register or log in               | username                |
+| 2      | send message                     | message                 |
+| 3      | click in demining game           | clickX,clickY,clickType |
+| 4      | play request                     | type                    |
+| 5      | chat in game                     | message                 |
+| 6      | send message for undercover game | message                 |
 
