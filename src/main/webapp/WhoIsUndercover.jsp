@@ -111,20 +111,8 @@
 		}
 		if (json1.action == 4) { //游戏该轮完成后通讯
 			document.getElementById('ptest').innerHTML = "";
-			var i = 1,j=1;
-			for (i=1; i<=gridLen; i++) {
-				for (j=1; j<=gridLen; j++) {
-		    		document.getElementById('ptest').innerHTML += "<button onmousedown=\"send(" + i + "," + j +")\">" + json1.state[i-1][j-1]+ "</button></div>";
-				}
-				document.getElementById('ptest').innerHTML += "<br/>";
-			}
-			document.getElementById('message').innerHTML = "";
- 			setMessageInnerHTML("End of this turn, please select for next turn, now left "+json1.leftTime+" seconds with "+json1.leftMine +" left mines.");
-			var scores = "";
-			for (i=0; i<json1.players.length; i++) {
-				scores += json1.players[i].username+":"+json1.players[i].score+" ";
-			}
- 			setMessageInnerHTML(scores);
+			var messages = JSON.stringify(json1);
+			setMessageInnerHTML(messages);
 		}
 		if (json1.action == 5) { //游戏中进行聊天
 			setMessageInnerHTML(json1.message);

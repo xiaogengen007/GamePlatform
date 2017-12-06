@@ -1,6 +1,7 @@
 package game;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.sf.json.JSONArray;
@@ -174,6 +175,9 @@ public class WhoIsUndercover extends GameState{
 				ws.myPlayer.ucPlayer.hasVoted = true;
 				System.out.println(ws.myPlayer.username+" succeed voted.");
 				this.sendForVotingProcess();
+				if (this.finishVote()) {
+					this.batchHandleVoteTurn();
+				}
 			}
 		}
 	} 
@@ -185,6 +189,74 @@ public class WhoIsUndercover extends GameState{
 		this.gameProcess = 1; //1表示进入投票环节
 		this.leftTime = this.maxVotingTime;
 		this.initBeforeVoting(); //在投票前完成相关初始化工作
+	}
+	
+	/*
+	 * 当前投票轮结束时进行批处理(从投票阶段->发言阶段（或投票阶段）)
+	 */
+	public void batchHandleVoteTurn() { 
+		this.leftTime = this.maxVotingTime;
+		int[] countVoted = new int [this.gameNum];
+		for (int i = 0; i < this.gameNum; i++) {
+			countVoted[i] = 0;
+		}
+		for (Player item: players) {
+			if (item.ucPlayer.canbeVoted) {
+				int votedIndex = item.ucPlayer.votedPlayer;
+				countVoted[votedIndex]++;
+			}
+		}
+		ArrayList<Integer> votedMax = new ArrayList<Integer>();
+		int maxCount = 0;
+		for (int i = 0; i < this.gameNum; i++) {
+			if (countVoted[i] == maxCount) {
+				votedMax.add(i);
+			}
+			if (countVoted[i] > maxCount) {
+				maxCount = countVoted[i];
+				votedMax.clear();
+				votedMax.add(i);
+			}
+		}
+		if (votedMax.size() == 1) {
+			int maxIndex = votedMax.get(0);
+			this.sendEndOfVoteForNextTurn(countVoted, maxIndex);
+			this.players.get(maxIndex).ucPlayer.isAlive = false; //设置该人已经死亡
+			this.players.get(maxIndex).ucPlayer.canbeVoted = false;
+			//这里需要判断游戏是否已经结束
+		}
+	}
+	
+	/*
+	 * 该轮游戏发言阶段结束之后向玩家们发送消息
+	 */
+	public void sendEndOfVoteForNextTurn(int[] countVoted, int maxIndex) {
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
+		JSONArray jsar1 = new JSONArray();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).ucPlayer.canbeVoted) {
+				JSONObject json2 = new JSONObject();
+				json2.put("votedName", players.get(i).username);
+				json2.put("votedNum", countVoted[i]);
+				jsar1.add(jsar1);
+			}
+		}
+		json1.put("voteResult", jsar1);
+		json1.put("diePlayer", players.get(maxIndex));
+		json1.put("resultType", 1); //在分出胜负时type为1
+		String msg = json1.toString();
+		System.out.println("send voting message:"+msg);
+		for (Player item: players) {
+			if (item.myWebsocket != null) {
+				try {
+					item.myWebsocket.session.getBasicRemote().sendText(msg);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	/*
