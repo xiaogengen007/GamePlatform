@@ -165,9 +165,16 @@ public class WhoIsUndercover extends GameState{
 	 * (non-Javadoc)
 	 * @see game.GameState#handleUndercoverVoting(java.lang.String, websocket.WebSocket)
 	 */
-	public void handleUndercoverVoting(String username, WebSocket ws) {
-		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.hasVoted) { //还未投票时才处理
-			
+	public void handleUndercoverVoting(int userindex, WebSocket ws) {
+		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.hasVoted 
+				&& ws.myPlayer.ucPlayer.isAlive) { //有投票资格且还未投票时才处理
+			if (userindex < this.players.size() && 
+					this.players.get(userindex).ucPlayer.canbeVoted) {
+				ws.myPlayer.ucPlayer.votedPlayer = userindex;
+				ws.myPlayer.ucPlayer.hasVoted = true;
+				System.out.println(ws.myPlayer.username+" succeed voted.");
+				this.sendForVotingProcess();
+			}
 		}
 	} 
 	
@@ -274,6 +281,35 @@ public class WhoIsUndercover extends GameState{
 				}
 			}
 		}	
+	}
+	
+	/*
+	 * 发送在一轮游戏当中的投票环节进度
+	 */
+	public void sendForVotingProcess() {
+		JSONObject json1 = new JSONObject();
+		JSONArray jsar1 = new JSONArray();
+		for (Player item: players) {
+			if (item.ucPlayer.canbeVoted && item.ucPlayer.hasVoted) {
+				JSONObject json2 = new JSONObject();
+				json2.put("votePlayer", item.username);
+				json2.put("votedPlayer", item.ucPlayer.votedPlayer);
+				jsar1.add(json2);
+			}
+		}
+		json1.put("voteInfo", jsar1);
+		json1.put("action", 9); //9表示发送投票进展
+		String msg = json1.toString();
+		for (Player item: players) {
+			if (item.myWebsocket != null) {
+				try {
+					item.myWebsocket.session.getBasicRemote().sendText(msg);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public void sendForMyGameState(JSONObject json) {

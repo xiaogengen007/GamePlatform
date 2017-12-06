@@ -144,6 +144,12 @@ public class WebSocket {
 				this.myPlayer.nowGame.handleUndercover(messages, this);
 			}
 		}
+		if (json1.getInt("action") == 7) {
+			if (this.myPlayer.nowGame != null) {
+				int userindex = json1.getInt("vote");
+				this.myPlayer.nowGame.handleUndercoverVoting(userindex, this);
+			}
+		}
 	}
 
 	/**

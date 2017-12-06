@@ -9,16 +9,17 @@
 
 ##### Server to Browser
 
-| action | function           | part                              |
-| ------ | ------------------ | --------------------------------- |
-| 1      | game status        | start,players,(...)               |
-| 2      | send message       | message                           |
-| 3      | state in game      | finished,leftTime,playerNum,(...) |
-| 4      | finish one turn    |                                   |
-| 5      | chat in game       | message                           |
-| 6      | game result        | players                           |
-| 7      | other game state   |                                   |
-| 8      | finish one process |                                   |
+| action | function             | part                              |
+| ------ | -------------------- | --------------------------------- |
+| 1      | game status          | start,players,(...)               |
+| 2      | send message         | message                           |
+| 3      | state in game        | finished,leftTime,playerNum,(...) |
+| 4      | finish one turn      |                                   |
+| 5      | chat in game         | message                           |
+| 6      | game result          | players                           |
+| 7      | other game state     |                                   |
+| 8      | finish one process   |                                   |
+| 9      | state in one process |                                   |
 
 more information
 
@@ -107,6 +108,13 @@ more information
 
 
 
+
+##### action 9:
+
+- for undercover game:
+  - voteInfo (array, to tell the voted information), for voteInfo[i]
+    - votePlayer
+    - votedPlayer
 
 ##### Browser to Server
 

@@ -151,7 +151,7 @@ public class GameState {
 	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
 	public void handleUndercover(String message, WebSocket ws) {} //完成谁是卧底中的游戏响应
-	public void handleUndercoverVoting(String username, WebSocket ws) {} //完成投票阶段谁是卧底中的游戏响应
+	public void handleUndercoverVoting(int userindex, WebSocket ws) {} //完成投票阶段谁是卧底中的游戏响应
 	public void revisiting(Player ply) {} //处理用户重新进入游戏
 	public void handleLeftTimeZero() {} //解决时间为零的情况
 	public void sendForMyGameState(JSONObject json) {} //发送每个游戏状态特殊的部分
