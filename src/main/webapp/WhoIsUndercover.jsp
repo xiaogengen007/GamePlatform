@@ -110,7 +110,7 @@
 			
 		}
 		if (json1.action == 4) { //游戏该轮完成后通讯
-			document.getElementById('ptest').innerHTML = "";
+			document.getElementById('message').innerHTML = "";
 			var messages = JSON.stringify(json1);
 			setMessageInnerHTML(messages);
 		}

@@ -239,11 +239,11 @@ public class WhoIsUndercover extends GameState{
 				JSONObject json2 = new JSONObject();
 				json2.put("votedName", players.get(i).username);
 				json2.put("votedNum", countVoted[i]);
-				jsar1.add(jsar1);
+				jsar1.add(json2);
 			}
 		}
 		json1.put("voteResult", jsar1);
-		json1.put("diePlayer", players.get(maxIndex));
+		json1.put("diePlayer", players.get(maxIndex).username);
 		json1.put("resultType", 1); //在分出胜负时type为1
 		String msg = json1.toString();
 		System.out.println("send voting message:"+msg);

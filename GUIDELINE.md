@@ -75,7 +75,14 @@ more information
     - username
     - score
 
-  ​
+- for undercover game:
+  - voteresult: (1 or 2, 1 is for can get the die player, 2 for cannot get), for voteresult = 1
+    - diePlayer (his username)
+    - voteResult (an array, to get the result of every one voted count)
+      - votedName
+      - votedNum
+
+
 
 ##### action 6:
 
