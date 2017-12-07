@@ -23,3 +23,7 @@ to test the program more effectively, you might need to set some parameters, her
 
 - set the maximum time(second) in one turn, in the class **DeminGame.java**, in its construction function **DeminGame()** , change the command **this.maxTurnTime = 1;** its right number is the maximum time in one turn;
 
+
+## 4. init your database profile
+
+Before using this program for sever and database, you need to create a folder **D:/resource/datebase/** to save for your database.

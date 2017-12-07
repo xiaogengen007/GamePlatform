@@ -17,6 +17,18 @@
    }  
    else  
    { 
-       out.println("<script>alert('登陆失败！');window.location.href='signin.jsp'</script>");  
+	   switch (signinCode) {
+	   case 1:
+		   out.println("<script>alert('登陆失败！用户名与密码不匹配！');window.location.href='signin.jsp'</script>");
+		   break;
+	   case 2:
+		   out.println("<script>alert('登陆失败！该用户不存在（未注册）！');window.location.href='signin.jsp'</script>");  
+	   	   break;
+	   case 3:
+		   out.println("<script>alert('登陆失败！数据库异常！');window.location.href='signin.jsp'</script>");  
+		   break;
+	   default:
+		   out.println("<script>alert('登陆失败！');window.location.href='signin.jsp'</script>");  
+	   }
    }  
 %>  
