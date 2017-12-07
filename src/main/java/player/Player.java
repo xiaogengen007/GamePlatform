@@ -9,6 +9,7 @@ public class Player {
 	int status; //0表示不在进行游戏，1表示在玩扫雷
 	public GameState nowGame; //现在正在进行的比赛
 	public DeminPlayer deminPlayer = new DeminPlayer(); //扫雷游戏玩家记录
+	public UndercoverPlayer ucPlayer = new UndercoverPlayer(); //谁是卧底玩家记录
 	public Player() {
 		username = "";
 		status = 0;
@@ -30,6 +31,31 @@ public class Player {
 			this.clickX = -1;
 			this.clickY = -1;
 			this.score = 0; //初始化游戏积分为零
+		}
+		public void setPlayer() {
+			this.score = 0;
+			this.hasClicked = false;
+		}
+	}
+	public class UndercoverPlayer {
+		public boolean isUndercover; //是否为卧底
+		public boolean isSubmit; //这轮是否提交
+		public boolean isAlive; //是否已经阵亡
+		public String thisTurnMsg; //该轮玩家发言
+		public boolean hasVoted; //是否已经投票
+		public int votedPlayer; //投票认为为卧底人的index
+		public boolean canbeVoted; //能被投票
+		UndercoverPlayer() {
+			this.isSubmit = false;
+			this.isAlive = true;
+			this.hasVoted = false;
+			this.canbeVoted = true;
+		}
+		public void setPlayer() {
+			this.isSubmit = false;
+			this.isAlive = true;
+			this.hasVoted = false;
+			this.canbeVoted = true;
 		}
 	}
 }

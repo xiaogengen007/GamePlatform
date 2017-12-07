@@ -20,7 +20,7 @@
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
+    <link href="css/signin.css" rel="stylesheet">
 
   </head>
 
@@ -43,13 +43,6 @@
       </form>
 
     </div> <!-- /container -->
-    
-    <script type="text/javascript">
-		function inMainWindow() {
-			//window.location.href="index.jsp"+"?username="+document.getElementById('username').value;
-			window.location.href="minesweeper/mine.html"+"?username="+document.getElementById('inputUsername').value;
-		}
-	</script>
 
   </body>
 </html>

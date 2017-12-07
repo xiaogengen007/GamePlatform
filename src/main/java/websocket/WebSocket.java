@@ -30,10 +30,10 @@ public class WebSocket {
 	public Player myPlayer = null; //存储该用户的相关信息
 
 	public WebSocket() {
-		if (!this.startedthread) {
+/*		if (!this.startedthread) {
 			new Thread(new SendMessage(this)).start();
 			this.startedthread = true;
-		}
+		} */
 	}
 	/**
 	 * 连接建立成功调用的方法
@@ -57,7 +57,11 @@ public class WebSocket {
 	 */
 	@OnClose
 	public void onClose(){
-		boolean isSuccess = this.myPlayer.nowGame.deletePlayer(this.myPlayer); //试图删除在房间中记录
+		boolean isSuccess = false;
+		if (this.myPlayer != null && this.myPlayer.nowGame != null) {
+			isSuccess = this.myPlayer.nowGame.deletePlayer(this.myPlayer); //试图删除在房间中记录
+		}
+
 		if (!isSuccess) { //未成功时将引用置为空
 			this.myPlayer.myWebsocket = null;
 		}
@@ -117,19 +121,33 @@ public class WebSocket {
 				int clickX = json1.getInt("clickX"); //用户点击的X值(1-8)
 				int clickY = json1.getInt("clickY"); //用户点击的Y值(1-8)
 				int clickType = json1.getInt("clickType"); //点击类型，0表示左键，2表示右键
-				this.myPlayer.nowGame.handleDemin(clickX, clickY, clickType, this);
+				if (this.myPlayer.nowGame != null) {
+					this.myPlayer.nowGame.handleDemin(clickX, clickY, clickType, this);
+				}
 			}		
 		}
 		if (json1.getInt("action") == 4) { //4为游戏进入请求
 			int requestNum = json1.getInt("type");
-			if (requestNum == 1) {
-				GameState.distributeRoom(this.myPlayer);
+			if (requestNum == 1 || requestNum == 2) {
+				GameState.distributeRoom(this.myPlayer, requestNum);
 			}
 		}
 		if (json1.getInt("action") == 5) { //5为游戏中聊天
 			if (this.myPlayer.nowGame != null) {
 				String messages = this.myPlayer.username+": "+json1.getString("message");
 				this.myPlayer.nowGame.handleForChating(messages);
+			}
+		}
+		if (json1.getInt("action") == 6) { //6表示谁是卧底游戏中发送本轮发言
+			if (this.myPlayer.nowGame != null) {
+				String messages = json1.getString("message");
+				this.myPlayer.nowGame.handleUndercover(messages, this);
+			}
+		}
+		if (json1.getInt("action") == 7) {
+			if (this.myPlayer.nowGame != null) {
+				int userindex = json1.getInt("vote");
+				this.myPlayer.nowGame.handleUndercoverVoting(userindex, this);
 			}
 		}
 	}

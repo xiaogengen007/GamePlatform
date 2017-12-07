@@ -17,7 +17,7 @@ public class GameState {
 	int gameStatus; //记录该局游戏的状态（0为未开始，1为游戏中，2为已结束）
 	int gameNum = 3; //游戏中的玩家数
 	int finishedNum = 0; //完成本轮操作的人数
-	int gameType; //游戏类型（1为扫雷）
+	int gameType; //游戏类型（1为扫雷,2为谁是卧底）
 	int maxTurnTime; //单轮游戏所允许的最长时间
 	Integer leftTime; //本轮游戏还剩余的游戏时间
 	
@@ -26,26 +26,27 @@ public class GameState {
 		this.gameStatus = 0; //初始时游戏还未开始
 	}
 	public boolean canAddPlayer() { //判断该局游戏中是否可以再加玩家
-		if (players.size() < 3) {
+		if (players.size() < this.gameNum) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	public void addPlayer(Player ply) { //将该玩家加入该局游戏中
-		if (players.size() < 3) {
+	
+	/*
+	 * 将该玩家ply加入该局游戏中
+	 */
+	public void addPlayer(Player ply) { 
+		if (players.size() < this.gameNum) { //判断是否可以开始游戏
 			players.add(ply);
 		} else {
 			System.out.println("distribution error!");
 		}
-		if (players.size() == 3) {
+		if (players.size() == this.gameNum) {
 			this.gameStatus = 1; //游戏开始
 			this.leftTime = this.maxTurnTime; //游戏开始时设置剩余时间为最大时间
-			if (this.gameType == 1) { //对于扫雷游戏，将用户积分设为0
-				for (Player item: players) { //将每个人的积分置为0
-					item.deminPlayer.score = 0;
-				}
-			}
+			this.initGame(); //初始化游戏
+			this.initPlayers();
 		}
 		sendForGameState();		
 	}
@@ -58,18 +59,22 @@ public class GameState {
 			return false;
 		}
 	}
-	public static void distributeRoom(Player ply) { //为玩家分配房间
+	public static void distributeRoom(Player ply, int gameType) { //为玩家分配房间
 		if (ply.nowGame != null) return; //之前已经在一个房间里，则不用分配
 		GameState flow = null;
 		for (int i = 0; i < games.size(); i++) {
 			flow = games.get(i);
-			if (flow.canAddPlayer()) {
+			if (flow.canAddPlayer() && flow.gameType == gameType) {
 				ply.nowGame = flow;
 				flow.addPlayer(ply);
 				return;
 			}
 		}
-		flow = new DeminGame();
+		if (gameType == 1) {
+			flow = new DeminGame();
+		} else {
+			flow = new WhoIsUndercover();
+		}
 		flow.addPlayer(ply);
 		ply.nowGame = flow;
 	}
@@ -111,6 +116,9 @@ public class GameState {
 				e.printStackTrace();
 			}
 		}
+		if (this.gameStatus == 1) {
+			this.sendElseGameState();
+		}
 	}
 	
 	public void refreshTime() { //更新游戏时间
@@ -131,7 +139,9 @@ public class GameState {
 		String messages = json1.toString();
 		for (Player item: players) {
 			try {
-				item.myWebsocket.session.getBasicRemote().sendText(messages);
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -140,8 +150,13 @@ public class GameState {
 	}
 	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
+	public void handleUndercover(String message, WebSocket ws) {} //完成谁是卧底中的游戏响应
+	public void handleUndercoverVoting(int userindex, WebSocket ws) {} //完成投票阶段谁是卧底中的游戏响应
 	public void revisiting(Player ply) {} //处理用户重新进入游戏
 	public void handleLeftTimeZero() {} //解决时间为零的情况
 	public void sendForMyGameState(JSONObject json) {} //发送每个游戏状态特殊的部分
+	public void sendElseGameState() {} //在游戏开始时还需发送的其他部分（个性化处理）
 	public void sendAfterGame() {} //游戏后返回玩家游戏结果
+	public void initPlayers() {} //初始化玩家的信息
+	public void initGame() {} //初始化游戏
 }
