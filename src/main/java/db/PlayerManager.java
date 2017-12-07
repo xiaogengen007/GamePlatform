@@ -8,7 +8,7 @@ public class PlayerManager {
 		Statement stmt = null; //SQL语句环境
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
 			c.setAutoCommit(false);		
 			stmt = c.createStatement();
 			String sql_check = "SELECT * FROM player WHERE p_name = '"
@@ -18,6 +18,7 @@ public class PlayerManager {
 				stmt.close();
 				c.commit();
 				c.close();
+				System.out.println("错误类型1：该用户名已经存在");
 				return 1; //错误类型1：该用户名已经存在
 			}
 			else {
@@ -27,10 +28,12 @@ public class PlayerManager {
 				stmt.close();
 				c.commit();
 				c.close();
+				System.out.println("成功添加该用户");
 				return 0; //成功添加该用户，返回0
 			}	
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ":" + e.getMessage());
+			System.out.println("错误类型2：数据库异常，注册失败");
 			return 2; //错误类型2：数据库异常，注册失败
 		}
 	}
@@ -40,7 +43,7 @@ public class PlayerManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
 			c.setAutoCommit(false);		
 			stmt = c.createStatement();
 			String sql = "SELECT * FROM player WHERE p_name = '"
@@ -51,12 +54,14 @@ public class PlayerManager {
 					stmt.close();
 					c.commit();
 					c.close();
+					System.out.println("登录成功");
 					return 0; //登录成功，返回0
 				}
 				else {
 					stmt.close();
 					c.commit();
 					c.close();
+					System.out.println("错误类型1：用户名与密码不匹配");
 					return 1; //错误类型1：用户名与密码不匹配
 				}
 			}
@@ -64,10 +69,12 @@ public class PlayerManager {
 				stmt.close();
 				c.commit();
 				c.close();
+				System.out.println("错误类型2：该用户不存在（未注册）");
 				return 2; //错误类型2：该用户不存在（未注册）
 			}
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ":" + e.getMessage());
+			System.out.println("错误类型3：数据库异常，登录失败");
 			return 3;//错误类型3：数据库异常，登录失败
 		}
 	}
