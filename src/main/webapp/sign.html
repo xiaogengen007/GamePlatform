@@ -2,9 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <title>玩吧 登录和注册</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<script type="text/javascript" src="sign/js/jquery-1.9.0.min.js"></script>
-<script type="text/javascript" src="sign/js/login.js"></script>
-<link href="sign/css/login.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="basicpages/2 sign/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="basicpages/2 sign/js/login.js"></script>
+
+<link href="basicpages/2 sign/css/login.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -41,7 +42,15 @@
                     </div>
                     </div>
                     
-                    <div style="padding-left:50px;margin-top:20px;"><input type="submit" value="登 录" style="width:150px;" class="button_blue"/></div>
+                    <!--div style="padding-left:50px; margin-top:20px;" onclick="gotoGameSelection()"-->
+
+                    <div style="padding-left:50px; margin-top:20px;">
+                        <input value="登 录" style="width:150px;" class="button_blue" onclick="javascript:window.location.href='gamepage.html'"/>
+                        <!--
+                        <input value="登 录" style="width:150px;" class="button_blue" onclick="javascript:window.location.href='gamepage.html'" type="submit"/>
+                        加入type="submit"无法转到新页面
+                        -->
+                    </div>
                 </form>
                 </div>
             </div> 
@@ -91,6 +100,21 @@
     </div>
     <!--注册end-->
 </div>
+    
+
+
+
+<!--
+    onclick="inMainWindow()"
+    <script type="text/javascript">
+    //转到游戏选择界面
+    gotoGameSelection()
+    function inMainWindow() {
+      //window.location.href="index.jsp"+"?username="+document.getElementById('username').value;
+      window.location.href="gamepage.html"+"?username="+document.getElementById('inputUsername').value;
+    }
+    </script>
+-->
 
 
 <!--<div class="jianyi">*推荐使用ie8或以上版本ie浏览器或Chrome内核浏览器访问本站</div>-->
