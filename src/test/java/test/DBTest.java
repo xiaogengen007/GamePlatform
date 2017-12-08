@@ -12,6 +12,8 @@ public class DBTest {
 		//}
 		System.out.println(PlayerManager.checkLogin("123", "1234"));	
 		System.out.println(PlayerManager.recordPlayer("1", "1"));
+		System.out.println(PlayerManager.recordPlayer("2", "2"));
+		System.out.println(PlayerManager.recordPlayer("3", "3"));
 		System.out.println(PlayerManager.checkLogin("123", "1234"));
 	}
 }
