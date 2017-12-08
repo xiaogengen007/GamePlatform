@@ -22,13 +22,7 @@
 		   out.println("<script>alert('登陆失败！用户名与密码不匹配！');window.location.href='signin.jsp'</script>");
 		   break;
 	   case 2:
-		   int logcode = PlayerManager.recordPlayer(name, pass);
-		   if (logcode == 0) {
-			   out.println("<script>alert('注册成功！');window.location.href='index.jsp'</script>"); 
-		   } else {
-			   out.println("<script>alert('注册失败！数据库异常！');window.location.href='signin.jsp'</script>"); 
-		   }
-		   //out.println("<script>alert('登陆失败！该用户不存在（未注册）！');window.location.href='signin.jsp'</script>");  
+		   out.println("<script>alert('登陆失败！该用户不存在（未注册）！');window.location.href='signin.jsp'</script>");  
 	   	   break;
 	   case 3:
 		   out.println("<script>alert('登陆失败！数据库异常！');window.location.href='signin.jsp'</script>");  
