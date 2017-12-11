@@ -110,12 +110,12 @@ websocket.onmessage = function (event) {
                 
             }
         }
+        scoreUpdate(json1.players);
         setMessageInnerHTML("End of this turn, please select for next turn.");
         tNow = tMax;
         timeUpdate(tNow, tMax);
         actionArray.splice(0, actionArray.length);
         numMineUpdate(json1.leftMine);
-    	
     }
     else if (json1.action == 5){
     	setMessageInnerHTML(json1.message);
@@ -146,6 +146,12 @@ function timeUpdate(timeNow, timeMax){
     var percentage = Math.floor(timeNow / timeMax * 100);
     progressBar.setAttribute('aria-valuenow',percentage.toString());
     progressBar.style.width = percentage + '%';
+}
+
+function scoreUpdate(players){
+	for(var i =0; i < players.length; i++){
+		playerArray[i].score = players[i].score;
+	}
 }
 
 function numMineUpdate(numMine){
@@ -193,7 +199,7 @@ function startGame(){
 		var img = $('<img></img>').addClass("img-responsive")
 		.attr('src',playerArray[i-1].thumbnail)
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
-		var label = $('<h4></h4>').text(playerArray[i-1].username);
+		var label = $('<h6></h6>').text(playerArray[i-1].username);
 		var object1 = $('<div></div>').addClass('object').attr('id','object_one');
 		var object2 = $('<div></div>').addClass('object').attr('id','object_two');
 		var object3 = $('<div></div>').addClass('object').attr('id','object_three');
