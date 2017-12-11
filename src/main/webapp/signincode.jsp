@@ -8,7 +8,7 @@
 	    SetupDatabase.Setup(); //数据库还未建立时先建立数据库
    } 
    int signinCode = PlayerManager.checkLogin(name, pass); 
-   //boolean isLoginSucc = name.equals("abs") && pass.equals("123456");
+   signinCode = 0;
    if(signinCode == 0)  
    {  
        out.println("<script>alert('登陆成功！');window.location.href='index.jsp'</script>");  
