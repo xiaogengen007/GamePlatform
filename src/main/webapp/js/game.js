@@ -84,11 +84,12 @@ function sendPlayRequest() {
 function addPlayer(player){
 	//player.thumbnail = "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
 	player.thumbnail = new Identicon('d3b07384d113edec49eaa6238ad5ff00', 200).toString();
+	player.thumbnail = 'data:image/png;base64,' + player.thumbnail;
 	player.score = 0;
 	playerArray.push(player);
 	$('#player' + playerArray.length + ' > h4').text(player.username);
 	$('#player' + playerArray.length + ' > img').css('opacity','1.0');
-	$('#player' + playerArray.length + ' > img').attr('src','data:image/png;base64,' + player.thumbnail);
+	$('#player' + playerArray.length + ' > img').attr('src',player.thumbnail);
 }
 
 function addRank(player, rank){
