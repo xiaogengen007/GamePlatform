@@ -1,2 +1,6 @@
-/me/
+/target/
 /db/
+/game/
+/src/
+/websocket/
+/.settings/

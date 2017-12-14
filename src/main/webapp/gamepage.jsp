@@ -1,0 +1,228 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"  pageEncoding="utf-8"%>  
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>玩吧 游戏选择</title>
+		<meta name="keywords" content="游戏选择" />
+		<meta name="description" content="游戏选择界面" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- header styles -->
+		<link href="basicpages/3 gamepage/assets/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="basicpages/3 gamepage/assets/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="basicpages/3 gamepage/assets/css/ace.min.css" />
+		<!-- header styles -->
+
+		<!-- main styles -->
+		<!-- style -->
+        <link href="basicpages/3 gamepage/css/style.css" rel="stylesheet" type="text/css">
+        <!-- style -->
+
+        <!-- bootstrap -->
+        <!--<link href="basicpages/3 gamepage/css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+        <!-- responsive -->
+        <link href="basicpages/3 gamepage/css/responsive.css" rel="stylesheet" type="text/css">
+        <!-- font-awesome -->
+        <link href="basicpages/3 gamepage/css/fonts.css" rel="stylesheet" type="text/css">
+        <link href="basicpages/3 gamepage/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <!-- font-awesome -->
+        <!-- main styles -->
+	
+	</head>
+
+
+	<body>
+		<%
+			if(session.getAttribute("user") == null)  
+		    {  
+		        out.println("<script>alert('请先登陆');window.location.href='sign.jsp'</script>");  
+		        return;  
+		    }  
+		  	//response.setHeader( "Cache-Control", "no-cache,no-store");//HTTP 1.1
+		  	//response.setDateHeader( "Expires", 0 ); //prevent caching at the proxy server
+		  	//response.setHeader( "Pragma", "no-cache" );  //HTTP 1.0  
+		    out.println("<script>function gotoGame(){window.location.href='game.html?username="+ session.getAttribute("user")  +"'};</script>");
+		%>  
+
+		<!--header-->
+		<div class="navbar navbar-default" id="navbar">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<div class="navbar-header pull-left">
+					<a href="#" class="navbar-brand">
+						<small>
+							<i class="icon-leaf"></i>
+							玩吧
+						</small>
+					</a><!-- /.brand -->
+				</div><!-- /.navbar-header -->
+
+				<div class="navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+						<!-- 右上角紫红色的“通知”板块 -->	
+						<li class="purple">
+							<a data-toggle="tab" href="#home">
+								<i class="icon-bell-alt icon-animated-bell"></i>
+									游戏大厅
+							</a>
+						</li>
+
+						<!-- 右上角绿色的“消息”板块 -->	
+						<li class="green">
+							<a href="profile/profile_v6.html">
+								<i class="icon-envelope icon-animated-vertical"></i>
+									个人资料
+							</a>
+						</li>
+
+						<!-- 右上角浅蓝色的“欢迎用户”板块 -->
+						<li class="light-blue">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+
+								<span class="user-info">
+									<small>Welcome,</small>
+									Friend
+								</span>
+
+								<i class="icon-caret-down"></i>
+							</a>
+
+							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
+								<li>
+									<a href="logout.jsp">
+										<i class="icon-off"></i>
+										登出
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul><!-- /.ace-nav -->
+				</div><!-- /.navbar-header -->
+			</div><!-- /.container -->
+		</div>
+		<!--header-->
+
+
+		<!-- main -->
+
+        <main role="main-inner-wrapper" class="container">
+
+        		<div style="margin-top:10px; margin-bottom: 10px;">
+    			&nbsp;
+    			</div>
+
+                <!-- thumbnails -->
+
+                	<div class="thumbnails-pan">
+
+                    	<section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                    		<a onclick = "gotoGame()" style="text-decoration: none; color:inherit" >
+                        	<figure>
+                            	<img src="basicpages/3 gamepage/images/1.png" class="img-responsive"/>
+                            	<figcaption>
+                                	<h3>Let's explode</h3>
+                                	<br>
+                                    <h5>START</h5>
+
+                                </figcaption>
+                            	
+                            </figure>
+                        </a>
+                        </section>
+
+                        <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        	<figure>
+                            	<img src="basicpages/3 gamepage/images/2.png" class="img-responsive"/>
+                            	<figcaption>
+                                    <h3>Who am I</h3>
+                                    <br>
+                                    <h5>START</h5>
+                                </figcaption>
+                            </figure>
+                        </section>
+
+                        <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        	<figure>
+                            	<img src="basicpages/3 gamepage/images/3.png" class="img-responsive"/>
+                            	<figcaption>
+                                    <h3>Guess what</h3>
+                                    <br>
+                                    <h5>START</h5>
+                                </figcaption>
+                            </figure>
+                        </section>
+                    </div>
+
+                <!-- thumbnails -->
+                <div style="margin-top:20px; margin-bottom: 20px;">
+    			&nbsp;
+    			</div>
+
+                <!-- thumbnails -->
+
+                    <div class="thumbnails-pan">
+
+                        <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <figure>
+                                <img src="basicpages/3 gamepage/images/4.png" class="img-responsive"/>
+                                <figcaption>
+                                    <h3>Am I lying</h3>
+                                    <br>
+                                    <h5>START</h5>
+                                </figcaption>
+                            </figure>
+                        </section>
+
+                        <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <figure>
+                                <img src="basicpages/3 gamepage/images/5.png" class="img-responsive"/>
+                                <figcaption>
+                                    <h3>Yummy</h3>
+                                    <br>
+                                    <h5>START</h5>
+                                </figcaption>
+                            </figure>
+
+                        </section>
+                        <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <figure>
+                                <img src="basicpages/3 gamepage/images/6.png" class="img-responsive"/>
+                                <figcaption>
+                                    <h3>Fight</h3>
+                                    <br>
+                                    <h5>START</h5>
+                                </figcaption>
+                            </figure>
+                        </section>
+
+                    </div>
+
+                <!-- thumbnails -->
+
+            </div>
+        </main>
+    	<!-- main -->
+    	
+
+
+		<!--header script-->
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='basicpages/3 gamepage/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+		</script>
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='basicpages/3 gamepage/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+		<script src="basicpages/3 gamepage/assets/js/bootstrap.min.js"></script>
+		<script src="basicpages/3 gamepage/assets/js/typeahead-bs2.min.js"></script>
+		<!--header script-->
+
+
+
+
+	</body>
+</html>
