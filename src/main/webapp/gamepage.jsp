@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"  pageEncoding="utf-8"%>  
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -32,6 +33,12 @@
 
 
 	<body>
+		<%
+		  	//response.setHeader( "Cache-Control", "no-cache,no-store");//HTTP 1.1
+		  	//response.setDateHeader( "Expires", 0 ); //prevent caching at the proxy server
+		  	//response.setHeader( "Pragma", "no-cache" );  //HTTP 1.0  
+		    out.println("<script>function gotoGame(){window.location.href='game.html?username="+ session.getAttribute("user")  +"'};</script>");
+		%>  
 
 		<!--header-->
 		<div class="navbar navbar-default" id="navbar">

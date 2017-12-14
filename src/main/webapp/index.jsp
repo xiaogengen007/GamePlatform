@@ -20,8 +20,8 @@
     Object user = session.getAttribute("user");  
     out.println("欢迎"+user);
     //System.out.printf("test");
-    
-    out.println("<script>function gotoGame(){window.location.href='game.html?username="+ session.getAttribute("user")  +"'};</script>");
+    out.println("<script>window.location.href='gamepage.jsp';</script>");
+    //out.println("<script>function gotoGame(){window.location.href='game.html?username="+ session.getAttribute("user")  +"'};</script>");
   %>  
   <br/>  
   <!--
