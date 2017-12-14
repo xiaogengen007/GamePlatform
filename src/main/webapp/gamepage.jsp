@@ -34,6 +34,11 @@
 
 	<body>
 		<%
+			if(session.getAttribute("user") == null)  
+		    {  
+		        out.println("<script>alert('请先登陆');window.location.href='sign.jsp'</script>");  
+		        return;  
+		    }  
 		  	//response.setHeader( "Cache-Control", "no-cache,no-store");//HTTP 1.1
 		  	//response.setDateHeader( "Expires", 0 ); //prevent caching at the proxy server
 		  	//response.setHeader( "Pragma", "no-cache" );  //HTTP 1.0  

@@ -14,7 +14,7 @@
   	response.setHeader( "Pragma", "no-cache" );  //HTTP 1.0  
     if(session.getAttribute("user") == null)  
     {  
-        out.println("<script>alert('请先登陆');window.location.href='signin.jsp'</script>");  
+        out.println("<script>alert('请先登陆');window.location.href='sign.jsp'</script>");  
         return;  
     }  
     Object user = session.getAttribute("user");  
