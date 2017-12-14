@@ -13,7 +13,7 @@
    {  
        out.println("<script>alert('登陆成功！');window.location.href='index.jsp'</script>");  
        session.setAttribute("user", name);  
-       session.setMaxInactiveInterval(60);  
+       session.setMaxInactiveInterval(3600);  
    }  
    else  
    { 

@@ -3,5 +3,5 @@
 <%  
   session.removeAttribute("user");  
   //session.invalidate()
-  out.println("<script>window.location.href='signin.jsp'</script>");  
+  out.println("<script>window.location.href='sign.jsp'</script>");  
 %>  
