@@ -78,4 +78,37 @@ public class PlayerManager {
 			return 3;//错误类型3：数据库异常，登录失败
 		}
 	}
+	
+	public static int getPoint(String plyName) {
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:Gameplatform.db");
+			c.setAutoCommit(false);
+			//System.out.println("Open database successfully");
+			
+			stmt = c.createStatement();
+			String sql = "SELECT * FROM player WHERE p_name = '"
+					+ plyName + "';"; //在数据库中寻找该用户名
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next()) { //该用户存在
+				int rtpoint = rs.getInt("p_point"); //存储该用户积分值
+				stmt.close();
+				c.commit();
+				c.close();
+				return rtpoint; //返回该用户积分值
+			}
+			else { //该用户不存在
+				stmt.close();
+				c.commit();
+				c.close();
+				return Integer.MIN_VALUE; //用户不存在
+			}
+			
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ":" + e.getMessage());
+			return Integer.MIN_VALUE; //查询积分异常
+		}
+	}
 }
