@@ -151,7 +151,9 @@ function timeUpdate(timeNow, timeMax){
 function scoreUpdate(players){
 	for(var i =0; i < players.length; i++){
 		playerArray[i].score = players[i].score;
+		$('#score'+(i+1)).text(playerArray[i].score);
 	}
+	
 }
 
 function numMineUpdate(numMine){
@@ -200,12 +202,13 @@ function startGame(){
 		.attr('src',playerArray[i-1].thumbnail)
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
+		var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		//var object1 = $('<div></div>').addClass('object').attr('id','object_one');
 		//var object2 = $('<div></div>').addClass('object').attr('id','object_two');
 		//var object3 = $('<div></div>').addClass('object').attr('id','object_three');
 		//var loading = $('<div></div>').attr('id','loading').append(object1).append(object2).append(object3);
 		$('<div></div>').addClass("col-xs-3 col-sm-1 placeholder").attr('id','player' + i)
-		.append(img).append(label).appendTo('#playerlist');
+		.append(scoreLabel).append(img).append(label).appendTo('#playerlist');
 	}
 	
 	function mousedownhandler(e){
