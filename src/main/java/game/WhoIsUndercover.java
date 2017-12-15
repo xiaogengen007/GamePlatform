@@ -69,8 +69,10 @@ public class WhoIsUndercover extends GameState{
 		for (Player item: players) {
 			item.ucPlayer.hasVoted = false;
 			if (item.ucPlayer.isAlive) {
+				item.ucPlayer.canVote = true;
 				item.ucPlayer.canbeVoted = true;
 			} else {
+				item.ucPlayer.canVote = false;
 				item.ucPlayer.canbeVoted = false;
 			}
 		}
@@ -95,7 +97,7 @@ public class WhoIsUndercover extends GameState{
 	public int getVotedNum() {
 		int countVoted = 0;
 		for (Player item: players) {
-			if (item.ucPlayer.hasVoted) {
+			if (item.ucPlayer.hasVoted && item.ucPlayer.isAlive && item.ucPlayer.canVote) {
 				countVoted++;
 			}
 		}
@@ -108,7 +110,7 @@ public class WhoIsUndercover extends GameState{
 	public boolean finishVote() {
 		boolean hasVoted = true;
 		for (Player item: players) {
-			if (item.ucPlayer.isAlive && !item.ucPlayer.hasVoted) {
+			if (item.ucPlayer.isAlive && !item.ucPlayer.hasVoted && item.ucPlayer.canVote) {
 				hasVoted = false;
 			}
 		}
@@ -159,7 +161,7 @@ public class WhoIsUndercover extends GameState{
 				this.sendEndOfThisTurn();
 			}
 		} else {
-			System.out.println("receive but not handle");
+			//System.out.println("receive but not handle");
 		}
 	}
 	
@@ -230,7 +232,23 @@ public class WhoIsUndercover extends GameState{
 			this.gameProcess = 0; //回到发言阶段
 			this.leftTime = this.maxTurnTime;
 		} else {
-			
+			/*
+			 * 在进入下一轮投票前先做好初始化工作
+			 * 设定好可以投票和可以被投票的人选
+			 */
+			for (Player item: players) {
+				item.ucPlayer.canbeVoted = false;
+			}
+			for (Integer indexNoVote: votedMax) {
+				players.get(indexNoVote).ucPlayer.canbeVoted = true; //仅设置平分这些玩家可被投票
+			}
+			for (Player item: players) {
+				if (!item.ucPlayer.canbeVoted && item.ucPlayer.isAlive) {
+					item.ucPlayer.canVote = true;
+				} else {
+					item.ucPlayer.canVote = false;
+				}
+			}
 		}
 	}
 	
@@ -289,8 +307,17 @@ public class WhoIsUndercover extends GameState{
 				jsar2.add(json2);
 			}
 		}
+		JSONArray jsar3 = new JSONArray();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).ucPlayer.canVote) {
+				JSONObject json2 = new JSONObject();
+				json2.put("nextVoteIndex", i);
+				jsar3.add(json2);
+			}
+		}
 		json1.put("voteResult", jsar1);
 		json1.put("nextVoted", jsar2);
+		json1.put("nextVote", jsar3);
 		json1.put("resultType", 2); //在未分出胜负时type为2
 		String msg = json1.toString();
 		System.out.println("send voting message:"+msg);

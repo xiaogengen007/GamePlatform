@@ -56,17 +56,20 @@ public class Player {
 		public boolean hasVoted; //是否已经投票
 		public int votedPlayer; //投票认为为卧底人的index
 		public boolean canbeVoted; //能被投票
+		public boolean canVote; //能投票
 		UndercoverPlayer() {
 			this.isSubmit = false;
 			this.isAlive = true;
 			this.hasVoted = false;
 			this.canbeVoted = true;
+			this.canVote = true;
 		}
 		public void setPlayer() {
 			this.isSubmit = false;
 			this.isAlive = true;
 			this.hasVoted = false;
 			this.canbeVoted = true;
+			this.canVote = true;
 		}
 	}
 }
