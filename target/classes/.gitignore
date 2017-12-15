@@ -16,3 +16,8 @@
 /player/
 /target/
 /websocket/
+<<<<<<< HEAD
+=======
+/.settings/
+/player/
+>>>>>>> master

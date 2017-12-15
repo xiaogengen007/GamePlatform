@@ -101,11 +101,13 @@ public class GameState {
 		for (Player item: players) {
 			JSONObject json2 = new JSONObject();
 			json2.put("username", item.username);
+			json2.put("hashcode", item.hashCode);
 			jsar1.add(json2);
 		}
 		json1.put("players", jsar1);
 		this.sendForMyGameState(json1); //发送每种游戏额外的东西
 		String messages = json1.toString();
+		//System.out.println("send:"+messages);
 		for (Player item : players) {
 			try {
 				if (item.myWebsocket != null) {

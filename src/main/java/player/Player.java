@@ -8,12 +8,23 @@ public class Player {
 	public WebSocket myWebsocket = null;
 	int status; //0表示不在进行游戏，1表示在玩扫雷
 	public GameState nowGame; //现在正在进行的比赛
+	public String hashCode; //用户的哈希值，用于生成头像
 	public DeminPlayer deminPlayer = new DeminPlayer(); //扫雷游戏玩家记录
 	public UndercoverPlayer ucPlayer = new UndercoverPlayer(); //谁是卧底玩家记录
 	public Player() {
 		username = "";
 		status = 0;
 	}
+	
+	public void setupHashCode() {
+		String hashTmp = this.username+"1234abcd";
+		String hashPart = String.valueOf(hashTmp.hashCode());
+		this.hashCode = hashTmp + hashPart;
+		if (this.hashCode.length() <= 15) {
+			this.hashCode += "dcba4321"; //不过长度15时，再添上一部分
+		}
+	}
+	
 	void setName(String name) {
 		this.username = name;
 	}
@@ -45,17 +56,20 @@ public class Player {
 		public boolean hasVoted; //是否已经投票
 		public int votedPlayer; //投票认为为卧底人的index
 		public boolean canbeVoted; //能被投票
+		public boolean canVote; //能投票
 		UndercoverPlayer() {
 			this.isSubmit = false;
 			this.isAlive = true;
 			this.hasVoted = false;
 			this.canbeVoted = true;
+			this.canVote = true;
 		}
 		public void setPlayer() {
 			this.isSubmit = false;
 			this.isAlive = true;
 			this.hasVoted = false;
 			this.canbeVoted = true;
+			this.canVote = true;
 		}
 	}
 }

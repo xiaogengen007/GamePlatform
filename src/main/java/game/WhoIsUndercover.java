@@ -69,8 +69,10 @@ public class WhoIsUndercover extends GameState{
 		for (Player item: players) {
 			item.ucPlayer.hasVoted = false;
 			if (item.ucPlayer.isAlive) {
+				item.ucPlayer.canVote = true;
 				item.ucPlayer.canbeVoted = true;
 			} else {
+				item.ucPlayer.canVote = false;
 				item.ucPlayer.canbeVoted = false;
 			}
 		}
@@ -95,7 +97,7 @@ public class WhoIsUndercover extends GameState{
 	public int getVotedNum() {
 		int countVoted = 0;
 		for (Player item: players) {
-			if (item.ucPlayer.hasVoted) {
+			if (item.ucPlayer.hasVoted && item.ucPlayer.isAlive && item.ucPlayer.canVote) {
 				countVoted++;
 			}
 		}
@@ -108,7 +110,7 @@ public class WhoIsUndercover extends GameState{
 	public boolean finishVote() {
 		boolean hasVoted = true;
 		for (Player item: players) {
-			if (item.ucPlayer.isAlive && !item.ucPlayer.hasVoted) {
+			if (item.ucPlayer.isAlive && !item.ucPlayer.hasVoted && item.ucPlayer.canVote) {
 				hasVoted = false;
 			}
 		}
@@ -144,12 +146,43 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	/*
+	 * 判断游戏是否已经结束
+	 * 0表示游戏还未结束
+	 * 1表示游戏结束，且盟军获胜
+	 * 2表示游戏结束，且卧底获胜
+	 */
+	public int gameOver() { 
+		/*
+		 * 四人局中1人为卧底
+		 * 卧底如果亡了，则平民胜
+		 * 卧底如果能坚持到只剩下两人，则平民败
+		 */
+		int flag = 0; //flag来记录游戏状态
+		if (this.gameNum == 4) { 
+			boolean undercoverDied = true;
+			for (Player item: players) {
+				if (item.ucPlayer.isUndercover && item.ucPlayer.isAlive) {
+					undercoverDied = false;
+				}
+			}
+			if (undercoverDied) {
+				flag = 1;
+			} else {
+				if (this.getAliveNum() == 2) {
+					flag = 2;
+				} 
+			}
+		}
+		return flag;
+	}
+	
+	/*
 	 * 完成谁是卧底中的游戏响应,在非投票阶段
 	 * (non-Javadoc)
 	 * @see game.GameState#handleUndercover(java.lang.String, websocket.WebSocket)
 	 */
 	public void handleUndercover(String message, WebSocket ws) { 
-		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
+		if (this.gameStatus == 1 && ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
 				&& ws.myPlayer.ucPlayer.isAlive) { //判断该玩家是否有"说话"的权力
 			ws.myPlayer.ucPlayer.thisTurnMsg = message;
 			ws.myPlayer.ucPlayer.isSubmit = true;
@@ -158,6 +191,8 @@ public class WhoIsUndercover extends GameState{
 				this.batchHandleTurn();
 				this.sendEndOfThisTurn();
 			}
+		} else {
+			//System.out.println("receive but not handle");
 		}
 	}
 	
@@ -167,8 +202,8 @@ public class WhoIsUndercover extends GameState{
 	 * @see game.GameState#handleUndercoverVoting(java.lang.String, websocket.WebSocket)
 	 */
 	public void handleUndercoverVoting(int userindex, WebSocket ws) {
-		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.hasVoted 
-				&& ws.myPlayer.ucPlayer.isAlive) { //有投票资格且还未投票时才处理
+		if (this.gameStatus == 1 && ws.myPlayer != null && !ws.myPlayer.ucPlayer.hasVoted 
+				&& ws.myPlayer.ucPlayer.isAlive && ws.myPlayer.ucPlayer.canVote) { //有投票资格且还未投票时才处理
 			if (userindex < this.players.size() && 
 					this.players.get(userindex).ucPlayer.canbeVoted) {
 				ws.myPlayer.ucPlayer.votedPlayer = userindex;
@@ -201,7 +236,7 @@ public class WhoIsUndercover extends GameState{
 			countVoted[i] = 0;
 		}
 		for (Player item: players) {
-			if (item.ucPlayer.canbeVoted) {
+			if (item.ucPlayer.canVote) {
 				int votedIndex = item.ucPlayer.votedPlayer;
 				countVoted[votedIndex]++;
 			}
@@ -224,8 +259,46 @@ public class WhoIsUndercover extends GameState{
 			this.players.get(maxIndex).ucPlayer.isAlive = false; //设置该人已经死亡
 			this.players.get(maxIndex).ucPlayer.canbeVoted = false;
 			//这里需要判断游戏是否已经结束
+			if (this.gameOver() != 0) { //如果游戏结束则结束操作
+				this.sendAfterGame();
+			} else {
+				this.initFinishTurn(); //将大家都置为可以说话
+				this.gameProcess = 0; //回到发言阶段
+				this.leftTime = this.maxTurnTime;
+			}		
 		} else {
+			/*
+			 * 在进入下一轮投票前先做好初始化工作
+			 * 设定好可以投票和可以被投票的人选
+			 */
+			for (Player item: players) {
+				item.ucPlayer.canbeVoted = false;
+			}
+			for (Integer indexNoVote: votedMax) {
+				players.get(indexNoVote).ucPlayer.canbeVoted = true; //仅设置平分这些玩家可被投票
+			}
+			if (votedMax.size() != this.getAliveNum()) { //当还有人不是同票时
+				for (Player item: players) {
+					if (!item.ucPlayer.canbeVoted && item.ucPlayer.isAlive) {
+						item.ucPlayer.canVote = true;
+					} else {
+						item.ucPlayer.canVote = false;
+					}
+				}
+			} else { //否则，所有活着的人都可以投票
+				for (Player item: players) {
+					if (item.ucPlayer.isAlive) {
+						item.ucPlayer.canVote = true;
+					} else {
+						item.ucPlayer.canVote = false;
+					}
+				}
+			}
 			
+			this.sendEndOfVoteForNextVoting(countVoted, votedMax);
+			for (Player item: players) {
+				item.ucPlayer.hasVoted = false; //重置每人都没投票，能投票的人继续投票
+			}
 		}
 	}
 	
@@ -265,6 +338,7 @@ public class WhoIsUndercover extends GameState{
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
 	public void sendEndOfVoteForNextVoting(int[] countVoted, ArrayList<Integer> votedMax) {
+		System.out.println("has send for next vote turn");
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
 		JSONArray jsar1 = new JSONArray();
@@ -284,8 +358,17 @@ public class WhoIsUndercover extends GameState{
 				jsar2.add(json2);
 			}
 		}
+		JSONArray jsar3 = new JSONArray();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).ucPlayer.canVote) {
+				JSONObject json2 = new JSONObject();
+				json2.put("nextVoteIndex", i);
+				jsar3.add(json2);
+			}
+		}
 		json1.put("voteResult", jsar1);
 		json1.put("nextVoted", jsar2);
+		json1.put("nextVote", jsar3);
 		json1.put("resultType", 2); //在未分出胜负时type为2
 		String msg = json1.toString();
 		System.out.println("send voting message:"+msg);
@@ -404,7 +487,7 @@ public class WhoIsUndercover extends GameState{
 		JSONObject json1 = new JSONObject();
 		JSONArray jsar1 = new JSONArray();
 		for (Player item: players) {
-			if (item.ucPlayer.canbeVoted && item.ucPlayer.hasVoted) {
+			if (item.ucPlayer.canVote && item.ucPlayer.hasVoted) {
 				JSONObject json2 = new JSONObject();
 				json2.put("votePlayer", item.username);
 				json2.put("votedPlayer", item.ucPlayer.votedPlayer);
@@ -466,5 +549,42 @@ public class WhoIsUndercover extends GameState{
 			}
 		}
 		System.out.println("has send keywords for undercover game!");
+	}
+	
+	/*
+	 * 游戏后返回玩家游戏结果(包括结果，积分变化等)
+	 * (non-Javadoc)
+	 * @see game.GameState#sendAfterGame()
+	 */
+	public void sendAfterGame() { 
+		int sign = this.gameOver();
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 6); //6表示游戏结束时所发送的消息
+		JSONArray jsar1 = new JSONArray(); //存储用户信息和排名
+		for (Player item: players) {
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			if (item.ucPlayer.isUndercover) {
+				json2.put("keyword", this.undercoverString);
+				json2.put("undercover", 1); //1表示是卧底，0则不是
+			} else {
+				json2.put("keyword", this.friendString);
+				json2.put("undercover", 0);
+			}
+			jsar1.add(json2);
+		}
+		json1.put("players", jsar1);
+		json1.put("result", sign); //1为平民获胜，2为卧底获胜
+		String messages = json1.toString();
+		for (Player item : players) {
+			try {
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

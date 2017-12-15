@@ -29,6 +29,7 @@ more information
 
   - players(array,store the players info in the room) ,for players[i]
     - username
+    - hashcode (to generate his icon)
 
 - for demining game:
 
@@ -76,22 +77,40 @@ more information
     - score
 
 - for undercover game:
-  - voteresult: (1 or 2, 1 is for can get the die player, 2 for cannot get), for voteresult = 1
+
+  - resultType (1 or 2, 1 is for can get the die player, 2 for cannot get)
+
+
+  - voteresult: (for resultType = 1)
     - diePlayer (his username)
     - voteResult (an array, to get the result of every one voted count)
       - votedName
       - votedNum
+- voteresult: (for resultType = 2)
+  - voteResult (an array, to get the result of every one voted count)
+    - votedName
+    - votedNum
+  - nextVoted (an array, to get which will be voted in the next vote turn)
+    - nextVotedIndex (the voted player index)
+  - nextVote (an array, to get who can vote in the next vote turn)
+    - nextVoteIndex (the vote player index)
 
 
 
 ##### action 6:
 
-- for all game:
+- for demining game:
   - players(array, send the finally rank of players, for players[i]:
     - username
     - rank
+- for undercover game:
+  - players(array, send the players' status and key word, for players[i]):
+    - username
+    - keyword
+    - undercover
+  - result
 
-​
+
 
 ##### action 7: for different game might have different value
 
