@@ -101,6 +101,7 @@ public class GameState {
 		for (Player item: players) {
 			JSONObject json2 = new JSONObject();
 			json2.put("username", item.username);
+			json2.put("hashcode", item.hashCode);
 			jsar1.add(json2);
 		}
 		json1.put("players", jsar1);

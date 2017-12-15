@@ -84,13 +84,14 @@ public class WebSocket {
 		if (json1.getInt("action") == 1) { //1为登录或注册
 			String name = (String) json1.getString("username");
 			try {
-				if (name.length() > 5) {
+				if (name.length() > 15 || name.length() <= 0) {
 					this.sendMessage("");
 				} else {
 					this.myPlayer = GameState.searchFromName(name);
 					if (myPlayer == null) {
 						myPlayer = new Player(); //存储该用户的相关信息
 						this.myPlayer.username = name;
+						this.myPlayer.setupHashCode();
 						this.myPlayer.myWebsocket = this; //建立player与websocket的双向连接
 						//System.out.println("I'm not create new!");
 					} else {
