@@ -41,7 +41,8 @@ public class WebSocket {
 	 */
 	@OnOpen
 	public void onOpen(Session session){
-		
+		String encoding = System.getProperty("file.encoding");
+		System.out.println(encoding);
 		this.session = session;
 		if (!Timer.hasSet) { //当第一个用户连接时即开始计时器线程
 			new Thread(new Timer()).start();

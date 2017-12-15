@@ -1,3 +1,5 @@
+package game;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,9 +13,9 @@ public class ReadTxt {
 		try {
 			String encoding = "GBK";
 			File file = new File(filePath);
-			if (file.isFile() && file.exists()) { // 判断文件是否存在
+			if (file.isFile() && file.exists()) { // 鍒ゆ柇鏂囦欢鏄惁瀛樺湪
 				InputStreamReader read = new InputStreamReader(
-						new FileInputStream(file), encoding);// 考虑到编码格式
+						new FileInputStream(file), encoding);// 璇诲彇鏂囦欢
 				BufferedReader bufferedReader = new BufferedReader(read);
 				String lineTxt = null;
 				while ((lineTxt = bufferedReader.readLine()) != null) {
@@ -21,10 +23,9 @@ public class ReadTxt {
 				}
 				read.close();
 			} else {
-				System.out.println("找不到指定的文件");
+				System.out.println("cannot found file!");
 			}
 		} catch (Exception e) {
-			System.out.println("读取文件内容出错");
 			e.printStackTrace();
 		}
 		return vv;
@@ -33,6 +34,7 @@ public class ReadTxt {
 	public static String getRandomConent(String filePath) {
 		Vector<String> vv = readTxtFile(filePath);
 		int len = vv.size();
+		//System.out.println(len);
 		Random r = new Random();
 		int now = r.nextInt(len);
 		String content = vv.get(now);
@@ -40,7 +42,7 @@ public class ReadTxt {
 	}
 
 	public static void main(String argv[]) {
-		String filePath = "E:\\myPro\\UserMan\\src\\lucene\\dictionary.txt";
+		String filePath = "src/main/resources/wordsForUndercover.txt";
 		System.out.println(readTxtFile(filePath));
 		System.out.println(getRandomConent(filePath));
 	}
