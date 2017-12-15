@@ -182,7 +182,7 @@ public class WhoIsUndercover extends GameState{
 	 * @see game.GameState#handleUndercover(java.lang.String, websocket.WebSocket)
 	 */
 	public void handleUndercover(String message, WebSocket ws) { 
-		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
+		if (this.gameStatus == 1 && ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
 				&& ws.myPlayer.ucPlayer.isAlive) { //判断该玩家是否有"说话"的权力
 			ws.myPlayer.ucPlayer.thisTurnMsg = message;
 			ws.myPlayer.ucPlayer.isSubmit = true;
@@ -202,7 +202,7 @@ public class WhoIsUndercover extends GameState{
 	 * @see game.GameState#handleUndercoverVoting(java.lang.String, websocket.WebSocket)
 	 */
 	public void handleUndercoverVoting(int userindex, WebSocket ws) {
-		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.hasVoted 
+		if (this.gameStatus == 1 && ws.myPlayer != null && !ws.myPlayer.ucPlayer.hasVoted 
 				&& ws.myPlayer.ucPlayer.isAlive && ws.myPlayer.ucPlayer.canVote) { //有投票资格且还未投票时才处理
 			if (userindex < this.players.size() && 
 					this.players.get(userindex).ucPlayer.canbeVoted) {
@@ -259,9 +259,13 @@ public class WhoIsUndercover extends GameState{
 			this.players.get(maxIndex).ucPlayer.isAlive = false; //设置该人已经死亡
 			this.players.get(maxIndex).ucPlayer.canbeVoted = false;
 			//这里需要判断游戏是否已经结束
-			this.initFinishTurn(); //将大家都置为可以说话
-			this.gameProcess = 0; //回到发言阶段
-			this.leftTime = this.maxTurnTime;
+			if (this.gameOver() != 0) { //如果游戏结束则结束操作
+				this.sendAfterGame();
+			} else {
+				this.initFinishTurn(); //将大家都置为可以说话
+				this.gameProcess = 0; //回到发言阶段
+				this.leftTime = this.maxTurnTime;
+			}		
 		} else {
 			/*
 			 * 在进入下一轮投票前先做好初始化工作
