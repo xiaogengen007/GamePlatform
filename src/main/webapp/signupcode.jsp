@@ -9,8 +9,8 @@
    } 
    int logcode = PlayerManager.recordPlayer(name, pass);
    if (logcode == 0) {
-	   out.println("<script>alert('succeeded');window.location.href='signin.jsp'</script>"); 
+	   out.println("<script>alert('注册成功，请登录！');window.location.href='sign.jsp'</script>"); 
    } else {
-	   out.println("<script>alert('failed');window.location.href='signin.jsp'</script>"); 
+	   out.println("<script>alert('该用户名已被注册！');window.location.href='sign.jsp'</script>"); 
    }
 %>  

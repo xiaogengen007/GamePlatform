@@ -99,12 +99,18 @@ more information
 
 ##### action 6:
 
-- for all game:
+- for demining game:
   - players(array, send the finally rank of players, for players[i]:
     - username
     - rank
+- for undercover game:
+  - players(array, send the players' status and key word, for players[i]):
+    - username
+    - keyword
+    - undercover
+  - result
 
-​
+
 
 ##### action 7: for different game might have different value
 
