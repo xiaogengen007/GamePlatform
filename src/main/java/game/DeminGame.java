@@ -21,7 +21,7 @@ public class DeminGame extends GameState{
 	DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
-		this.maxTurnTime = 5; //扫雷游戏设置的一轮游戏时间为20s
+		this.maxTurnTime = 8; //扫雷游戏设置的一轮游戏时间为20s
 		this.leftTime = new Integer(this.maxTurnTime);
 		for (int i = 1; i < gridLen+1; i++) {
 			for (int j= 1; j < gridLen+1; j++) {
@@ -276,6 +276,22 @@ public class DeminGame extends GameState{
 		this.sendEndOfThisTurn();
 		if (this.gameStatus == 2) { //游戏结束之后，将游戏结果返回给玩家
 			sendAfterGame();
+			/*
+			 * 同时将该游戏房间玩家清空
+			 */
+			for (Player item: players) {
+				item.nowGame = null;
+			}
+			players.clear();
+			this.gameStatus = 0; //将房间恢复初始状态
+			for (int i = 1; i < gridLen+1; i++) {
+				for (int j= 1; j < gridLen+1; j++) {
+					gridClicked[i][j] = 0; 
+					this.gridState[i][j] = 0;
+					this.isMine[i][j] = false; //默认都不是地雷
+				}
+			}
+			this.generatingMine();
 		}
 	}
 	
