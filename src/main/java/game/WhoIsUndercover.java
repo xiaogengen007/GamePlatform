@@ -249,6 +249,7 @@ public class WhoIsUndercover extends GameState{
 					item.ucPlayer.canVote = false;
 				}
 			}
+			this.sendEndOfVoteForNextVoting(countVoted, votedMax);
 		}
 	}
 	
@@ -288,6 +289,7 @@ public class WhoIsUndercover extends GameState{
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
 	public void sendEndOfVoteForNextVoting(int[] countVoted, ArrayList<Integer> votedMax) {
+		System.out.println("has send for next vote turn");
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
 		JSONArray jsar1 = new JSONArray();

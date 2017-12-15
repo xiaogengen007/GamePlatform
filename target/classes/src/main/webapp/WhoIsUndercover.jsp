@@ -119,6 +119,14 @@
 				}
 				writeNormal();
 				isVoting = 0;
+			} else { //否则则继续进行投票
+				for (i=0; i<playerNum; i++) {
+					canVoted[i] = 0;
+				}
+				for (i=0; i<json1.nextVoted.length; i++) {
+					canVoted[json1.nextVoted[i].nextVotedIndex] = 1;
+				}
+				writeAfterSpeechProcess();
 			}
 			
 		}
