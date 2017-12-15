@@ -158,6 +158,8 @@ public class WhoIsUndercover extends GameState{
 				this.batchHandleTurn();
 				this.sendEndOfThisTurn();
 			}
+		} else {
+			System.out.println("receive but not handle");
 		}
 	}
 	
@@ -224,6 +226,9 @@ public class WhoIsUndercover extends GameState{
 			this.players.get(maxIndex).ucPlayer.isAlive = false; //设置该人已经死亡
 			this.players.get(maxIndex).ucPlayer.canbeVoted = false;
 			//这里需要判断游戏是否已经结束
+			this.initFinishTurn(); //将大家都置为可以说话
+			this.gameProcess = 0; //回到发言阶段
+			this.leftTime = this.maxTurnTime;
 		} else {
 			
 		}

@@ -113,6 +113,14 @@
 			document.getElementById('message').innerHTML = "";
 			var messages = JSON.stringify(json1);
 			setMessageInnerHTML(messages);
+			if (json1.resultType == 1) { //1 for can get the die player
+				for (i=0; i<playerNum; i++) {
+					state[i] = "";
+				}
+				writeNormal();
+				isVoting = 0;
+			}
+			
 		}
 		if (json1.action == 5) { //游戏中进行聊天
 			setMessageInnerHTML(json1.message);
