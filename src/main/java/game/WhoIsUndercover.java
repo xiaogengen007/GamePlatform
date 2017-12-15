@@ -146,6 +146,37 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	/*
+	 * 判断游戏是否已经结束
+	 * 0表示游戏还未结束
+	 * 1表示游戏结束，且盟军获胜
+	 * 2表示游戏结束，且卧底获胜
+	 */
+	public int gameOver() { 
+		/*
+		 * 四人局中1人为卧底
+		 * 卧底如果亡了，则平民胜
+		 * 卧底如果能坚持到只剩下两人，则平民败
+		 */
+		int flag = 0; //flag来记录游戏状态
+		if (this.gameNum == 4) { 
+			boolean undercoverDied = true;
+			for (Player item: players) {
+				if (item.ucPlayer.isUndercover && item.ucPlayer.isAlive) {
+					undercoverDied = false;
+				}
+			}
+			if (undercoverDied) {
+				flag = 1;
+			} else {
+				if (this.getAliveNum() == 2) {
+					flag = 2;
+				} 
+			}
+		}
+		return flag;
+	}
+	
+	/*
 	 * 完成谁是卧底中的游戏响应,在非投票阶段
 	 * (non-Javadoc)
 	 * @see game.GameState#handleUndercover(java.lang.String, websocket.WebSocket)
