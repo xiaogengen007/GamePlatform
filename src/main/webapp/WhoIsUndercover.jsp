@@ -134,12 +134,8 @@
 			setMessageInnerHTML(json1.message);
 		}
 		if (json1.action == 6) { //游戏结束时的通讯
-			setMessageInnerHTML("This game has finished! Following is the rank:");
-			var ranks = "";
-			for (i=0; i<json1.players.length; i++) {
-				ranks = json1.players[i].username + ": " + json1.players[i].rank;
-				setMessageInnerHTML(ranks);
-			}
+			var messages = JSON.stringify(json1);
+			setMessageInnerHTML(messages);
 		}
 		if (json1.action == 7) { //游戏状态的额外传输
 			var keywords = json1.keyword;

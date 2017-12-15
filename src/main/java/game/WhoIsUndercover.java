@@ -546,4 +546,41 @@ public class WhoIsUndercover extends GameState{
 		}
 		System.out.println("has send keywords for undercover game!");
 	}
+	
+	/*
+	 * 游戏后返回玩家游戏结果(包括结果，积分变化等)
+	 * (non-Javadoc)
+	 * @see game.GameState#sendAfterGame()
+	 */
+	public void sendAfterGame() { 
+		int sign = this.gameOver();
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 6); //6表示游戏结束时所发送的消息
+		JSONArray jsar1 = new JSONArray(); //存储用户信息和排名
+		for (Player item: players) {
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			if (item.ucPlayer.isUndercover) {
+				json2.put("keyword", this.undercoverString);
+				json2.put("undercover", 1); //1表示是卧底，0则不是
+			} else {
+				json2.put("keyword", this.friendString);
+				json2.put("undercover", 0);
+			}
+			jsar1.add(json2);
+		}
+		json1.put("players", jsar1);
+		json1.put("result", sign); //1为平民获胜，2为卧底获胜
+		String messages = json1.toString();
+		for (Player item : players) {
+			try {
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }
