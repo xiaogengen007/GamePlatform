@@ -172,7 +172,7 @@ public class WhoIsUndercover extends GameState{
 	 */
 	public void handleUndercoverVoting(int userindex, WebSocket ws) {
 		if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.hasVoted 
-				&& ws.myPlayer.ucPlayer.isAlive) { //有投票资格且还未投票时才处理
+				&& ws.myPlayer.ucPlayer.isAlive && ws.myPlayer.ucPlayer.canVote) { //有投票资格且还未投票时才处理
 			if (userindex < this.players.size() && 
 					this.players.get(userindex).ucPlayer.canbeVoted) {
 				ws.myPlayer.ucPlayer.votedPlayer = userindex;
@@ -205,7 +205,7 @@ public class WhoIsUndercover extends GameState{
 			countVoted[i] = 0;
 		}
 		for (Player item: players) {
-			if (item.ucPlayer.canbeVoted) {
+			if (item.ucPlayer.canVote) {
 				int votedIndex = item.ucPlayer.votedPlayer;
 				countVoted[votedIndex]++;
 			}
@@ -242,14 +242,28 @@ public class WhoIsUndercover extends GameState{
 			for (Integer indexNoVote: votedMax) {
 				players.get(indexNoVote).ucPlayer.canbeVoted = true; //仅设置平分这些玩家可被投票
 			}
-			for (Player item: players) {
-				if (!item.ucPlayer.canbeVoted && item.ucPlayer.isAlive) {
-					item.ucPlayer.canVote = true;
-				} else {
-					item.ucPlayer.canVote = false;
+			if (votedMax.size() != this.getAliveNum()) { //当还有人不是同票时
+				for (Player item: players) {
+					if (!item.ucPlayer.canbeVoted && item.ucPlayer.isAlive) {
+						item.ucPlayer.canVote = true;
+					} else {
+						item.ucPlayer.canVote = false;
+					}
+				}
+			} else { //否则，所有活着的人都可以投票
+				for (Player item: players) {
+					if (item.ucPlayer.isAlive) {
+						item.ucPlayer.canVote = true;
+					} else {
+						item.ucPlayer.canVote = false;
+					}
 				}
 			}
+			
 			this.sendEndOfVoteForNextVoting(countVoted, votedMax);
+			for (Player item: players) {
+				item.ucPlayer.hasVoted = false; //重置每人都没投票，能投票的人继续投票
+			}
 		}
 	}
 	
@@ -438,7 +452,7 @@ public class WhoIsUndercover extends GameState{
 		JSONObject json1 = new JSONObject();
 		JSONArray jsar1 = new JSONArray();
 		for (Player item: players) {
-			if (item.ucPlayer.canbeVoted && item.ucPlayer.hasVoted) {
+			if (item.ucPlayer.canVote && item.ucPlayer.hasVoted) {
 				JSONObject json2 = new JSONObject();
 				json2.put("votePlayer", item.username);
 				json2.put("votedPlayer", item.ucPlayer.votedPlayer);
