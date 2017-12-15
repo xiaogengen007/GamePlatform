@@ -1,4 +1,7 @@
 var user = getParam("username");
+var gameCode = parseInt(getParam("game"));
+gameName = ['', '扫雷', '谁是卧底'];
+document.getElementById('roomtitle').innerText = gameName[gameCode];
 
 var playerArray = Array();
 
@@ -11,7 +14,7 @@ websocket.onerror = function () {
 websocket.onopen = function () {
     setMessageInnerHTML("WebSocket连接成功2");
     senduser();
-    sendPlayRequest(); //发送玩游戏请求（扫雷）
+    sendPlayRequest(gameCode); //发送玩游戏请求
 }
 
 //连接关闭的回调方法
@@ -72,10 +75,10 @@ function getParam(paramName) {
     return paramValue;
 }
 
-function sendPlayRequest() {
+function sendPlayRequest(gameCode) {
     var json1 = {};
     json1.action = 4; //4表示请求加入游戏
-    json1.type = 1; //type为1表示扫雷游戏
+    json1.type = gameCode; //type为1表示扫雷游戏
     var messages = JSON.stringify(json1);
     websocket.send(messages);
     setMessageInnerHTML("have send play request.");

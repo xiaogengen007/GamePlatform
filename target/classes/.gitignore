@@ -1,23 +1,2 @@
-/.classpath
-/.idea/
-/.metadata/
-/.project
-/.settings/
-/GUIDELINE.md
-/GUIDELINE_DB.md
-/JavaWebSocket.iml
-/LICENSE
-/README.md
-/lib/
-/pom.xml
 /src/
-/db/
-/game/
-/player/
 /target/
-/websocket/
-<<<<<<< HEAD
-=======
-/.settings/
-/player/
->>>>>>> master
