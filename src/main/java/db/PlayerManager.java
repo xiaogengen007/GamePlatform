@@ -79,14 +79,13 @@ public class PlayerManager {
 		}
 	}
 	
-	public static int getPoint(String plyName) {
+	public static int getPoint(String plyName) { //获取用户积分
 		Connection c = null;
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
 			c.setAutoCommit(false);
-			//System.out.println("Open database successfully");
 			
 			stmt = c.createStatement();
 			String sql = "SELECT * FROM player WHERE p_name = '"
@@ -109,6 +108,36 @@ public class PlayerManager {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ":" + e.getMessage());
 			return Integer.MIN_VALUE; //查询积分异常
+		}
+	}
+	
+	public static boolean modifyPoint(String plyName, int deltaPoint) { //修改用户积分
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c.setAutoCommit(false);
+			
+			stmt = c.createStatement();
+			int prePoint = PlayerManager.getPoint(plyName);// 获得原分数
+			if(prePoint == Integer.MIN_VALUE) {
+				return false; //获取分数异常
+			}
+			String newPoint = String.valueOf(prePoint + deltaPoint); //得到现在的分数(字符形式)
+			
+			String sql = "UPDATE player SET p_point = " + newPoint + " WHERE p_name = '"
+					+ plyName + "';";
+			stmt.executeUpdate(sql); //更新用户的积分
+			
+			stmt.close();
+			c.commit();
+			c.close();
+			return true; //更新积分成功
+			
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ":" + e.getMessage());
+			return false; //修改用户积分异常
 		}
 	}
 }
