@@ -69,7 +69,7 @@
 		if (json1.action == 1) { //游戏状态的通讯
 			var playerInfo = "";
 			for (i=0; i<json1.players.length; i++) {
-				playerInfo += json1.players[i].username+" ";
+				playerInfo += json1.players[i].username+":"+json1.players[i].hashcode+" ";
 			}	
 			if (json1.start == 0) {
 				//游戏还未开始

@@ -107,6 +107,7 @@ public class GameState {
 		json1.put("players", jsar1);
 		this.sendForMyGameState(json1); //发送每种游戏额外的东西
 		String messages = json1.toString();
+		//System.out.println("send:"+messages);
 		for (Player item : players) {
 			try {
 				if (item.myWebsocket != null) {

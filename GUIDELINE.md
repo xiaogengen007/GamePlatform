@@ -29,6 +29,7 @@ more information
 
   - players(array,store the players info in the room) ,for players[i]
     - username
+    - hashcode (to generate his icon)
 
 - for demining game:
 
