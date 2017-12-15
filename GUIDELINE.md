@@ -86,6 +86,14 @@ more information
     - voteResult (an array, to get the result of every one voted count)
       - votedName
       - votedNum
+- voteresult: (for resultType = 2)
+  - voteResult (an array, to get the result of every one voted count)
+    - votedName
+    - votedNum
+  - nextVoted (an array, to get which will be voted in the next vote turn)
+    - nextVotedIndex (the voted player index)
+  - nextVote (an array, to get who can vote in the next vote turn)
+    - nextVoteIndex (the vote player index)
 
 
 
