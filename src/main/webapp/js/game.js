@@ -1,7 +1,7 @@
 var user = getParam("username");
 var gameCode = parseInt(getParam("game"));
 gameName = ['', '扫雷', '谁是卧底'];
-gameNameEng = ['','minesweeper',''];
+gameNameEng = ['','minesweeper','whoisundercover'];
 document.getElementById('roomtitle').innerText = gameName[gameCode];
 var oHead = document.getElementsByTagName('body').item(0); 
 var gameScript= document.createElement("script"); 

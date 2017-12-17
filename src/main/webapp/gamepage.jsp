@@ -43,6 +43,7 @@
 		  	//response.setDateHeader( "Expires", 0 ); //prevent caching at the proxy server
 		  	//response.setHeader( "Pragma", "no-cache" );  //HTTP 1.0  
 		    out.println("<script>function gotoMineSweeper(){window.location.href='game.html?game=1&username="+ session.getAttribute("user")  +"'};</script>");
+		    out.println("<script>function gotoWhoIsUnderCover(){window.location.href='game.html?game=2&username="+ session.getAttribute("user")  +"'};</script>");
 		  	//out.println("<script>username = '" + session.getAttribute("user")+ "';</script>");
 		%>  
 
@@ -137,6 +138,7 @@
                         </section>
 
                         <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        	<a onclick = "gotoWhoIsUnderCover()" style="text-decoration: none; color:inherit" >
                         	<figure>
                             	<img src="basicpages/3 gamepage/images/2.png" class="img-responsive"/>
                             	<figcaption>
