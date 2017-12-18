@@ -165,6 +165,11 @@
 			var messages = JSON.stringify(json1);
 			setMessageInnerHTML(messages);
 		}
+		
+		if (json1.action == 10) { //谁是卧底的额外信息
+			var messages = JSON.stringify(json1);
+			setMessageInnerHTML(messages);
+		}
     }
 
     //连接关闭的回调方法

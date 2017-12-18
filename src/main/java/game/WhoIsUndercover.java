@@ -338,6 +338,37 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	/*
+	 * 该轮游戏发言阶段结束之后向某个玩家发送消息
+	 */
+	public void sendEndOfVoteForNextTurn(Player player) {
+		int maxIndex = this.votedMax.get(0);
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
+		JSONArray jsar1 = new JSONArray();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).ucPlayer.canbeVoted) {
+				JSONObject json2 = new JSONObject();
+				json2.put("votedName", players.get(i).username);
+				json2.put("votedNum", countVoted[i]);
+				jsar1.add(json2);
+			}
+		}
+		json1.put("voteResult", jsar1);
+		json1.put("diePlayer", players.get(maxIndex).username);
+		json1.put("resultType", 1); //在分出胜负时type为1
+		String msg = json1.toString();
+		System.out.println("send voting message:"+msg);
+		if (player.myWebsocket != null) {
+			try {
+				player.myWebsocket.session.getBasicRemote().sendText(msg);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+	}
+	
+	/*
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
 	public void sendEndOfVoteForNextVoting() {
@@ -597,8 +628,61 @@ public class WhoIsUndercover extends GameState{
 	 * 处理有玩家重新进入的情况
 	 */
 	public void revisiting(Player ply) {
-		if (this.gameStatus == 0) {
-			//this.sendEndOfVoteForNextTurn(countVoted, maxIndex);
+		if (this.gameStatus != 1) return;
+		System.out.println("has send for revisiting player!");
+		this.sendForGameState();
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 10); //10表示游戏过程中时有用户重新返回时发送的内容
+		json1.put("gameStatus", this.gameProcess); //0为发言阶段，1为投票阶段
+		JSONArray jsar1 = new JSONArray(); //存储基本信息
+		for (Player item: players) {
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			json2.put("alive", item.ucPlayer.isAlive);
+			jsar1.add(json2);
 		}
+		json1.put("baseinfo", jsar1);
+		if (this.gameProcess == 0) { //在发言阶段返回
+			String messages = json1.toString();
+			try {
+				if (ply.myWebsocket != null) {
+					ply.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.sendForGameProcess();
+		} else { //在投票阶段进入
+			JSONArray jsar2 = new JSONArray();
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).ucPlayer.canbeVoted) {
+					JSONObject json2 = new JSONObject();
+					json2.put("VotedIndex", i);
+					jsar2.add(json2);
+				}
+			}
+			JSONArray jsar3 = new JSONArray();
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).ucPlayer.canVote) {
+					JSONObject json2 = new JSONObject();
+					json2.put("VoteIndex", i);
+					jsar3.add(json2);
+				}
+			}
+			json1.put("userVoted", jsar2);
+			json1.put("userVote", jsar3);
+			String messages = json1.toString();
+			try {
+				if (ply.myWebsocket != null) {
+					ply.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.sendForVotingProcess();
+		}
+		
 	}
 }

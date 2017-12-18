@@ -63,7 +63,7 @@ public class WebSocket {
 			isSuccess = this.myPlayer.nowGame.deletePlayer(this.myPlayer); //试图删除在房间中记录
 		}
 
-		if (!isSuccess) { //未成功时将引用置为空
+		if (!isSuccess && this.myPlayer != null) { //未成功时将引用置为空
 			this.myPlayer.myWebsocket = null;
 		}
 		webSocketSet.remove(this);  //从set中删除

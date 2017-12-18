@@ -20,6 +20,7 @@
 | 7      | other game state     |                                   |
 | 8      | finish one process   |                                   |
 | 9      | state in one process |                                   |
+|        |                      |                                   |
 
 more information
 
