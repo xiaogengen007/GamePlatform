@@ -142,6 +142,7 @@ more information
   - voteInfo (array, to tell the voted information), for voteInfo[i]
     - votePlayer
     - votedPlayer
+  - leftTime
 
 
 

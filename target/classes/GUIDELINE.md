@@ -20,7 +20,7 @@
 | 7      | other game state     |                                   |
 | 8      | finish one process   |                                   |
 | 9      | state in one process |                                   |
-|        |                      |                                   |
+| 10     | handle for revisit   |                                   |
 
 more information
 
@@ -82,12 +82,12 @@ more information
   - resultType (1 or 2, 1 is for can get the die player, 2 for cannot get)
 
 
-  - voteresult: (for resultType = 1)
+  - (for resultType = 1)
     - diePlayer (his username)
     - voteResult (an array, to get the result of every one voted count)
       - votedName
       - votedNum
-- voteresult: (for resultType = 2)
+- (for resultType = 2)
   - voteResult (an array, to get the result of every one voted count)
     - votedName
     - votedNum
@@ -142,6 +142,29 @@ more information
   - voteInfo (array, to tell the voted information), for voteInfo[i]
     - votePlayer
     - votedPlayer
+  - leftTime
+
+
+
+##### action 10: 
+
+- for undercover game (send when user revisit):
+  - gameProcess (0 for speech process, 1 for voting process)
+- (for gameProcess = 0)
+  - baseInfo (array, about the basic information of the current process)
+    - username
+    - alive (1 for alive, 0 for not alive)
+- (for gameProcess = 1)
+  - baseInfo (array, about the basic information of the current process)
+    - username
+    - alive
+    - message (the user's speech in this turn, refer to vote)
+  - userVoted (array, about the user be voted in this turn)
+    - votedIndex
+  - userVote (array, about the user can vote in this turn)
+    - voteIndex
+
+
 
 ##### Browser to Server
 

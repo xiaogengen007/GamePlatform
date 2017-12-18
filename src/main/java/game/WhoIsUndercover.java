@@ -26,8 +26,8 @@ public class WhoIsUndercover extends GameState{
 		this.gameType = 2; //2表示谁是卧底
 		this.gameNum = 4; //设置玩家数为4人
 		countVoted = new int [this.gameNum];
-		this.maxTurnTime = 30;
-		this.maxVotingTime = 15; //设置投票环节最长时间为15秒
+		this.maxTurnTime = 10;
+		this.maxVotingTime = 5; //设置投票环节最长时间为15秒
 		this.leftTime = new Integer(this.maxTurnTime);
 		this.friendString = "大佬";
 		this.undercoverString = "大神";
@@ -276,6 +276,7 @@ public class WhoIsUndercover extends GameState{
 			this.players.get(maxIndex).ucPlayer.canbeVoted = false;
 			//这里需要判断游戏是否已经结束
 			if (this.gameOver() != 0) { //如果游戏结束则结束操作
+				this.gameStatus = 2; //标识游戏结束
 				this.sendAfterGame();
 			} else {
 				this.initFinishTurn(); //将大家都置为可以说话
@@ -543,6 +544,7 @@ public class WhoIsUndercover extends GameState{
 			}
 		}
 		json1.put("voteInfo", jsar1);
+		json1.put("leftTime", this.leftTime);
 		json1.put("action", 9); //9表示发送投票进展
 		String msg = json1.toString();
 		for (Player item: players) {
