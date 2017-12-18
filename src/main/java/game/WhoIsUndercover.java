@@ -7,6 +7,7 @@ import java.util.Random;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import player.Player;
+import player.Player.UndercoverPlayer;
 import websocket.WebSocket;
 
 public class WhoIsUndercover extends GameState{
@@ -105,6 +106,19 @@ public class WhoIsUndercover extends GameState{
 			}
 		}
 		return countVoted;
+	}
+	
+	/*
+	 * 获取当前可以被投票的玩家数（对投票阶段适用）
+	 */
+	public int getCanBeVotedNum() {
+		int countCanBeVoted = 0;
+		for (Player item: players) {
+			if (item.ucPlayer.isAlive && item.ucPlayer.canbeVoted) {
+				countCanBeVoted++;
+			}
+		}
+		return countCanBeVoted;
 	}
 	
 	/*
@@ -699,7 +713,57 @@ public class WhoIsUndercover extends GameState{
 				e.printStackTrace();
 			}
 			this.sendForVotingProcess();
-		}
-		
+		}		
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see game.GameState#handleLeftTimeZero()
+	 * 解决时间为零的情况,发言阶段则什么都不说，投票阶段则随机投一个人
+	 */
+	public void handleLeftTimeZero() {
+		if (this.gameStatus != 1) {
+			return; //游戏为处在进行状态时直接跳过
+		}
+		for (Player item: players) {
+			if (this.gameProcess == 0) { //发言阶段
+				if (!item.ucPlayer.isSubmit && item.ucPlayer.isAlive) {
+					synchronized (item) {
+						item.ucPlayer.thisTurnMsg = "";
+						item.ucPlayer.isSubmit = true;
+					}
+				}
+			} else { //投票阶段
+				if (!item.ucPlayer.hasVoted && item.ucPlayer.canVote) {
+					synchronized (item) {
+						int canBeVotedNum = this.getCanBeVotedNum();
+						Random random = new Random();
+						int index = random.nextInt(canBeVotedNum);
+						int beVotedIndex = 0;
+						int nowIndex = -1; //逢一个加一
+						while (true) {
+							UndercoverPlayer uctmp = this.players.get(beVotedIndex).ucPlayer;
+							if (uctmp.canbeVoted && uctmp.isAlive) {
+								nowIndex++;
+								if (nowIndex == index) {
+									break; //相等时则代表就是他了
+								}
+							}
+							beVotedIndex++;
+						}
+						item.ucPlayer.votedPlayer = beVotedIndex;
+						item.ucPlayer.hasVoted = true;
+					}
+				}
+			}
+		}
+		if (this.gameProcess == 0) {
+			this.sendForGameProcess();
+			this.batchHandleTurn();
+			this.sendEndOfThisTurn();
+		} else {
+			this.sendForVotingProcess();
+			this.batchHandleVoteTurn();
+		}
+	} 
 }
