@@ -8,7 +8,23 @@ import java.util.Random;
 import java.util.Vector;
 
 public class ReadTxt {
-	public static Vector<String> readTxtFile(String filePath) {
+	public static ReadTxt myRead = null;
+	private static String filePath = "src/main/resources/wordsForUndercover.txt";
+	ReadTxt() {
+		this.readTxtFile();
+	}
+	
+	/*
+	 * 单子模式，获取一个实体
+	 */
+	public static ReadTxt getInstance() {
+		if (myRead == null) {
+			myRead = new ReadTxt();
+		}
+		return myRead;
+	}
+	
+	private Vector<String> readTxtFile() {
 		Vector<String> vv = new Vector<String>();
 		try {
 			String encoding = "GBK";
@@ -31,8 +47,8 @@ public class ReadTxt {
 		return vv;
 	}
 
-	public static String getRandomConent(String filePath) {
-		Vector<String> vv = readTxtFile(filePath);
+	public String getRandomConent() {
+		Vector<String> vv = readTxtFile();
 		int len = vv.size();
 		//System.out.println(len);
 		Random r = new Random();
@@ -42,8 +58,7 @@ public class ReadTxt {
 	}
 
 	public static void main(String argv[]) {
-		String filePath = "src/main/resources/wordsForUndercover.txt";
-		System.out.println(readTxtFile(filePath));
-		System.out.println(getRandomConent(filePath));
+		ReadTxt rt = ReadTxt.getInstance();
+		System.out.println(rt.getRandomConent());
 	}
 }
