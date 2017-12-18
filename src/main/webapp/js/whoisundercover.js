@@ -71,7 +71,7 @@ websocket.onmessage = function (event) {
 		
 	}
 	if (json1.action == 4) { //游戏该轮完成后通讯
-		document.getElementById('message').innerHTML = "";
+		//document.getElementById('message').innerHTML = "";
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		if (json1.resultType == 1) { //1 for can get the die player
@@ -150,14 +150,17 @@ websocket.onmessage = function (event) {
 
 //在非投票时更新界面
 function writeNormal() {
+	/*
 	document.getElementById('ptest').innerHTML = "";
 	for (i=0; i<playerNum; i++) {
     	document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"</div><br/>";
 	}
+	*/
 }
 
 //在发言阶段结束后更新界面
 function writeAfterSpeechProcess() {
+	/*
 	document.getElementById('ptest').innerHTML = "";
 	for (i=0; i<playerNum; i++) {
 		if (alive[i] == 1 && canVoted[i] == 1) { //或者需要让他可以被投票
@@ -166,7 +169,7 @@ function writeAfterSpeechProcess() {
 			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"</div><br/>";
 		}
     	
-	}
+	}*/
 }
 
 //发送消息
@@ -261,7 +264,7 @@ function startGame(){
 		var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		var classList;
 		if(i == 1){
-			classList = "col-md-2 col-md-offset-4 placeholder";
+			classList = "col-md-2 col-md-offset-" + (6-playerArray.length) +" placeholder";
 		}
 		else{
 			classList = "col-md-2 placeholder";
