@@ -1,3 +1,10 @@
+var playerNum = 4;
+var isVoting = 0; //初始时不是投票环节
+var state = new Array(8); //多生成一些防止不够用
+var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
+var canVoted = new Array(8); //记录各玩家能否被投票
+var playerName = new Array(8);
+
 websocket.onmessage = function (event) {
 	var json1 = JSON.parse(event.data);
 	if (json1.action == 1) { //游戏状态的通讯
