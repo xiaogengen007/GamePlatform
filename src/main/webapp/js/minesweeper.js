@@ -23,7 +23,7 @@ websocket.onmessage = function (event) {
         }
     }
     else if (json1.action == 1) { //游戏状态的通讯
-    	
+    	//针对退出游戏的情况，要进行修改
     	for(var i = playerArray.length; i < json1.players.length; i++ ){
     		addPlayer(json1.players[i]);
     	}
