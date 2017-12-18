@@ -29,9 +29,21 @@ public class WhoIsUndercover extends GameState{
 		this.maxTurnTime = 10;
 		this.maxVotingTime = 5; //设置投票环节最长时间为15秒
 		this.leftTime = new Integer(this.maxTurnTime);
-		this.friendString = "大佬";
-		this.undercoverString = "大神";
+		String[] words = this.getWords();
+		this.friendString = words[0];
+		this.undercoverString = words[1];
 		this.gameProcess = 0; //初始化为发言阶段
+	}
+	
+	/*
+	 * 获取一组词汇，第一个为好友词，第二个为卧底词
+	 */
+	public String[] getWords() {
+		ReadTxt rt = ReadTxt.getInstance();
+		String string = rt.getRandomConent();
+		String[] splits = string.split(" ");
+		System.out.println("create the words:"+splits[0]+" | "+splits[1]);
+		return splits;
 	}
 	
 	/*

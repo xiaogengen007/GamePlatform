@@ -9,7 +9,8 @@ import java.util.Vector;
 
 public class ReadTxt {
 	public static ReadTxt myRead = null;
-	private static String filePath = "src/main/resources/wordsForUndercover.txt";
+	private static String filePath = Thread.currentThread().getContextClassLoader().getResource("").getPath()
+			+"wordsForUndercover.txt";
 	ReadTxt() {
 		this.readTxtFile();
 	}
@@ -20,6 +21,9 @@ public class ReadTxt {
 	public static ReadTxt getInstance() {
 		if (myRead == null) {
 			myRead = new ReadTxt();
+			File directory = new File("");//设定为当前文件夹
+			System.out.println("the absolutePath:"+directory.getAbsolutePath());//获取绝对路径
+			System.out.println(Thread.currentThread().getContextClassLoader().getResource("").getPath());
 		}
 		return myRead;
 	}
@@ -59,6 +63,9 @@ public class ReadTxt {
 
 	public static void main(String argv[]) {
 		ReadTxt rt = ReadTxt.getInstance();
-		System.out.println(rt.getRandomConent());
+		String string = rt.getRandomConent();
+		System.out.println(string);
+		String[] splits = string.split(" ");
+		System.out.println(splits[0]+"|"+splits[1]);
 	}
 }
