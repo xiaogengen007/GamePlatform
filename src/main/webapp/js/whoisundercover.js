@@ -1,16 +1,41 @@
+var playerNum = 4;
+var isVoting = 0; //初始时不是投票环节
+var state = new Array(8); //多生成一些防止不够用
+var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
+var canVoted = new Array(8); //记录各玩家能否被投票
+var playerName = new Array(8);
+
+//接收到消息的回调方法
 websocket.onmessage = function (event) {
 	var json1 = JSON.parse(event.data);
 	if (json1.action == 1) { //游戏状态的通讯
 		var playerInfo = "";
 		for (i=0; i<json1.players.length; i++) {
 			playerInfo += json1.players[i].username+" ";
-		}	
+		}
+		/*
+		for(var i = 0; i < json1.players.length; i++){
+			if(json1.players[i].username == playerArray[i].username){
+				continue;
+			}
+			
+			if(i > playerArray.length - 1){
+				addPlayer(json1.players[i]);
+			}
+			
+		}
+		*/
+		for(var i = playerArray.length; i < json1.players.length; i++ ){
+    		addPlayer(json1.players[i]);
+    	}
+		
 		if (json1.start == 0) {
 			//游戏还未开始
 			setMessageInnerHTML("Now has "+playerInfo+" in this room, please wait for game start.");
 		} 
 		if (json1.start == 1) {
 			//游戏正在进行
+			startGame();
 			playerNum = json1.players.length;
 			for (i=0; i<json1.players.length; i++) {
 				playerName[i] = json1.players[i].username;
@@ -46,7 +71,7 @@ websocket.onmessage = function (event) {
 		
 	}
 	if (json1.action == 4) { //游戏该轮完成后通讯
-		document.getElementById('message').innerHTML = "";
+		//document.getElementById('message').innerHTML = "";
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		if (json1.resultType == 1) { //1 for can get the die player
@@ -75,7 +100,7 @@ websocket.onmessage = function (event) {
 	}
 	if (json1.action == 7) { //游戏状态的额外传输
 		var keywords = json1.keyword;
-		document.getElementById('keyword').innerHTML = "您的关键词："+keywords;
+		//document.getElementById('keyword').innerHTML = "您的关键词："+keywords;
 	}
 	if (json1.action == 8) { //发言阶段结束时的发言记录
 		isVoting = 1; //进入投票环节
@@ -101,18 +126,41 @@ websocket.onmessage = function (event) {
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 	}
+	
+	if (json1.action == 10) { //谁是卧底的额外信息
+		var messages = JSON.stringify(json1);
+		setMessageInnerHTML(messages);
+		for (i=0; i<playerNum; i++) {
+			alive[i] = json1.baseInfo[i].alive;
+		}
+		if (json1.gameProcess == 1) { //在投票阶段需要根据情况来绘制投票器
+			for (i = 0; i<playerNum; i++) {
+				state[i] = json1.baseInfo[i].message;
+			}
+			for (i=0; i<playerNum; i++) {
+				canVoted[i] = 0;
+			}
+			for (i=0; i<json1.userVoted.length; i++) {
+				canVoted[json1.userVoted[i].votedIndex] = 1;
+			}
+			writeAfterSpeechProcess();
+		}
+	}
 }
 
 //在非投票时更新界面
 function writeNormal() {
+	/*
 	document.getElementById('ptest').innerHTML = "";
 	for (i=0; i<playerNum; i++) {
     	document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"</div><br/>";
 	}
+	*/
 }
 
 //在发言阶段结束后更新界面
 function writeAfterSpeechProcess() {
+	/*
 	document.getElementById('ptest').innerHTML = "";
 	for (i=0; i<playerNum; i++) {
 		if (alive[i] == 1 && canVoted[i] == 1) { //或者需要让他可以被投票
@@ -121,7 +169,7 @@ function writeAfterSpeechProcess() {
 			document.getElementById('ptest').innerHTML += "<div>" +playerName[i]+":"+state[i]+"</div><br/>";
 		}
     	
-	}
+	}*/
 }
 
 //发送消息
@@ -202,5 +250,26 @@ function startGame(){
 	node.href = 'css/whoisundercover.css';
 	document.getElementsByTagName('head')[0].appendChild(node);
 	
-	$('#players').empty().removeClass('main').addClass('game');
+	$('#players').empty();
+	$('<div></div>').attr('id','mainArea').css('margin-top','50px').appendTo('#players');
+	$('<div></div>').addClass("row placeholders").attr('id','playerlist').appendTo('#mainArea');
+	
+	for(var i = 1; i <= playerArray.length; i++){
+		var popMessage = $('<div></div>').attr('data-container','body').attr('data-toggle','popover')
+		.attr('data-placement','top').attr('data-content','word');
+		var img = $('<img></img>').addClass("img-responsive")
+		.attr('src',playerArray[i-1].thumbnail)
+		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
+		var label = $('<h6></h6>').text(playerArray[i-1].username);
+		var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
+		var classList;
+		if(i == 1){
+			classList = "col-md-2 col-md-offset-" + (6-playerArray.length) +" placeholder";
+		}
+		else{
+			classList = "col-md-2 placeholder";
+		}
+		$('<div></div>').addClass(classList).attr('id','player' + i).append(popMessage)
+		.append(img).append(label).append(scoreLabel).appendTo('#playerlist');
+	}
 }

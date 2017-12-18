@@ -1,2 +1,6 @@
 /src/
+/db/
+/game/
+/player/
 /target/
+/websocket/
