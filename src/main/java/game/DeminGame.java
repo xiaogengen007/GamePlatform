@@ -292,6 +292,7 @@ public class DeminGame extends GameState{
 				}
 			}
 			this.generatingMine();
+			this.gameStatus = 0; //恢复初始状态
 		}
 	}
 	

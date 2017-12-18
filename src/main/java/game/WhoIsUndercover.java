@@ -278,6 +278,16 @@ public class WhoIsUndercover extends GameState{
 			if (this.gameOver() != 0) { //如果游戏结束则结束操作
 				this.gameStatus = 2; //标识游戏结束
 				this.sendAfterGame();
+				/*
+				 * 同时将该游戏房间玩家清空
+				 */
+				for (Player item: players) {
+					item.nowGame = null;
+				}
+				players.clear();
+				//游戏房间还需要重新初始化，即更换词汇
+				this.gameStatus = 0;
+				
 			} else {
 				this.initFinishTurn(); //将大家都置为可以说话
 				this.gameProcess = 0; //回到发言阶段
