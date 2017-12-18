@@ -201,4 +201,6 @@ function startGame(){
 	node.rel = 'stylesheet';
 	node.href = 'css/whoisundercover.css';
 	document.getElementsByTagName('head')[0].appendChild(node);
+	
+	$('#players').empty().removeClass('main').addClass('game');
 }
