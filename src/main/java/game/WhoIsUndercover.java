@@ -633,15 +633,19 @@ public class WhoIsUndercover extends GameState{
 		this.sendForGameState();
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 10); //10表示游戏过程中时有用户重新返回时发送的内容
-		json1.put("gameStatus", this.gameProcess); //0为发言阶段，1为投票阶段
+		json1.put("gameProcess", this.gameProcess); //0为发言阶段，1为投票阶段
 		JSONArray jsar1 = new JSONArray(); //存储基本信息
 		for (Player item: players) {
 			JSONObject json2 = new JSONObject();
 			json2.put("username", item.username);
-			json2.put("alive", item.ucPlayer.isAlive);
+			if (item.ucPlayer.isAlive) {
+				json2.put("alive", 1);
+			} else {
+				json2.put("alive", 0);
+			}
 			jsar1.add(json2);
 		}
-		json1.put("baseinfo", jsar1);
+		json1.put("baseInfo", jsar1);
 		if (this.gameProcess == 0) { //在发言阶段返回
 			String messages = json1.toString();
 			try {
@@ -658,7 +662,7 @@ public class WhoIsUndercover extends GameState{
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).ucPlayer.canbeVoted) {
 					JSONObject json2 = new JSONObject();
-					json2.put("VotedIndex", i);
+					json2.put("votedIndex", i);
 					jsar2.add(json2);
 				}
 			}
@@ -666,7 +670,7 @@ public class WhoIsUndercover extends GameState{
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).ucPlayer.canVote) {
 					JSONObject json2 = new JSONObject();
-					json2.put("VoteIndex", i);
+					json2.put("voteIndex", i);
 					jsar3.add(json2);
 				}
 			}
