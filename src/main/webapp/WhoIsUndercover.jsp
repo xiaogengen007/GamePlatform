@@ -173,6 +173,9 @@
 				alive[i] = json1.baseInfo[i].alive;
 			}
 			if (json1.gameProcess == 1) { //在投票阶段需要根据情况来绘制投票器
+				for (i = 0; i<playerNum; i++) {
+					state[i] = json1.baseInfo[i].message;
+				}
 				for (i=0; i<playerNum; i++) {
 					canVoted[i] = 0;
 				}
