@@ -14,6 +14,8 @@ public class WhoIsUndercover extends GameState{
 	String undercoverString = ""; //卧底的词汇
 	int gameProcess; //游戏当前的进程，0表示发言环节，1表示投票环节
 	public int maxVotingTime;
+	int[] countVoted;
+	ArrayList<Integer> votedMax = new ArrayList<Integer>();
 	
 	/*
 	 * 构造函数，完成一些基本的参数配置
@@ -22,6 +24,7 @@ public class WhoIsUndercover extends GameState{
 		super();
 		this.gameType = 2; //2表示谁是卧底
 		this.gameNum = 4; //设置玩家数为4人
+		countVoted = new int [this.gameNum];
 		this.maxTurnTime = 30;
 		this.maxVotingTime = 15; //设置投票环节最长时间为15秒
 		this.leftTime = new Integer(this.maxTurnTime);
@@ -231,7 +234,6 @@ public class WhoIsUndercover extends GameState{
 	 */
 	public void batchHandleVoteTurn() { 
 		this.leftTime = this.maxVotingTime;
-		int[] countVoted = new int [this.gameNum];
 		for (int i = 0; i < this.gameNum; i++) {
 			countVoted[i] = 0;
 		}
@@ -241,8 +243,8 @@ public class WhoIsUndercover extends GameState{
 				countVoted[votedIndex]++;
 			}
 		}
-		ArrayList<Integer> votedMax = new ArrayList<Integer>();
 		int maxCount = 0;
+		votedMax.clear();
 		for (int i = 0; i < this.gameNum; i++) {
 			if (countVoted[i] == maxCount) {
 				votedMax.add(i);
@@ -255,7 +257,7 @@ public class WhoIsUndercover extends GameState{
 		}
 		if (votedMax.size() == 1) {
 			int maxIndex = votedMax.get(0);
-			this.sendEndOfVoteForNextTurn(countVoted, maxIndex);
+			this.sendEndOfVoteForNextTurn();
 			this.players.get(maxIndex).ucPlayer.isAlive = false; //设置该人已经死亡
 			this.players.get(maxIndex).ucPlayer.canbeVoted = false;
 			//这里需要判断游戏是否已经结束
@@ -295,7 +297,7 @@ public class WhoIsUndercover extends GameState{
 				}
 			}
 			
-			this.sendEndOfVoteForNextVoting(countVoted, votedMax);
+			this.sendEndOfVoteForNextVoting();
 			for (Player item: players) {
 				item.ucPlayer.hasVoted = false; //重置每人都没投票，能投票的人继续投票
 			}
@@ -305,7 +307,8 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
-	public void sendEndOfVoteForNextTurn(int[] countVoted, int maxIndex) {
+	public void sendEndOfVoteForNextTurn() {
+		int maxIndex = this.votedMax.get(0);
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
 		JSONArray jsar1 = new JSONArray();
@@ -337,7 +340,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
-	public void sendEndOfVoteForNextVoting(int[] countVoted, ArrayList<Integer> votedMax) {
+	public void sendEndOfVoteForNextVoting() {
 		System.out.println("has send for next vote turn");
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
@@ -585,6 +588,17 @@ public class WhoIsUndercover extends GameState{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see game.GameState#revisiting(player.Player)
+	 * 处理有玩家重新进入的情况
+	 */
+	public void revisiting(Player ply) {
+		if (this.gameStatus == 0) {
+			//this.sendEndOfVoteForNextTurn(countVoted, maxIndex);
 		}
 	}
 }
