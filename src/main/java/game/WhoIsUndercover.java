@@ -7,6 +7,7 @@ import java.util.Random;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import player.Player;
+import player.Player.UndercoverPlayer;
 import websocket.WebSocket;
 
 public class WhoIsUndercover extends GameState{
@@ -14,6 +15,8 @@ public class WhoIsUndercover extends GameState{
 	String undercoverString = ""; //卧底的词汇
 	int gameProcess; //游戏当前的进程，0表示发言环节，1表示投票环节
 	public int maxVotingTime;
+	int[] countVoted;
+	ArrayList<Integer> votedMax = new ArrayList<Integer>();
 	
 	/*
 	 * 构造函数，完成一些基本的参数配置
@@ -22,12 +25,25 @@ public class WhoIsUndercover extends GameState{
 		super();
 		this.gameType = 2; //2表示谁是卧底
 		this.gameNum = 4; //设置玩家数为4人
-		this.maxTurnTime = 30;
-		this.maxVotingTime = 15; //设置投票环节最长时间为15秒
+		countVoted = new int [this.gameNum];
+		this.maxTurnTime = 10;
+		this.maxVotingTime = 5; //设置投票环节最长时间为15秒
 		this.leftTime = new Integer(this.maxTurnTime);
-		this.friendString = "大佬";
-		this.undercoverString = "大神";
+		String[] words = this.getWords();
+		this.friendString = words[0];
+		this.undercoverString = words[1];
 		this.gameProcess = 0; //初始化为发言阶段
+	}
+	
+	/*
+	 * 获取一组词汇，第一个为好友词，第二个为卧底词
+	 */
+	public String[] getWords() {
+		ReadTxt rt = ReadTxt.getInstance();
+		String string = rt.getRandomConent();
+		String[] splits = string.split(" ");
+		System.out.println("create the words:"+splits[0]+" | "+splits[1]);
+		return splits;
 	}
 	
 	/*
@@ -102,6 +118,19 @@ public class WhoIsUndercover extends GameState{
 			}
 		}
 		return countVoted;
+	}
+	
+	/*
+	 * 获取当前可以被投票的玩家数（对投票阶段适用）
+	 */
+	public int getCanBeVotedNum() {
+		int countCanBeVoted = 0;
+		for (Player item: players) {
+			if (item.ucPlayer.isAlive && item.ucPlayer.canbeVoted) {
+				countCanBeVoted++;
+			}
+		}
+		return countCanBeVoted;
 	}
 	
 	/*
@@ -231,7 +260,6 @@ public class WhoIsUndercover extends GameState{
 	 */
 	public void batchHandleVoteTurn() { 
 		this.leftTime = this.maxVotingTime;
-		int[] countVoted = new int [this.gameNum];
 		for (int i = 0; i < this.gameNum; i++) {
 			countVoted[i] = 0;
 		}
@@ -241,8 +269,8 @@ public class WhoIsUndercover extends GameState{
 				countVoted[votedIndex]++;
 			}
 		}
-		ArrayList<Integer> votedMax = new ArrayList<Integer>();
 		int maxCount = 0;
+		votedMax.clear();
 		for (int i = 0; i < this.gameNum; i++) {
 			if (countVoted[i] == maxCount) {
 				votedMax.add(i);
@@ -255,12 +283,23 @@ public class WhoIsUndercover extends GameState{
 		}
 		if (votedMax.size() == 1) {
 			int maxIndex = votedMax.get(0);
-			this.sendEndOfVoteForNextTurn(countVoted, maxIndex);
+			this.sendEndOfVoteForNextTurn();
 			this.players.get(maxIndex).ucPlayer.isAlive = false; //设置该人已经死亡
 			this.players.get(maxIndex).ucPlayer.canbeVoted = false;
 			//这里需要判断游戏是否已经结束
 			if (this.gameOver() != 0) { //如果游戏结束则结束操作
+				this.gameStatus = 2; //标识游戏结束
 				this.sendAfterGame();
+				/*
+				 * 同时将该游戏房间玩家清空
+				 */
+				for (Player item: players) {
+					item.nowGame = null;
+				}
+				players.clear();
+				//游戏房间还需要重新初始化，即更换词汇
+				this.gameStatus = 0;
+				
 			} else {
 				this.initFinishTurn(); //将大家都置为可以说话
 				this.gameProcess = 0; //回到发言阶段
@@ -295,7 +334,7 @@ public class WhoIsUndercover extends GameState{
 				}
 			}
 			
-			this.sendEndOfVoteForNextVoting(countVoted, votedMax);
+			this.sendEndOfVoteForNextVoting();
 			for (Player item: players) {
 				item.ucPlayer.hasVoted = false; //重置每人都没投票，能投票的人继续投票
 			}
@@ -305,7 +344,8 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
-	public void sendEndOfVoteForNextTurn(int[] countVoted, int maxIndex) {
+	public void sendEndOfVoteForNextTurn() {
+		int maxIndex = this.votedMax.get(0);
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
 		JSONArray jsar1 = new JSONArray();
@@ -335,9 +375,40 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	/*
+	 * 该轮游戏发言阶段结束之后向某个玩家发送消息
+	 */
+	public void sendEndOfVoteForNextTurn(Player player) {
+		int maxIndex = this.votedMax.get(0);
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
+		JSONArray jsar1 = new JSONArray();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).ucPlayer.canbeVoted) {
+				JSONObject json2 = new JSONObject();
+				json2.put("votedName", players.get(i).username);
+				json2.put("votedNum", countVoted[i]);
+				jsar1.add(json2);
+			}
+		}
+		json1.put("voteResult", jsar1);
+		json1.put("diePlayer", players.get(maxIndex).username);
+		json1.put("resultType", 1); //在分出胜负时type为1
+		String msg = json1.toString();
+		System.out.println("send voting message:"+msg);
+		if (player.myWebsocket != null) {
+			try {
+				player.myWebsocket.session.getBasicRemote().sendText(msg);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+	}
+	
+	/*
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
-	public void sendEndOfVoteForNextVoting(int[] countVoted, ArrayList<Integer> votedMax) {
+	public void sendEndOfVoteForNextVoting() {
 		System.out.println("has send for next vote turn");
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
@@ -495,6 +566,7 @@ public class WhoIsUndercover extends GameState{
 			}
 		}
 		json1.put("voteInfo", jsar1);
+		json1.put("leftTime", this.leftTime);
 		json1.put("action", 9); //9表示发送投票进展
 		String msg = json1.toString();
 		for (Player item: players) {
@@ -587,4 +659,135 @@ public class WhoIsUndercover extends GameState{
 			}
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see game.GameState#revisiting(player.Player)
+	 * 处理有玩家重新进入的情况
+	 */
+	public void revisiting(Player ply) {
+		if (this.gameStatus != 1) return;
+		System.out.println("has send for revisiting player!");
+		this.sendForGameState();
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 10); //10表示游戏过程中时有用户重新返回时发送的内容
+		json1.put("gameProcess", this.gameProcess); //0为发言阶段，1为投票阶段
+		if (this.gameProcess == 0) { //在发言阶段返回
+			JSONArray jsar1 = new JSONArray(); //存储基本信息
+			for (Player item: players) {
+				JSONObject json2 = new JSONObject();
+				json2.put("username", item.username);
+				if (item.ucPlayer.isAlive) {
+					json2.put("alive", 1);
+				} else {
+					json2.put("alive", 0);
+				}
+				jsar1.add(json2);
+			}
+			json1.put("baseInfo", jsar1);
+			String messages = json1.toString();
+			try {
+				if (ply.myWebsocket != null) {
+					ply.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.sendForGameProcess();
+		} else { //在投票阶段进入
+			JSONArray jsar1 = new JSONArray(); //存储基本信息
+			for (Player item: players) {
+				JSONObject json2 = new JSONObject();
+				json2.put("username", item.username);
+				if (item.ucPlayer.isAlive) {
+					json2.put("alive", 1);
+				} else {
+					json2.put("alive", 0);
+				}
+				json2.put("message", item.ucPlayer.thisTurnMsg);
+				jsar1.add(json2);
+			}
+			json1.put("baseInfo", jsar1);
+			JSONArray jsar2 = new JSONArray();
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).ucPlayer.canbeVoted) {
+					JSONObject json2 = new JSONObject();
+					json2.put("votedIndex", i);
+					jsar2.add(json2);
+				}
+			}
+			JSONArray jsar3 = new JSONArray();
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).ucPlayer.canVote) {
+					JSONObject json2 = new JSONObject();
+					json2.put("voteIndex", i);
+					jsar3.add(json2);
+				}
+			}
+			json1.put("userVoted", jsar2);
+			json1.put("userVote", jsar3);
+			String messages = json1.toString();
+			try {
+				if (ply.myWebsocket != null) {
+					ply.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.sendForVotingProcess();
+		}		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see game.GameState#handleLeftTimeZero()
+	 * 解决时间为零的情况,发言阶段则什么都不说，投票阶段则随机投一个人
+	 */
+	public void handleLeftTimeZero() {
+		if (this.gameStatus != 1) {
+			return; //游戏为处在进行状态时直接跳过
+		}
+		for (Player item: players) {
+			if (this.gameProcess == 0) { //发言阶段
+				if (!item.ucPlayer.isSubmit && item.ucPlayer.isAlive) {
+					synchronized (item) {
+						item.ucPlayer.thisTurnMsg = "";
+						item.ucPlayer.isSubmit = true;
+					}
+				}
+			} else { //投票阶段
+				if (!item.ucPlayer.hasVoted && item.ucPlayer.canVote) {
+					synchronized (item) {
+						int canBeVotedNum = this.getCanBeVotedNum();
+						Random random = new Random();
+						int index = random.nextInt(canBeVotedNum);
+						int beVotedIndex = 0;
+						int nowIndex = -1; //逢一个加一
+						while (true) {
+							UndercoverPlayer uctmp = this.players.get(beVotedIndex).ucPlayer;
+							if (uctmp.canbeVoted && uctmp.isAlive) {
+								nowIndex++;
+								if (nowIndex == index) {
+									break; //相等时则代表就是他了
+								}
+							}
+							beVotedIndex++;
+						}
+						item.ucPlayer.votedPlayer = beVotedIndex;
+						item.ucPlayer.hasVoted = true;
+					}
+				}
+			}
+		}
+		if (this.gameProcess == 0) {
+			this.sendForGameProcess();
+			this.batchHandleTurn();
+			this.sendEndOfThisTurn();
+		} else {
+			this.sendForVotingProcess();
+			this.batchHandleVoteTurn();
+		}
+	} 
 }

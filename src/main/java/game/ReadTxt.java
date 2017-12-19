@@ -8,7 +8,27 @@ import java.util.Random;
 import java.util.Vector;
 
 public class ReadTxt {
-	public static Vector<String> readTxtFile(String filePath) {
+	public static ReadTxt myRead = null;
+	private static String filePath = Thread.currentThread().getContextClassLoader().getResource("").getPath()
+			+"wordsForUndercover.txt";
+	ReadTxt() {
+		this.readTxtFile();
+	}
+	
+	/*
+	 * 单子模式，获取一个实体
+	 */
+	public static ReadTxt getInstance() {
+		if (myRead == null) {
+			myRead = new ReadTxt();
+			File directory = new File("");//设定为当前文件夹
+			System.out.println("the absolutePath:"+directory.getAbsolutePath());//获取绝对路径
+			System.out.println(Thread.currentThread().getContextClassLoader().getResource("").getPath());
+		}
+		return myRead;
+	}
+	
+	private Vector<String> readTxtFile() {
 		Vector<String> vv = new Vector<String>();
 		try {
 			String encoding = "GBK";
@@ -31,8 +51,8 @@ public class ReadTxt {
 		return vv;
 	}
 
-	public static String getRandomConent(String filePath) {
-		Vector<String> vv = readTxtFile(filePath);
+	public String getRandomConent() {
+		Vector<String> vv = readTxtFile();
 		int len = vv.size();
 		//System.out.println(len);
 		Random r = new Random();
@@ -42,8 +62,10 @@ public class ReadTxt {
 	}
 
 	public static void main(String argv[]) {
-		String filePath = "src/main/resources/wordsForUndercover.txt";
-		System.out.println(readTxtFile(filePath));
-		System.out.println(getRandomConent(filePath));
+		ReadTxt rt = ReadTxt.getInstance();
+		String string = rt.getRandomConent();
+		System.out.println(string);
+		String[] splits = string.split(" ");
+		System.out.println(splits[0]+"|"+splits[1]);
 	}
 }

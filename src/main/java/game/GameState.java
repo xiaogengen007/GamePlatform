@@ -60,7 +60,7 @@ public class GameState {
 		}
 	}
 	public static void distributeRoom(Player ply, int gameType) { //为玩家分配房间
-		if (ply.nowGame != null) return; //之前已经在一个房间里，则不用分配
+		if (ply == null || ply.nowGame != null) return; //之前已经在一个房间里，则不用分配
 		GameState flow = null;
 		for (int i = 0; i < games.size(); i++) {
 			flow = games.get(i);

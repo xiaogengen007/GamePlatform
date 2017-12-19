@@ -165,6 +165,26 @@
 			var messages = JSON.stringify(json1);
 			setMessageInnerHTML(messages);
 		}
+		
+		if (json1.action == 10) { //谁是卧底的额外信息
+			var messages = JSON.stringify(json1);
+			setMessageInnerHTML(messages);
+			for (i=0; i<playerNum; i++) {
+				alive[i] = json1.baseInfo[i].alive;
+			}
+			if (json1.gameProcess == 1) { //在投票阶段需要根据情况来绘制投票器
+				for (i = 0; i<playerNum; i++) {
+					state[i] = json1.baseInfo[i].message;
+				}
+				for (i=0; i<playerNum; i++) {
+					canVoted[i] = 0;
+				}
+				for (i=0; i<json1.userVoted.length; i++) {
+					canVoted[json1.userVoted[i].votedIndex] = 1;
+				}
+				writeAfterSpeechProcess();
+			}
+		}
     }
 
     //连接关闭的回调方法
