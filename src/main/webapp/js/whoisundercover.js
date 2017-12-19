@@ -56,17 +56,20 @@ websocket.onmessage = function (event) {
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		if (json1.finished != 0) { //不是为非完成的用户
+			/*
 			for (i=0; i<playerNum; i++) {
 				state[i] = "";
-			}
+			}*/
 			for (i=0; i<json1.preMessage.length; i++) {
-				for (var j=0; j<playerNum; j++) {
-					if (json1.preMessage[i].username == playerName[j]) {						
-						state[j] = json1.preMessage[i].message;
+				for (var j=0; j<playerArray.length; j++) {
+					if (json1.preMessage[i].username == playerArray[j].username) {
+						var tmp = $('#popmessage' + i).attr('data-content', json1.preMessage[i].message);
+						tmp.popover('show');
+						//state[j] = json1.preMessage[i].message;
 					} 
 				}	
 			}
-			writeNormal();
+			//writeNormal();
 		}
 		
 	}
@@ -216,25 +219,6 @@ function sendGame() {
 	websocket.send(messages);
 }
 
-function getParam(paramName) {
-    paramValue = "";
-    isFound = false;
-    if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
-        arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&");
-        i = 0;
-        while (i < arrSource.length && !isFound) {
-            if (arrSource[i].indexOf("=") > 0) {
-                if (arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase()) {
-                    paramValue = arrSource[i].split("=")[1];
-                    isFound = true;
-                }
-            }
-            i++;
-        }
-    }
-    return paramValue;
-}
-
 function sendPlayRequest() {
 	var json1 = {};
 	json1.action = 4; //4表示请求加入游戏
@@ -256,7 +240,7 @@ function startGame(){
 	
 	for(var i = 1; i <= playerArray.length; i++){
 		var popMessage = $('<div></div>').attr('data-container','body').attr('data-toggle','popover')
-		.attr('data-placement','top').attr('data-content','word');
+		.attr('data-placement','top').attr('data-content','word').attr('id','popmessage' + i);
 		var img = $('<img></img>').addClass("img-responsive")
 		.attr('src',playerArray[i-1].thumbnail)
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
