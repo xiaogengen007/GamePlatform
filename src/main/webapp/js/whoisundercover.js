@@ -272,4 +272,12 @@ function startGame(){
 		$('<div></div>').addClass(classList).attr('id','player' + i).append(popMessage)
 		.append(img).append(label).append(scoreLabel).appendTo('#playerlist');
 	}
+	
+	$('<div></div>').attr('id','progressbardiv').addClass('progress').appendTo('#mainArea');
+	
+	$('<div></div>').attr('id','progressbar')
+	.addClass('progress-bar progress-bar-striped active')
+	.attr('role', 'progressbar').attr('aria-valuenow', '100')
+	.attr('aria-valuemin','0').attr('aria-valuemax','100').css('width','100%')
+	.appendTo('#progressbardiv');
 }
