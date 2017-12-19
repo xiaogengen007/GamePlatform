@@ -280,4 +280,13 @@ function startGame(){
 	.attr('role', 'progressbar').attr('aria-valuenow', '100')
 	.attr('aria-valuemin','0').attr('aria-valuemax','100').css('width','100%')
 	.appendTo('#progressbardiv');
+	
+	var div1 = $('<div></div>').addClass('row').attr('id','#keywordArea').appendTo('#mainArea');
+	var div2 = $('<div></div>').addClass("col-md-6 col-md-offset-3 col-sm-12" )
+	.attr('align','center').appendTo(div1);
+	$('<h2></h>').text('请输入关键词').appendTo(div2);
+	var inputform = $('<div></div>').addClass('input-group').appendTo(div2);
+	var inputbox = $('<input></input>').addclass('form-control').attr('type','text').attr('placeholder','关键词').appendTo(inputform);
+	var inputButtonGroup = $('<span></span>').addclass('input-groupp-btn').appendTo(inputform);
+	var inputButton = $('<button></button>').addClass("btn btn-default").attr('type','button').text('确定').appendTo(inputButtonGroup);
 }
