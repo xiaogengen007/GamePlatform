@@ -140,4 +140,35 @@ public class PlayerManager {
 			return false; //修改用户积分异常
 		}
 	}
+	
+	public static int getId(String plyName) {//获取用户id
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c.setAutoCommit(false);
+			stmt = c.createStatement();
+			
+			String sql = "SELECT * FROM player WHERE p_name = '"
+					+ plyName + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next()) { //该用户存在
+				int rtId = rs.getInt("p_id");
+				stmt.close();
+				c.commit();
+				c.close();
+				return rtId; //返回该用户id
+			}
+			else { //该用户不存在
+				stmt.close();
+				c.commit();
+				c.close();
+				return -1; //该用户不存在
+			}
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ":" + e.getMessage());
+			return Integer.MIN_VALUE; //获取用户id异常
+		}
+	}
 }
