@@ -286,7 +286,7 @@ function startGame(){
 	.attr('align','center').appendTo(div1);
 	$('<h2></h>').text('请输入关键词').appendTo(div2);
 	var inputform = $('<div></div>').addClass('input-group').appendTo(div2);
-	var inputbox = $('<input></input>').addclass('form-control').attr('type','text').attr('placeholder','关键词').appendTo(inputform);
-	var inputButtonGroup = $('<span></span>').addclass('input-groupp-btn').appendTo(inputform);
+	var inputbox = $('<input></input>').addClass('form-control').attr('type','text').attr('placeholder','关键词').appendTo(inputform);
+	var inputButtonGroup = $('<span></span>').addClass('input-groupp-btn').appendTo(inputform);
 	var inputButton = $('<button></button>').addClass("btn btn-default").attr('type','button').text('确定').appendTo(inputButtonGroup);
 }
