@@ -63,6 +63,7 @@ public class WhoIsUndercover extends GameState{
 			}
 			
 		}
+		this.gameProcess = 0; //初始化为发言阶段
 		this.initFinishTurn();
 	}
 	
@@ -240,7 +241,7 @@ public class WhoIsUndercover extends GameState{
 				this.sendEndOfThisTurn();
 			}
 		} else {
-			System.out.print("receive but not handle because");
+			System.out.print("receive but not handle because ");
 			if (this.gameStatus != 1) {
 				System.out.println("gameStatus is " +this.gameStatus);
 			}
@@ -252,8 +253,7 @@ public class WhoIsUndercover extends GameState{
 			}
 			if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isAlive) {
 				System.out.println("has died!");
-			}
-			
+			} 	
 		}
 	}
 	
