@@ -8,16 +8,20 @@
        out.println("<script>window.location.href='index.jsp'</script>");  
 	}  
 %>
+
 <head>
+
 <title>玩吧 登录和注册</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="basicpages/2 sign/js/jquery-1.9.0.min.js"></script>
 <script type="text/javascript" src="basicpages/2 sign/js/login.js"></script>
-
 <link href="basicpages/2 sign/css/login.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
 
+</head>
+
+
+
+<body>
 
 <div class="login" style="margin-top:50px;">
     
@@ -28,8 +32,8 @@
     </div>    
   
     
-    <div class="web_qr_login" id="web_qr_login" style="display: block; height: 250px;">    
-        <!--登录-->
+    <!--登录-->
+    <div class="web_qr_login" id="web_qr_login" style="display: block; height: 280px;">    
         <div class="web_login" id="web_login">
             <div class="login-box">
 			    <div class="login_form">
@@ -57,11 +61,11 @@
                 </div>
             </div> 
         </div>
-        <!--登录end-->
     </div>
+    <!--登录end-->
     
+    <!--注册-->
     <div class="qlogin" id="qlogin" style="display: none; height: 250px; ">    
-        <!--登录-->
         <div class="web_login">
             <div class="login-box">
 			    <div class="login_form">
@@ -83,14 +87,14 @@
                     </div>
                     
                     <div style="padding-left:50px; margin-top:20px;">
-                        <input value="注册" style="width:150px;" class="button_blue" type="submit"/>
+                        <input value="注 册" style="width:150px;" class="button_blue" type="submit"/>
                     </div>
                 </form>
                 </div>
             </div> 
         </div>
-        <!--登录end-->
     </div>
+    <!--注册end-->
     
 
     <!--注册-->
