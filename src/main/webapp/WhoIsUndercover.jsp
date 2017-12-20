@@ -185,6 +185,10 @@
 				writeAfterSpeechProcess();
 			}
 		}
+		if (json1.action == 11) { //告知游戏积分变化
+			var messages = JSON.stringify(json1);
+			setMessageInnerHTML(messages);
+		}
     }
 
     //连接关闭的回调方法

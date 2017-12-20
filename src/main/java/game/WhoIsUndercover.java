@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import db.PlayerManager;
+import db.SetupDatabase;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import player.Player;
@@ -321,6 +323,7 @@ public class WhoIsUndercover extends GameState{
 			//这里需要判断游戏是否已经结束
 			if (this.gameOver() != 0) { //如果游戏结束则结束操作
 				this.gameStatus = 2; //标识游戏结束
+				this.setPointChange();
 				this.sendAfterGame();
 				/*
 				 * 同时将该游戏房间玩家清空
@@ -823,6 +826,66 @@ public class WhoIsUndercover extends GameState{
 		} else {
 			this.sendForVotingProcess();
 			this.batchHandleVoteTurn();
+		}
+	}
+	
+	/*
+	 * 设置游戏结束时的分数变化，并传送给前端
+	 * (non-Javadoc)
+	 * @see game.GameState#setPointChange()
+	 */
+	public void setPointChange() {
+		if (SetupDatabase.hasSet == false) {
+			boolean setSucceed = SetupDatabase.Setup();
+			if (!setSucceed) {
+				System.err.println("fail to set the database!");
+				return;
+			}
+		}
+		/*
+		 * 每个人的分数依据平均分进行变化，目标是使得所有人总的分数变化之和大于0
+		 */
+		int gameSign = this.gameOver(); //记录游戏状态
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 11); // 11表示游戏结束后修改积分信息
+		JSONArray jsar1 = new JSONArray(); //存储用户信息和排名
+		for (Player item: players) {
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			int deltaPoint = 0; //记录分数变化的量
+			if (this.gameNum == 4) {
+				if (item.ucPlayer.isUndercover) {
+					if (gameSign == 2) { //四人局中卧底赢时加7分，其他人减2分
+						deltaPoint = 7;
+					} else { //四人局中卧底输时减5分，其他人加2分
+						deltaPoint = -5;
+					}
+				} else {
+					if (gameSign == 2) {
+						deltaPoint = -2;
+					} else {
+						deltaPoint = -2;
+					}
+				}
+			}
+			PlayerManager.modifyPoint(item.username, deltaPoint);
+			json2.put("deltaPoint", deltaPoint);
+			int point = PlayerManager.getPoint(item.username);
+			json2.put("point", point);
+			jsar1.add(json2);
+		}
+		json1.put("players", jsar1);
+		System.out.println("point info:"+jsar1.toString());
+		String messages = json1.toString();
+		for (Player item : players) {
+			try {
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	} 
 }
