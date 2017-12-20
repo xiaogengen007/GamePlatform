@@ -21,6 +21,7 @@
 | 8      | finish one process   |                                   |
 | 9      | state in one process |                                   |
 | 10     | handle for revisit   |                                   |
+| 11     | send for game score  |                                   |
 
 more information
 
@@ -151,18 +152,30 @@ more information
 - for undercover game (send when user revisit):
   - gameProcess (0 for speech process, 1 for voting process)
 - (for gameProcess = 0)
-  - baseInfo (array, about the basic information of the current process)
+  - baseInfo (array, about the basic information of the current process) ,for baseInfo[i]
     - username
     - alive (1 for alive, 0 for not alive)
 - (for gameProcess = 1)
-  - baseInfo (array, about the basic information of the current process)
+  - baseInfo (array, about the basic information of the current process) ,for baseInfo[i]
     - username
     - alive
     - message (the user's speech in this turn, refer to vote)
-  - userVoted (array, about the user be voted in this turn)
+  - userVoted (array, about the user be voted in this turn),for userVoted[i]
     - votedIndex
-  - userVote (array, about the user can vote in this turn)
+  - userVote (array, about the user can vote in this turn), for userVote[i]
     - voteIndex
+
+
+
+
+##### action 11:
+
+- for all game:
+  - players (an array, to send about the score and delta score of the players), for players[i]
+    - username
+    - point
+    - deltaPoint
+
 
 
 

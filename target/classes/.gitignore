@@ -1,6 +1,5 @@
-/src/
-/db/
-/game/
-/player/
+/.idea/
+/.metadata/
+/.settings/
+/lib/
 /target/
-/websocket/
