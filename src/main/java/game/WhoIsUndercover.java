@@ -206,6 +206,23 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	/*
+	 * 过滤用户的发言，去掉其中关键字
+	 */
+	private String filterString(String message) {
+		String filterMessage = message;
+		for (int i = 0; i < this.friendString.length(); i++) {
+			char keyChar = this.friendString.charAt(i);
+			//System.out.println("split friend char:"+keyChar);
+			filterMessage = filterMessage.replace(keyChar, '*');
+		}
+		for (int i = 0; i < this.undercoverString.length(); i++) {
+			char keyChar = this.undercoverString.charAt(i);
+			filterMessage = filterMessage.replace(keyChar, '*');
+		}
+		return filterMessage;
+	}
+	
+	/*
 	 * 完成谁是卧底中的游戏响应,在非投票阶段
 	 * (non-Javadoc)
 	 * @see game.GameState#handleUndercover(java.lang.String, websocket.WebSocket)
@@ -213,7 +230,9 @@ public class WhoIsUndercover extends GameState{
 	public void handleUndercover(String message, WebSocket ws) { 
 		if (this.gameStatus == 1 && ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
 				&& ws.myPlayer.ucPlayer.isAlive) { //判断该玩家是否有"说话"的权力
-			ws.myPlayer.ucPlayer.thisTurnMsg = message;
+			String filterMessage = this.filterString(message);
+			//System.out.println("after filtered:"+filterMessage);
+			ws.myPlayer.ucPlayer.thisTurnMsg = filterMessage;
 			ws.myPlayer.ucPlayer.isSubmit = true;
 			this.sendForGameProcess();
 			if (finishThisTurn()) { //该轮结束时进入投票模式
@@ -221,7 +240,20 @@ public class WhoIsUndercover extends GameState{
 				this.sendEndOfThisTurn();
 			}
 		} else {
-			//System.out.println("receive but not handle");
+			System.out.print("receive but not handle because");
+			if (this.gameStatus != 1) {
+				System.out.println("gameStatus is " +this.gameStatus);
+			}
+			if (ws.myPlayer == null) {
+				System.out.println("myplayer is null");
+			}
+			if (ws.myPlayer != null && ws.myPlayer.ucPlayer.isSubmit) {
+				System.out.println("is submit");
+			}
+			if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isAlive) {
+				System.out.println("has died!");
+			}
+			
 		}
 	}
 	
