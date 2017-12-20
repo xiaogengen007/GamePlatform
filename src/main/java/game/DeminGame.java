@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import db.PlayerManager;
+import db.SetupDatabase;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
 
@@ -272,9 +274,10 @@ public class DeminGame extends GameState{
 		if (this.gameOver()) {
 			this.gameStatus = 2; //检查游戏是否已经结束了
 		}
-		System.out.println("leftNoneclick:"+this.leftNoneClicked());
+		//System.out.println("leftNoneclick:"+this.leftNoneClicked());
 		this.sendEndOfThisTurn();
 		if (this.gameStatus == 2) { //游戏结束之后，将游戏结果返回给玩家
+			this.setPointChange(); //将分数变化单独发过去
 			sendAfterGame();
 			/*
 			 * 同时将该游戏房间玩家清空
@@ -434,6 +437,55 @@ public class DeminGame extends GameState{
 		json.put("gridLen", this.gridLen); //雷区的大小
 		json.put("maxTime", this.maxTurnTime); //单轮最长时间
 	}
+	
+	/*
+	 * 设置游戏结束时的分数变化，并传送给前端
+	 * (non-Javadoc)
+	 * @see game.GameState#setPointChange()
+	 */
+	public void setPointChange() {
+		if (SetupDatabase.hasSet == false) {
+			boolean setSucceed = SetupDatabase.Setup();
+			if (!setSucceed) {
+				System.err.println("fail to set the database!");
+				return;
+			}
+		}
+		int averageScore = 0; //记录平均分
+		for (Player item: players) {
+			averageScore += item.deminPlayer.score;
+		}
+		averageScore /= this.gameNum;
+		/*
+		 * 每个人的分数依据平均分进行变化，目标是使得所有人总的分数变化之和大于0
+		 */
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 11); // 11表示游戏结束后修改积分信息
+		JSONArray jsar1 = new JSONArray(); //存储用户信息和排名
+		for (Player item: players) {
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			int deltaPoint = (item.deminPlayer.score - averageScore + 2) / 3;
+			PlayerManager.modifyPoint(item.username, deltaPoint);
+			json2.put("deltaPoint", deltaPoint);
+			int point = PlayerManager.getPoint(item.username);
+			json2.put("point", point);
+			jsar1.add(json2);
+		}
+		json1.put("players", jsar1);
+		System.out.println("point info:"+jsar1.toString());
+		String messages = json1.toString();
+		for (Player item : players) {
+			try {
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	} 
 	
 	class GridPosition {
 		public int girdX; //1~gridLen
