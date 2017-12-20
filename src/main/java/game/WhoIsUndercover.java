@@ -299,6 +299,9 @@ public class WhoIsUndercover extends GameState{
 				players.clear();
 				//游戏房间还需要重新初始化，即更换词汇
 				this.gameStatus = 0;
+				String[] words = this.getWords();
+				this.friendString = words[0];
+				this.undercoverString = words[1];
 				
 			} else {
 				this.initFinishTurn(); //将大家都置为可以说话
