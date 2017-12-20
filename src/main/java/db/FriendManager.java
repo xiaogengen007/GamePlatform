@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -81,5 +82,43 @@ public class FriendManager {
 			System.err.println(e.getClass().getName() + ":" + e.getMessage());
 			return map; //获取失败，返回空map
 		}
+	}
+	
+	public static ArrayList<String> getFriendList(String plyName) { //获取好友列表
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c.setAutoCommit(false);
+			stmt = c.createStatement();
+			ArrayList<String> ls = new ArrayList<String>();
+			int plyId = PlayerManager.getId(plyName); //获得该用户的id
+			
+			String sql = "SELECT p_name FROM player INNER JOIN friend "
+					+ "ON player.p_id = friend.p_id2 "
+					+ "WHERE p_id1 = " + String.valueOf(plyId)
+					+ " ORDER BY p_name;"; //获得该用户所有好友
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				ls.add(rs.getString("p_name"));
+			}
+			
+			stmt.close();
+			c.commit();
+			c.close();
+			return ls; //返回修改的列表
+			
+		} catch (Exception e) {
+			ArrayList<String> ls = new ArrayList<String>();
+			System.err.println(e.getClass().getName() + ":" + e.getMessage());
+			return ls; //获取失败，返回空list
+		}
+		/*下面给出ArrayList输出方式
+		ArrayList<String> ls = new ArrayList<String>();
+		ls = testFriendManager.getFriendList("11");
+		for(int i = 0 ; i < ls.size() ; i++) {
+			  System.out.println(ls.get(i));
+		}*/
 	}
 }
