@@ -1,6 +1,8 @@
 package db;
 
 import java.sql.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class PlayerManager {
 	public static int recordPlayer(String plyName, String plyKey) { //记录新的玩家
@@ -170,5 +172,42 @@ public class PlayerManager {
 			System.err.println(e.getClass().getName() + ":" + e.getMessage());
 			return Integer.MIN_VALUE; //获取用户id异常
 		}
+	}
+	
+	public static Map<String, Integer> sortPoint() { //对全体玩家排序取前5名
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c.setAutoCommit(false);
+			stmt = c.createStatement();
+			
+			Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+			String sql = "SELECT * FROM player ORDER BY p_point DESC"; //按照积分降序排序
+			ResultSet rs = stmt.executeQuery(sql);
+			int k = 0;
+			while(rs.next() && k < 5) { //取前5名，将昵称和积分存储到map中
+				map.put(rs.getString("p_name"), rs.getInt("p_point"));
+				k++;
+			}
+			stmt.close();
+			c.commit();
+			c.close();
+			return map; //返回修改的map
+			
+		} catch (Exception e) {
+			Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+			System.err.println(e.getClass().getName() + ":" + e.getMessage());
+			return map; //获取失败，返回空map
+		}
+		/*下面给出map的输出方式
+		Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+		map = testPlayerManager.sortPoint();
+		if(!map.isEmpty()) { //必须先判断是否为空
+			for(Map.Entry<String, Integer> entry : map.entrySet()){  
+			    System.out.println("Name = " + entry.getKey() + ", point = " + entry.getValue());  
+			}  
+		}*/
 	}
 }
