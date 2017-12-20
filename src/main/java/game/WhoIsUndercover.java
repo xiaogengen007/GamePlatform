@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import db.PlayerManager;
+import db.SetupDatabase;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import player.Player;
@@ -63,6 +65,7 @@ public class WhoIsUndercover extends GameState{
 			}
 			
 		}
+		this.gameProcess = 0; //初始化为发言阶段
 		this.initFinishTurn();
 	}
 	
@@ -206,6 +209,23 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	/*
+	 * 过滤用户的发言，去掉其中关键字
+	 */
+	private String filterString(String message) {
+		String filterMessage = message;
+		for (int i = 0; i < this.friendString.length(); i++) {
+			char keyChar = this.friendString.charAt(i);
+			//System.out.println("split friend char:"+keyChar);
+			filterMessage = filterMessage.replace(keyChar, '*');
+		}
+		for (int i = 0; i < this.undercoverString.length(); i++) {
+			char keyChar = this.undercoverString.charAt(i);
+			filterMessage = filterMessage.replace(keyChar, '*');
+		}
+		return filterMessage;
+	}
+	
+	/*
 	 * 完成谁是卧底中的游戏响应,在非投票阶段
 	 * (non-Javadoc)
 	 * @see game.GameState#handleUndercover(java.lang.String, websocket.WebSocket)
@@ -213,7 +233,9 @@ public class WhoIsUndercover extends GameState{
 	public void handleUndercover(String message, WebSocket ws) { 
 		if (this.gameStatus == 1 && ws.myPlayer != null && !ws.myPlayer.ucPlayer.isSubmit
 				&& ws.myPlayer.ucPlayer.isAlive) { //判断该玩家是否有"说话"的权力
-			ws.myPlayer.ucPlayer.thisTurnMsg = message;
+			String filterMessage = this.filterString(message);
+			//System.out.println("after filtered:"+filterMessage);
+			ws.myPlayer.ucPlayer.thisTurnMsg = filterMessage;
 			ws.myPlayer.ucPlayer.isSubmit = true;
 			this.sendForGameProcess();
 			if (finishThisTurn()) { //该轮结束时进入投票模式
@@ -221,7 +243,19 @@ public class WhoIsUndercover extends GameState{
 				this.sendEndOfThisTurn();
 			}
 		} else {
-			//System.out.println("receive but not handle");
+			System.out.print("receive but not handle because ");
+			if (this.gameStatus != 1) {
+				System.out.println("gameStatus is " +this.gameStatus);
+			}
+			if (ws.myPlayer == null) {
+				System.out.println("myplayer is null");
+			}
+			if (ws.myPlayer != null && ws.myPlayer.ucPlayer.isSubmit) {
+				System.out.println("is submit");
+			}
+			if (ws.myPlayer != null && !ws.myPlayer.ucPlayer.isAlive) {
+				System.out.println("has died!");
+			} 	
 		}
 	}
 	
@@ -289,6 +323,7 @@ public class WhoIsUndercover extends GameState{
 			//这里需要判断游戏是否已经结束
 			if (this.gameOver() != 0) { //如果游戏结束则结束操作
 				this.gameStatus = 2; //标识游戏结束
+				this.setPointChange();
 				this.sendAfterGame();
 				/*
 				 * 同时将该游戏房间玩家清空
@@ -299,6 +334,9 @@ public class WhoIsUndercover extends GameState{
 				players.clear();
 				//游戏房间还需要重新初始化，即更换词汇
 				this.gameStatus = 0;
+				String[] words = this.getWords();
+				this.friendString = words[0];
+				this.undercoverString = words[1];
 				
 			} else {
 				this.initFinishTurn(); //将大家都置为可以说话
@@ -788,6 +826,66 @@ public class WhoIsUndercover extends GameState{
 		} else {
 			this.sendForVotingProcess();
 			this.batchHandleVoteTurn();
+		}
+	}
+	
+	/*
+	 * 设置游戏结束时的分数变化，并传送给前端
+	 * (non-Javadoc)
+	 * @see game.GameState#setPointChange()
+	 */
+	public void setPointChange() {
+		if (SetupDatabase.hasSet == false) {
+			boolean setSucceed = SetupDatabase.Setup();
+			if (!setSucceed) {
+				System.err.println("fail to set the database!");
+				return;
+			}
+		}
+		/*
+		 * 每个人的分数依据平均分进行变化，目标是使得所有人总的分数变化之和大于0
+		 */
+		int gameSign = this.gameOver(); //记录游戏状态
+		JSONObject json1 = new JSONObject();
+		json1.put("action", 11); // 11表示游戏结束后修改积分信息
+		JSONArray jsar1 = new JSONArray(); //存储用户信息和排名
+		for (Player item: players) {
+			JSONObject json2 = new JSONObject();
+			json2.put("username", item.username);
+			int deltaPoint = 0; //记录分数变化的量
+			if (this.gameNum == 4) {
+				if (item.ucPlayer.isUndercover) {
+					if (gameSign == 2) { //四人局中卧底赢时加7分，其他人减2分
+						deltaPoint = 7;
+					} else { //四人局中卧底输时减5分，其他人加2分
+						deltaPoint = -5;
+					}
+				} else {
+					if (gameSign == 2) {
+						deltaPoint = -2;
+					} else {
+						deltaPoint = -2;
+					}
+				}
+			}
+			PlayerManager.modifyPoint(item.username, deltaPoint);
+			json2.put("deltaPoint", deltaPoint);
+			int point = PlayerManager.getPoint(item.username);
+			json2.put("point", point);
+			jsar1.add(json2);
+		}
+		json1.put("players", jsar1);
+		System.out.println("point info:"+jsar1.toString());
+		String messages = json1.toString();
+		for (Player item : players) {
+			try {
+				if (item.myWebsocket != null) {
+					item.myWebsocket.session.getBasicRemote().sendText(messages);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	} 
 }

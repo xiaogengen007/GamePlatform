@@ -161,4 +161,5 @@ public class GameState {
 	public void sendAfterGame() {} //游戏后返回玩家游戏结果
 	public void initPlayers() {} //初始化玩家的信息
 	public void initGame() {} //初始化游戏
+	public void setPointChange() {} //设置游戏结束时的分数变化，并传送给前端
 }
