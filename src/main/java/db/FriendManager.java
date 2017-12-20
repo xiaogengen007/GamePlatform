@@ -1,6 +1,8 @@
 package db;
 
 import java.sql.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class FriendManager {
 	public static int recordFriend(String plyName_1, String plyName_2) { //记录新的朋友关系
@@ -44,6 +46,40 @@ public class FriendManager {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ":" + e.getMessage());
 			return 2; //错误类型2：记录好友关系失败
+		}
+	}
+	
+	public static Map<String, Integer> sortFriendPoint(String plyName) { //获取用户好友的积分排行榜（取前5名）
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c.setAutoCommit(false);
+			stmt = c.createStatement();
+			Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+			int plyId = PlayerManager.getId(plyName); //获得该用户的id
+			
+			String sql = "SELECT p_name, p_point FROM player INNER JOIN friend "
+					+ "ON player.p_id = friend.p_id2 "
+					+ "WHERE p_id1 = " + String.valueOf(plyId)
+					+ " ORDER by p_point DESC;"; //按照积分降序排序
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			int k = 0;
+			while(rs.next() && k < 5) { //取前5名，将昵称和积分存储到map中
+				map.put(rs.getString("p_name"), rs.getInt("p_point"));
+				k++;
+			}
+			stmt.close();
+			c.commit();
+			c.close();
+			return map; //返回修改的map
+			
+		} catch (Exception e) {
+			Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+			System.err.println(e.getClass().getName() + ":" + e.getMessage());
+			return map; //获取失败，返回空map
 		}
 	}
 }
