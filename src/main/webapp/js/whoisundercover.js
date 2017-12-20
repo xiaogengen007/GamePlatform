@@ -199,15 +199,6 @@ function sendVote(num) {
 	alert("succeed vote "+playerName[num]);
 }
 
-//发送你的用户名
-function senduser() {
-	var json1 = {};
-	json1.action = 1; //1表示登录
-	json1.username = user;
-	var messages = JSON.stringify(json1);
-	//setMessageInnerHTML("myname:"+user);
-	websocket.send(messages);
-}
 
 //在游戏中发送消息
 function sendGame() {
@@ -219,14 +210,6 @@ function sendGame() {
 	websocket.send(messages);
 }
 
-function sendPlayRequest() {
-	var json1 = {};
-	json1.action = 4; //4表示请求加入游戏
-	json1.type = 2; //type为2表示谁是卧底游戏
-	var messages = JSON.stringify(json1);
-	websocket.send(messages);
-	setMessageInnerHTML("have send play request.");
-}
 
 function startGame(){
 	var node = document.createElement('link');
