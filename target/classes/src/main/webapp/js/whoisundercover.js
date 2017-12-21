@@ -38,6 +38,15 @@ websocket.onmessage = function (event) {
 		if (json1.start == 2) {
 			//游戏已经结束
 			setMessageInnerHTML("Game has finished!");
+			/*
+			for (i=0; i<json1.players.length; i++) {
+				for(j = 0; j < playerArray.length; j++){
+					if(playerArray[j].username == json1.players[i].username){
+						addRank(playerArray[j], json1.players[i].rank);
+					}
+				}
+			}*/
+			$('#myModal').modal({backdrop: 'static', keyboard: false});
 		}
 	}
 	if (json1.action == 2) { //消息通讯
