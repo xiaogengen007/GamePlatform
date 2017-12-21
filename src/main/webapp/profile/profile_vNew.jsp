@@ -1,3 +1,5 @@
+<%@ page language = "java" contentType = "text/html; charset = utf-8" pageEncoding = "utf-8" %>
+<%@ page import = "db.*, java.sql.*" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -54,6 +56,23 @@
 		<!-- head部分结束 -->
 
 	<body>
+		<%
+			//if(session.getAttribute("user") == null)  
+		    //{  
+		    //    out.println("<script>alert('请先登陆');window.location.href='sign.jsp'</script>");  
+		    //    return;  
+		    //}  
+		  	//response.setHeader( "Cache-Control", "no-cache,no-store");//HTTP 1.1
+		  	//response.setDateHeader( "Expires", 0 ); //prevent caching at the proxy server
+		  	//response.setHeader( "Pragma", "no-cache" );  //HTTP 1.0  
+		    //out.println("<script>function gotoMineSweeper(){window.location.href='game.html?game=1&username="+ session.getAttribute("user")  +"'};</script>");
+		    //out.println("<script>function gotoWhoIsUnderCover(){window.location.href='game.html?game=2&username="+ session.getAttribute("user")  +"'};</script>");
+		  	//out.println("<script>username = '" + session.getAttribute("user")+ "';</script>");
+		  	String uname = (String)session.getAttribute("user");
+   			int outputPoint = PlayerManager.getPoint(uname);
+		%> 
+
+
 		<div class="navbar navbar-default" id="navbar">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -93,7 +112,7 @@
 
 								<span class="user-info">
 									<small>Welcome,</small>
-									Novak
+									<%=uname%>
 								</span>
 
 								<i class="icon-caret-down"></i>
@@ -215,7 +234,7 @@
 
 														<div class="col-xs-12 col-sm-9">
 															<h4 class="blue">
-																<span class="middle">Novak Chen</span>
+																<span class="middle"><%=uname%></span>
 
 																<span class="label label-purple arrowed-in-right">
 																	<i class="icon-circle smaller-80 align-middle"></i>
