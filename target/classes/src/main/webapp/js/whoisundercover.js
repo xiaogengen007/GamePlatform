@@ -96,6 +96,7 @@ websocket.onmessage = function (event) {
 	}
 	if (json1.action == 7) { //游戏状态的额外传输
 		var keywords = json1.keyword;
+		$("#keyword").text("您的关键词:"+keywords);
 		//document.getElementById('keyword').innerHTML = "您的关键词："+keywords;
 	}
 	if (json1.action == 8) { //发言阶段结束时的发言记录
@@ -244,7 +245,7 @@ function startGame(){
 	var div1 = $('<div></div>').addClass('row').attr('id','#keywordArea').appendTo('#mainArea');
 	var div2 = $('<div></div>').addClass("col-md-6 col-md-offset-3 col-sm-12" )
 	.attr('align','center').appendTo(div1);
-	$('<h2></h>').text('请输入关键词').appendTo(div2);
+	$('<h2></h>').text('请输入关键词').attr('id','keyword').appendTo(div2);
 	var inputform = $('<div></div>').addClass('input-group').appendTo(div2);
 	var inputbox = $('<input></input>').addClass('form-control').attr('type','text').attr('placeholder','关键词').appendTo(inputform);
 	var inputButtonGroup = $('<span></span>').addClass('input-groupp-btn').appendTo(inputform);
