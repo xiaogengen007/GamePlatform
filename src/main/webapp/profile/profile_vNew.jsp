@@ -1,5 +1,6 @@
 <%@ page language = "java" contentType = "text/html; charset = utf-8" pageEncoding = "utf-8" %>
-<%@ page import = "db.*, java.sql.*" %>
+<%@ page import = "db.*, java.sql.*, java.util.*" %>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -69,7 +70,9 @@
 		    //out.println("<script>function gotoWhoIsUnderCover(){window.location.href='game.html?game=2&username="+ session.getAttribute("user")  +"'};</script>");
 		  	//out.println("<script>username = '" + session.getAttribute("user")+ "';</script>");
 		  	String uname = (String)session.getAttribute("user");
+		  	int outputID = PlayerManager.getId(uname);
    			int outputPoint = PlayerManager.getPoint(uname);
+   			Map<String, Integer> totalRanklist = PlayerManager.sortPoint();
 		%> 
 
 
@@ -244,9 +247,9 @@
 
 															<div class="profile-user-info">
 																<div class="profile-info-row">
-																	<div class="profile-info-name"> 用户名 </div>
+																	<div class="profile-info-name"> 用户ID </div>
 																	<div class="profile-info-value">
-																		<span><%=uname%></span>
+																		<span><%=outputID%></span>
 																	</div>
 																</div>
 
@@ -781,12 +784,12 @@
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							World Number One
+																							${totalRanklist['value1']};
 																							</a>
 																					</div>
 																				</td>
 																				<td style = 'vertical-align : middle'>
-																					201980
+																					${totalRanklist['value1']};
 																				</td>
 																			</tr>
 																			<tr class="success">
@@ -859,42 +862,6 @@
 																				</td>
 																				<td style = 'vertical-align : middle'>
 																					12300
-																				</td>
-																			</tr>
-																			<tr class="danger">
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-danger">6</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar.png" alt="Jim Doe's avatar"/>
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							Provincial 3
-																							</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					11900
-																				</td>
-																			</tr>
-																			<tr class="error">
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-inverse">7</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							Novakchen
-																							</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					10720
 																				</td>
 																			</tr>
 																		</tbody>
@@ -1017,42 +984,6 @@
 																				</td>
 																				<td style = 'vertical-align : middle'>
 																					1230
-																				</td>
-																			</tr>
-																			<tr class="danger">
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-danger">6</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar.png" alt="Jim Doe's avatar"/>
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							Mark
-																							</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					980
-																				</td>
-																			</tr>
-																			<tr class="error">
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-inverse">7</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar3.png" alt="Jim Doe's avatar"/>
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							Dean
-																							</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					740
 																				</td>
 																			</tr>
 																		</tbody>
