@@ -1,18 +1,14 @@
-var playerNum = 4;
+//var playerNum = 4;
 var isVoting = 0; //初始时不是投票环节
 var state = new Array(8); //多生成一些防止不够用
 var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
 var canVoted = new Array(8); //记录各玩家能否被投票
-var playerName = new Array(8);
+//var playerName = new Array(8);
 
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
 	var json1 = JSON.parse(event.data);
 	if (json1.action == 1) { //游戏状态的通讯
-		var playerInfo = "";
-		for (i=0; i<json1.players.length; i++) {
-			playerInfo += json1.players[i].username+" ";
-		}
 		/*
 		for(var i = 0; i < json1.players.length; i++){
 			if(json1.players[i].username == playerArray[i].username){
@@ -31,20 +27,26 @@ websocket.onmessage = function (event) {
 		
 		if (json1.start == 0) {
 			//游戏还未开始
-			setMessageInnerHTML("Now has "+playerInfo+" in this room, please wait for game start.");
+			setMessageInnerHTML("Now has "+json1.players.length+" in this room, please wait for game start.");
 		} 
 		if (json1.start == 1) {
 			//游戏正在进行
 			startGame();
-			playerNum = json1.players.length;
-			for (i=0; i<json1.players.length; i++) {
-				playerName[i] = json1.players[i].username;
-			}
-			setMessageInnerHTML("Game has started! Now has "+playerInfo+" in this room.");
+			//playerNum = json1.players.length;
+			setMessageInnerHTML("Game has started! Now has "+json1.players.length+" in this room.");
 		}		
 		if (json1.start == 2) {
 			//游戏已经结束
 			setMessageInnerHTML("Game has finished!");
+			/*
+			for (i=0; i<json1.players.length; i++) {
+				for(j = 0; j < playerArray.length; j++){
+					if(playerArray[j].username == json1.players[i].username){
+						addRank(playerArray[j], json1.players[i].rank);
+					}
+				}
+			}*/
+			$('#myModal').modal({backdrop: 'static', keyboard: false});
 		}
 	}
 	if (json1.action == 2) { //消息通讯
@@ -78,13 +80,13 @@ websocket.onmessage = function (event) {
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		if (json1.resultType == 1) { //1 for can get the die player
-			for (i=0; i<playerNum; i++) {
-				state[i] = "";
+			for (i=0; i<playerArray.length; i++) {
+				$('#popmessage' + i).popover('hide');
 			}
-			writeNormal();
+			//writeNormal();
 			isVoting = 0;
 		} else { //否则则继续进行投票
-			for (i=0; i<playerNum; i++) {
+			for (i=0; i<playerArray.length; i++) {
 				canVoted[i] = 0;
 			}
 			for (i=0; i<json1.nextVoted.length; i++) {
@@ -103,21 +105,22 @@ websocket.onmessage = function (event) {
 	}
 	if (json1.action == 7) { //游戏状态的额外传输
 		var keywords = json1.keyword;
+		$("#keyword").text("您的关键词:"+keywords);
 		//document.getElementById('keyword').innerHTML = "您的关键词："+keywords;
 	}
 	if (json1.action == 8) { //发言阶段结束时的发言记录
 		isVoting = 1; //进入投票环节
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
-		for (i=0; i<playerNum; i++) {
+		for (i=0; i<playerArray.length; i++) {
 			state[i] = ""; //初始化
 		}
 		for (i=0; i<json1.alive.length; i++) {
 			alive[i] = json1.alive[i];
 		}
 		for (i=0; i<json1.messages.length; i++) {
-			for (var j=0; j<playerNum; j++) {
-				if (json1.messages[i].username == playerName[j]) {						
+			for (var j=0; j<playerArray.length; j++) {
+				if (json1.messages[i].username == playerArray[j].username) {						
 					state[j] = json1.messages[i].message;
 					canVoted[j] = json1.messages[i].canVoted; //1为可以被投票，0为不可以
 				} 
@@ -133,14 +136,14 @@ websocket.onmessage = function (event) {
 	if (json1.action == 10) { //谁是卧底的额外信息
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
-		for (i=0; i<playerNum; i++) {
+		for (i=0; i<playerArray.length; i++) {
 			alive[i] = json1.baseInfo[i].alive;
 		}
 		if (json1.gameProcess == 1) { //在投票阶段需要根据情况来绘制投票器
-			for (i = 0; i<playerNum; i++) {
+			for (i = 0; i<playerArray.length; i++) {
 				state[i] = json1.baseInfo[i].message;
 			}
-			for (i=0; i<playerNum; i++) {
+			for (i=0; i<playerArray.length; i++) {
 				canVoted[i] = 0;
 			}
 			for (i=0; i<json1.userVoted.length; i++) {
@@ -196,7 +199,7 @@ function sendVote(num) {
 	json1.vote = num; //num从0~playerNum-1,且只能投给活着的人
 	var messages = JSON.stringify(json1);
 	websocket.send(messages);
-	alert("succeed vote "+playerName[num]);
+	//alert("succeed vote "+playerName[num]);
 }
 
 
@@ -251,7 +254,7 @@ function startGame(){
 	var div1 = $('<div></div>').addClass('row').attr('id','#keywordArea').appendTo('#mainArea');
 	var div2 = $('<div></div>').addClass("col-md-6 col-md-offset-3 col-sm-12" )
 	.attr('align','center').appendTo(div1);
-	$('<h2></h>').text('请输入关键词').appendTo(div2);
+	$('<h2></h>').text('请输入关键词').attr('id','keyword').appendTo(div2);
 	var inputform = $('<div></div>').addClass('input-group').appendTo(div2);
 	var inputbox = $('<input></input>').addClass('form-control').attr('type','text').attr('placeholder','关键词').appendTo(inputform);
 	var inputButtonGroup = $('<span></span>').addClass('input-groupp-btn').appendTo(inputform);

@@ -1,2 +1,5 @@
 /target/
 /src/
+/lib/
+/websocket/
+/.DS_Store
