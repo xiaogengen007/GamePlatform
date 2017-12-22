@@ -21,6 +21,7 @@ public class SetupDatabase {
 					+ "p_id	INTEGER 	PRIMARY KEY AUTOINCREMENT,"
 					+ "p_name			VARCHAR(15)	NOT NULL,"
 					+ "p_key			VARCHAR(12)	NOT NULL,"
+					+ "p_salt			CHAR(10)	NOT NULL,"
 					+ "p_point			INTEGER		NULL);";
 			stmt.executeUpdate(sql);
 			//创建game process表
