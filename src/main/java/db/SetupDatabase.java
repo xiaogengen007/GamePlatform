@@ -11,7 +11,7 @@ public class SetupDatabase {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			//创建Gameplatform.db
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);
 			//System.out.println("Open database successfully");
 			
