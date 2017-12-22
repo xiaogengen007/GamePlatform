@@ -10,7 +10,7 @@ public class PlayerManager {
 		Statement stmt = null; //SQL语句环境
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);		
 			stmt = c.createStatement();
 			String sql_check = "SELECT * FROM player WHERE p_name = '"
@@ -45,7 +45,7 @@ public class PlayerManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);		
 			stmt = c.createStatement();
 			String sql = "SELECT * FROM player WHERE p_name = '"
@@ -86,7 +86,7 @@ public class PlayerManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);
 			
 			stmt = c.createStatement();
@@ -118,7 +118,7 @@ public class PlayerManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);
 			
 			stmt = c.createStatement();
@@ -148,7 +148,7 @@ public class PlayerManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);
 			stmt = c.createStatement();
 			
@@ -179,7 +179,7 @@ public class PlayerManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);
 			stmt = c.createStatement();
 			
