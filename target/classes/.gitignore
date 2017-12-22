@@ -1,5 +1,10 @@
-/target/
-/src/
+/.settings/
+/GUIDELINE.md
+/GUIDELINE_DB.md
+/JavaWebSocket.iml
+/LICENSE
+/README.md
 /lib/
-/websocket/
-/.DS_Store
+/pom.xml
+/src/
+/target/
