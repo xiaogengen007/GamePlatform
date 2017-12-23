@@ -66,20 +66,14 @@ websocket.onmessage = function (event) {
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		if (json1.finished != 0) { //不是为非完成的用户
-			/*
-			for (i=0; i<playerNum; i++) {
-				state[i] = "";
-			}*/
 			for (i=0; i<json1.preMessage.length; i++) {
 				for (var j=0; j<playerArray.length; j++) {
 					if (json1.preMessage[i].username == playerArray[j].username) {
 						var tmp = $('#popmessage' + i).attr('data-content', json1.preMessage[i].message);
 						tmp.popover('show');
-						//state[j] = json1.preMessage[i].message;
 					} 
 				}	
 			}
-			//writeNormal();
 		}
 		
 	}
