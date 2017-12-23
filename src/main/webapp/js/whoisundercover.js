@@ -198,9 +198,8 @@ function send() {
 	if (isVoting == 0) { //不是投票环节采允许发言
     	var json1 = {};
     	json1.action = 6; //6表示谁是卧底游戏过程中用户发送本轮发言
-    	json1.message = document.getElementById('gametext').value;
+    	json1.message = $('#stateInput').val();
     	var messages = JSON.stringify(json1);
-    	//setMessageInnerHTML("myname:"+user);
     	websocket.send(messages);
 	} else {
 		alert("can not speech in voting process!");
@@ -215,17 +214,6 @@ function sendVote(num) {
 	var messages = JSON.stringify(json1);
 	websocket.send(messages);
 	//alert("succeed vote "+playerName[num]);
-}
-
-
-//在游戏中发送消息
-function sendGame() {
-	var json1 = {};
-	json1.action = 5; //5表示游戏过程中聊天
-	json1.message = document.getElementById('text').value;
-	var messages = JSON.stringify(json1);
-	//setMessageInnerHTML("myname:"+user);
-	websocket.send(messages);
 }
 
 function timeUpdate(timeNow, timeMax){
@@ -277,7 +265,8 @@ function startGame(){
 	.attr('align','center').appendTo(div1);
 	$('<h2></h>').text('请输入关键词').attr('id','keyword').appendTo(div2);
 	var inputform = $('<div></div>').addClass('input-group').appendTo(div2);
-	var inputbox = $('<input></input>').addClass('form-control').attr('type','text').attr('placeholder','关键词').appendTo(inputform);
+	var inputbox = $('<input></input>').addClass('form-control')
+	.attr('type','text').attr('id','stateInput').attr('placeholder','关键词').appendTo(inputform);
 	var inputButtonGroup = $('<span></span>').addClass('input-groupp-btn').appendTo(inputform);
 	var inputButton = $('<button></button>').addClass("btn btn-default").attr('type','button').text('确定').appendTo(inputButtonGroup);
 
