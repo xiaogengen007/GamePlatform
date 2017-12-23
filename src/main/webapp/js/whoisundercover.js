@@ -14,7 +14,7 @@ var timerCode;
 websocket.onmessage = function (event) {
 	var json1 = JSON.parse(event.data);
 	if (json1.action == 1) { //游戏状态的通讯
-		/*
+		/*处理房间有人离开的情况
 		for(var i = 0; i < json1.players.length; i++){
 			if(json1.players[i].username == playerArray[i].username){
 				continue;
@@ -85,7 +85,6 @@ websocket.onmessage = function (event) {
 			for (i=0; i<playerArray.length; i++) {
 				$('#popmessage' + i).popover('hide');
 			}
-			//writeNormal();
 			isVoting = 0;
 			tNow = tMaxState;
 			tMax = tMaxState;
