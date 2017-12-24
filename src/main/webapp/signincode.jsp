@@ -7,7 +7,12 @@
    if (!SetupDatabase.hasSet) {
 	    SetupDatabase.Setup(); //数据库还未建立时先建立数据库
    } 
-   int signinCode = PlayerManager.checkLogin(name, pass); 
+   String[] strings = PlayerManager.checkLogin(name);
+   int signinCode = 1; //默认登录失败
+   if (strings != null) {
+	   
+   }
+   
    //signinCode = 0;
    if(signinCode == 0)  
    {  
