@@ -9,6 +9,8 @@ import player.Player;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
+import db.FriendManager;
+import db.SetupDatabase;
 import game.GameState;
 import game.Timer;
 
@@ -151,6 +153,17 @@ public class WebSocket {
 				int userindex = json1.getInt("vote");
 				this.myPlayer.nowGame.handleUndercoverVoting(userindex, this);
 			}
+		}
+		if (json1.getInt("action") == 8) { //加好友请求
+			String username1 = json1.getString("username1");
+			String username2 = json1.getString("username2");
+			if (!SetupDatabase.hasSet) {
+				SetupDatabase.Setup();
+			}
+			if (this.myPlayer != null && this.myPlayer.nowGame != null) {
+				this.myPlayer.nowGame.addFriendInRoom(username1, username2);
+			}
+			
 		}
 	}
 

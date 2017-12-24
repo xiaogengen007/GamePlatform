@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import db.FriendManager;
+import db.SetupDatabase;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -149,6 +151,17 @@ public class GameState {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/*
+	 * 在房间里加好友
+	 */
+	public void addFriendInRoom(String username1, String username2) {
+		if (!SetupDatabase.hasSet) {
+			SetupDatabase.Setup();
+		}
+		int addState = FriendManager.recordFriend(username1, username2);
+		
 	}
 	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
