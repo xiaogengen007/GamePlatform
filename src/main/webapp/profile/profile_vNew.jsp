@@ -1,5 +1,6 @@
-<%@ page language = "java" contentType = "text/html; charset = utf-8" pageEncoding = "utf-8" %>
+<%@ page language = "java" contentType = "text/html; charset = utf-8" pageEncoding = "utf-8" isELIgnored = "false" %>
 <%@ page import = "db.*, java.sql.*, java.util.*" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +73,8 @@
 		  	String uname = (String)session.getAttribute("user");
 		  	int outputID = PlayerManager.getId(uname);
    			int outputPoint = PlayerManager.getPoint(uname);
-   			Map<String, Integer> totalRanklist = PlayerManager.sortPoint();
+   			//Map<String, Integer> totalRanklist = PlayerManager.sortPoint();
+   			//request.getSession().setAttribute("totalRanklist",totalRanklist);
 		%> 
 
 
@@ -265,7 +267,7 @@
 																	<div class="profile-info-name"> 游戏局数 </div>
 
 																	<div class="profile-info-value">
-																		<span>28</span>
+																		<span>N.A.</span>
 																	</div>
 																</div>
 															</div>
@@ -288,22 +290,14 @@
 																		<div class="profile-skills">
 																			<div class="progress">
 																				<div class="progress-bar" style="width:70%">
-																					<span class="pull-left">谁是卧底</span>
+																					<span class="pull-left">扫雷大作战</span>
 																					<span class="pull-right">50%</span>
 																				</div>
 																			</div>
-
-																			<div class="progress">
-																				<div class="progress-bar progress-bar-success" style="width:50%">
-																					<span class="pull-left">扫雷大作战</span>
-
-																					<span class="pull-right">30%</span>
-																				</div>
-																			</div>
-
+																			<br>
 																			<div class="progress">
 																				<div class="progress-bar progress-bar-purple" style="width:40%">
-																					<span class="pull-left">你画我猜</span>
+																					<span class="pull-left">谁是卧底</span>
 
 																					<span class="pull-right">20%</span>
 																				</div>
@@ -332,16 +326,7 @@
 																				<div class="space-2"></div>
 																				扫雷大作战
 																			</div>
-
-																			<div class="grid3 center">
-																				<div class="center easy-pie-chart percentage" data-percent="90" data-color="#59A84B">
-																					<span class="percent">90</span>%
-																				</div>
-
-																				<div class="space-2"></div>
-																				你画我猜
-																			</div>
-
+																			
 																			<div class="grid3 center">
 																				<div class="center easy-pie-chart percentage" data-percent="80" data-color="#9585BF">
 																					<span class="percent">80</span>%
@@ -349,6 +334,15 @@
 
 																				<div class="space-2"></div>
 																				谁是卧底
+																			</div>
+																			
+																			<div class="grid3 center">
+																				<div class="center easy-pie-chart percentage" data-percent="0" data-color="#28BD9A">
+																					<span class="percent">N.A.</span>
+																				</div>
+
+																				<div class="space-2"></div>
+																				更多游戏
 																			</div>
 																		</div>
 
@@ -371,7 +365,12 @@
 														</h1>
 													</div><!-- /.page-header -->
 													<br>
+													<%
+														ArrayList<String> fl = new ArrayList<String>();
+														fl = FriendManager.getFriendList(uname);
+													%>
 													<div class="profile-users clearfix">
+														<c:forEach items = "${fl}" var = "fl">
 														<div class="itemdiv memberdiv">
 															<div class="inline position-relative">
 																<div class="user">
@@ -384,7 +383,7 @@
 																	<div class="name">
 																		<a href="#">
 																			<span class="user-status status-online"></span>
-																			Bob Doe
+																			<c:out value = "${fl}"> </c:out>
 																		</a>
 																	</div>
 																</div>
@@ -393,12 +392,7 @@
 																	<div class="arrow"></div>
 
 																	<div class="popover-content">
-																		<div class="bolder">Content Editor</div>
-
-																		<div class="time">
-																			<i class="icon-time middle bigger-120 orange"></i>
-																			<span class="green"> 20 mins ago </span>
-																		</div>
+																		<div class="bolder"><c:out value = "${fl}"> </c:out></div>
 
 																		<div class="hr dotted hr-8"></div>
 
@@ -419,294 +413,7 @@
 																</div>
 															</div>
 														</div>
-
-														<div class="itemdiv memberdiv">
-															<div class="inline position-relative">
-																<div class="user">
-																	<a href="#">
-																		<img src="assets/avatars/avatar1.png" alt="Rose Doe's avatar" />
-																	</a>
-																</div>
-
-																<div class="body">
-																	<div class="name">
-																		<a href="#">
-																			<span class="user-status status-offline"></span>
-																			Rose Doe
-																		</a>
-																	</div>
-																</div>
-
-																<div class="popover">
-																	<div class="arrow"></div>
-
-																	<div class="popover-content">
-																		<div class="bolder">Graphic Designer</div>
-
-																		<div class="time">
-																			<i class="icon-time middle bigger-120 grey"></i>
-																			<span class="grey"> 30 min ago </span>
-																		</div>
-
-																		<div class="hr dotted hr-8"></div>
-
-																		<div class="tools action-buttons">
-																			<a href="#">
-																				<i class="icon-facebook-sign blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-twitter-sign light-blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-google-plus-sign red bigger-150"></i>
-																			</a>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-
-														<div class="itemdiv memberdiv">
-															<div class="inline position-relative">
-																<div class="user">
-																	<a href="#">
-																		<img src="assets/avatars/avatar.png" alt="Jim Doe's avatar" />
-																	</a>
-																</div>
-
-																<div class="body">
-																	<div class="name">
-																		<a href="#">
-																			<span class="user-status status-busy"></span>
-																			Jim Doe
-																		</a>
-																	</div>
-																</div>
-
-																<div class="popover">
-																	<div class="arrow"></div>
-
-																	<div class="popover-content">
-																		<div class="bolder">SEO &amp; Advertising</div>
-
-																		<div class="time">
-																			<i class="icon-time middle bigger-120 red"></i>
-																			<span class="grey"> 1 hour ago </span>
-																		</div>
-
-																		<div class="hr dotted hr-8"></div>
-
-																		<div class="tools action-buttons">
-																			<a href="#">
-																				<i class="icon-facebook-sign blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-twitter-sign light-blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-google-plus-sign red bigger-150"></i>
-																			</a>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-
-														<div class="itemdiv memberdiv">
-															<div class="inline position-relative">
-																<div class="user">
-																	<a href="#">
-																		<img src="assets/avatars/avatar5.png" alt="Alex Doe's avatar" />
-																	</a>
-																</div>
-
-																<div class="body">
-																	<div class="name">
-																		<a href="#">
-																			<span class="user-status status-idle"></span>
-																			Alex Doe
-																		</a>
-																	</div>
-																</div>
-
-																<div class="popover">
-																	<div class="arrow"></div>
-
-																	<div class="popover-content">
-																		<div class="bolder">Marketing</div>
-
-																		<div class="time">
-																			<i class="icon-time middle bigger-120 orange"></i>
-																			<span class=""> 40 minutes idle </span>
-																		</div>
-
-																		<div class="hr dotted hr-8"></div>
-
-																		<div class="tools action-buttons">
-																			<a href="#">
-																				<i class="icon-facebook-sign blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-twitter-sign light-blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-google-plus-sign red bigger-150"></i>
-																			</a>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-
-														<div class="itemdiv memberdiv">
-															<div class="inline position-relative">
-																<div class="user">
-																	<a href="#">
-																		<img src="assets/avatars/avatar3.png" alt="Susan Doe's avatar" />
-																	</a>
-																</div>
-
-																<div class="body">
-																	<div class="name">
-																		<a href="#">
-																			<span class="user-status status-online"></span>
-																			Susan Doe
-																		</a>
-																	</div>
-																</div>
-
-																<div class="popover">
-																	<div class="arrow"></div>
-
-																	<div class="popover-content">
-																		<div class="bolder">HR Management</div>
-
-																		<div class="time">
-																			<i class="icon-time middle bigger-120 orange"></i>
-																			<span class="green"> 20 mins ago </span>
-																		</div>
-
-																		<div class="hr dotted hr-8"></div>
-
-																		<div class="tools action-buttons">
-																			<a href="#">
-																				<i class="icon-facebook-sign blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-twitter-sign light-blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-google-plus-sign red bigger-150"></i>
-																			</a>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-
-														<div class="itemdiv memberdiv">
-															<div class="inline position-relative">
-																<div class="user">
-																	<a href="#">
-																		<img src="assets/avatars/avatar1.png" alt="Jennifer Doe's avatar" />
-																	</a>
-																</div>
-
-																<div class="body">
-																	<div class="name">
-																		<a href="#">
-																			<span class="user-status status-offline"></span>
-																			Jennifer Doe
-																		</a>
-																	</div>
-																</div>
-
-																<div class="popover">
-																	<div class="arrow"></div>
-
-																	<div class="popover-content">
-																		<div class="bolder">Graphic Designer</div>
-
-																		<div class="time">
-																			<i class="icon-time middle bigger-120 grey"></i>
-																			<span class="grey"> 2 hours ago </span>
-																		</div>
-
-																		<div class="hr dotted hr-8"></div>
-
-																		<div class="tools action-buttons">
-																			<a href="#">
-																				<i class="icon-facebook-sign blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-twitter-sign light-blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-google-plus-sign red bigger-150"></i>
-																			</a>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-
-														<div class="itemdiv memberdiv">
-															<div class="inline position-relative">
-																<div class="user">
-																	<a href="#">
-																		<img src="assets/avatars/avatar3.png" alt="Alexa Doe's avatar" />
-																	</a>
-																</div>
-
-																<div class="body">
-																	<div class="name">
-																		<a href="#">
-																			<span class="user-status status-offline"></span>
-																			Alexa Doe
-																		</a>
-																	</div>
-																</div>
-
-																<div class="popover">
-																	<div class="arrow"></div>
-
-																	<div class="popover-content">
-																		<div class="bolder">Accounting</div>
-
-																		<div class="time">
-																			<i class="icon-time middle bigger-120 grey"></i>
-																			<span class="grey"> 4 hours ago </span>
-																		</div>
-
-																		<div class="hr dotted hr-8"></div>
-
-																		<div class="tools action-buttons">
-																			<a href="#">
-																				<i class="icon-facebook-sign blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-twitter-sign light-blue bigger-150"></i>
-																			</a>
-
-																			<a href="#">
-																				<i class="icon-google-plus-sign red bigger-150"></i>
-																			</a>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
+													</c:forEach>
 													</div>
 
 													<div class="hr hr10 hr-double"></div>
@@ -784,7 +491,7 @@
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							${totalRanklist['value1']};
+																							${totalRanklist['key1']};
 																							</a>
 																					</div>
 																				</td>
@@ -864,6 +571,32 @@
 																					12300
 																				</td>
 																			</tr>
+																		</tbody>
+																	</table>
+																	<br>
+																	<% Map<String, Integer> totalRanklist = PlayerManager.sortPoint();
+																	%>
+																	<table class="table">
+																		<colgroup>
+																			<col style = "width:25%">
+																			<col style = "width:45%">
+																			<col style = "width:30%">
+																		</colgroup>
+																		<thead>
+																			<tr>
+																				<th> 名次 </th>
+																				<th> 用户名 </th>
+																				<th> 积分 </th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<c:forEach var = "item" items = "${totalRanklist}" varStatus = "status"> 
+																				<tr>
+																					<td> ${status.index + 1} </td>
+																					<td> <c:out value = "${item.key}"> </c:out> </td>
+																					<td> ${item.value} </td>
+																				</tr>
+																			</c:forEach>
 																		</tbody>
 																	</table>
 																</div>
