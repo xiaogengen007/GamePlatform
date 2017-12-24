@@ -20,7 +20,7 @@ public class SetupDatabase {
 			String sql = "CREATE TABLE player ("
 					+ "p_id	INTEGER 	PRIMARY KEY AUTOINCREMENT,"
 					+ "p_name			VARCHAR(15)	NOT NULL,"
-					+ "p_key			VARCHAR(12)	NOT NULL,"
+					+ "p_key			CHAR(64)	NOT NULL,"
 					+ "p_salt			CHAR(10)	NOT NULL,"
 					+ "p_point			INTEGER		NULL);";
 			stmt.executeUpdate(sql);

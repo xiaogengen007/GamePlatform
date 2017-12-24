@@ -22,6 +22,7 @@
 | 9      | state in one process |                                   |
 | 10     | handle for revisit   |                                   |
 | 11     | send for game score  |                                   |
+| 12     | add friend           | username1, username2, result      |
 
 more information
 
@@ -176,6 +177,12 @@ more information
     - point
     - deltaPoint
 
+##### action 12:
+
+- for all game:
+  - username1
+  - username2
+  - result (1:succeeded 0:failed)
 
 
 
@@ -190,4 +197,5 @@ more information
 | 5      | chat in game                     | message                 |
 | 6      | send message for undercover game | message                 |
 | 7      | send vote info for undercover    | vote                    |
+| 8      | add friend                       | username1, username2    |
 
