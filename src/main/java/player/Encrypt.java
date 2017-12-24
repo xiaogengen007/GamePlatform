@@ -86,11 +86,9 @@ public class Encrypt
   public String[] getPassword(String passInit) {
 	  String[] strings = new String [2];
       SecureRandom random = new SecureRandom();
-      byte[] salt = new byte[SALT_SIZE];
-      random.nextBytes(salt);
       char[] saltChar = new char [SALT_SIZE];
       for (int i = 0; i < SALT_SIZE; i++) {
-    	  saltChar[i] = (char) salt[i];
+    	  saltChar[i] = (char) (random.nextInt(75)+'0');
       }
       strings[1] = String.valueOf(saltChar);
       System.out.println(strings[1]);
