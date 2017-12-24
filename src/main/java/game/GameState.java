@@ -161,7 +161,23 @@ public class GameState {
 			SetupDatabase.Setup();
 		}
 		int addState = FriendManager.recordFriend(username1, username2);
-		
+		JSONObject json1 = new JSONObject();
+		json1.put("username1", username1);
+		json1.put("username2", username2);
+		json1.put("result", addState); //0表示成功，1表示已经是好友，2表示失败
+		String messages = json1.toString();
+		for (Player item: this.players) {
+			if (item.username.equals(username1) || item.username.equals(username2)) {
+				try {
+					if (item.myWebsocket != null) {
+						item.myWebsocket.session.getBasicRemote().sendText(messages);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) {} //完成扫雷游戏中的用户响应	
