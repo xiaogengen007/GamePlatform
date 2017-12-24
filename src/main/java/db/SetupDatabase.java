@@ -11,7 +11,7 @@ public class SetupDatabase {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			//创建Gameplatform.db
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);
 			//System.out.println("Open database successfully");
 			
@@ -20,7 +20,8 @@ public class SetupDatabase {
 			String sql = "CREATE TABLE player ("
 					+ "p_id	INTEGER 	PRIMARY KEY AUTOINCREMENT,"
 					+ "p_name			VARCHAR(15)	NOT NULL,"
-					+ "p_key			VARCHAR(12)	NOT NULL,"
+					+ "p_key			CHAR(64)	NOT NULL,"
+					+ "p_salt			CHAR(10)	NOT NULL,"
 					+ "p_point			INTEGER		NULL);";
 			stmt.executeUpdate(sql);
 			//创建game process表

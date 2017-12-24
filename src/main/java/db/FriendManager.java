@@ -11,7 +11,7 @@ public class FriendManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);		
 			stmt = c.createStatement();
 			
@@ -55,7 +55,7 @@ public class FriendManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);
 			stmt = c.createStatement();
 			Map<String, Integer> map = new LinkedHashMap<String, Integer>();
@@ -89,7 +89,7 @@ public class FriendManager {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:D:/resource/datebase/Gameplatform.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:/resource/database/Gameplatform.db");
 			c.setAutoCommit(false);
 			stmt = c.createStatement();
 			ArrayList<String> ls = new ArrayList<String>();

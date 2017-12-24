@@ -4,12 +4,17 @@ var state = new Array(8); //多生成一些防止不够用
 var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
 var canVoted = new Array(8); //记录各玩家能否被投票
 //var playerName = new Array(8);
+var tMaxState;
+var tMax;
+var tNow;
+var tMaxVote;
+var timerCode;
 
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
 	var json1 = JSON.parse(event.data);
 	if (json1.action == 1) { //游戏状态的通讯
-		/*
+		/*处理房间有人离开的情况
 		for(var i = 0; i < json1.players.length; i++){
 			if(json1.players[i].username == playerArray[i].username){
 				continue;
@@ -31,6 +36,9 @@ websocket.onmessage = function (event) {
 		} 
 		if (json1.start == 1) {
 			//游戏正在进行
+			tMaxState = maxTime;
+			tMaxVote = maxVoteTime;
+			tMax = tMaxState;
 			startGame();
 			//playerNum = json1.players.length;
 			setMessageInnerHTML("Game has started! Now has "+json1.players.length+" in this room.");
@@ -58,20 +66,14 @@ websocket.onmessage = function (event) {
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		if (json1.finished != 0) { //不是为非完成的用户
-			/*
-			for (i=0; i<playerNum; i++) {
-				state[i] = "";
-			}*/
 			for (i=0; i<json1.preMessage.length; i++) {
 				for (var j=0; j<playerArray.length; j++) {
 					if (json1.preMessage[i].username == playerArray[j].username) {
 						var tmp = $('#popmessage' + i).attr('data-content', json1.preMessage[i].message);
 						tmp.popover('show');
-						//state[j] = json1.preMessage[i].message;
 					} 
 				}	
 			}
-			//writeNormal();
 		}
 		
 	}
@@ -83,9 +85,14 @@ websocket.onmessage = function (event) {
 			for (i=0; i<playerArray.length; i++) {
 				$('#popmessage' + i).popover('hide');
 			}
-			//writeNormal();
 			isVoting = 0;
+			tNow = tMaxState;
+			tMax = tMaxState;
+	        timeUpdate(tNow, tMax);
 		} else { //否则则继续进行投票
+			tNow = tMaxVote;
+			tMax = tMaxVote
+	        timeUpdate(tNow, tMax);
 			for (i=0; i<playerArray.length; i++) {
 				canVoted[i] = 0;
 			}
@@ -100,13 +107,14 @@ websocket.onmessage = function (event) {
 		setMessageInnerHTML(json1.message);
 	}
 	if (json1.action == 6) { //游戏结束时的通讯
+		clearInterval(timerCode);
+		timeUpdate(1,1);
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 	}
 	if (json1.action == 7) { //游戏状态的额外传输
 		var keywords = json1.keyword;
 		$("#keyword").text("您的关键词:"+keywords);
-		//document.getElementById('keyword').innerHTML = "您的关键词："+keywords;
 	}
 	if (json1.action == 8) { //发言阶段结束时的发言记录
 		isVoting = 1; //进入投票环节
@@ -183,9 +191,8 @@ function send() {
 	if (isVoting == 0) { //不是投票环节采允许发言
     	var json1 = {};
     	json1.action = 6; //6表示谁是卧底游戏过程中用户发送本轮发言
-    	json1.message = document.getElementById('gametext').value;
+    	json1.message = $('#stateInput').val();
     	var messages = JSON.stringify(json1);
-    	//setMessageInnerHTML("myname:"+user);
     	websocket.send(messages);
 	} else {
 		alert("can not speech in voting process!");
@@ -202,17 +209,12 @@ function sendVote(num) {
 	//alert("succeed vote "+playerName[num]);
 }
 
-
-//在游戏中发送消息
-function sendGame() {
-	var json1 = {};
-	json1.action = 5; //5表示游戏过程中聊天
-	json1.message = document.getElementById('text').value;
-	var messages = JSON.stringify(json1);
-	//setMessageInnerHTML("myname:"+user);
-	websocket.send(messages);
+function timeUpdate(timeNow, timeMax){
+    var progressBar = document.getElementById('progressbar');
+    var percentage = Math.floor(timeNow / timeMax * 100);
+    progressBar.setAttribute('aria-valuenow',percentage.toString());
+    progressBar.style.width = percentage + '%';
 }
-
 
 function startGame(){
 	var node = document.createElement('link');
@@ -256,7 +258,13 @@ function startGame(){
 	.attr('align','center').appendTo(div1);
 	$('<h2></h>').text('请输入关键词').attr('id','keyword').appendTo(div2);
 	var inputform = $('<div></div>').addClass('input-group').appendTo(div2);
-	var inputbox = $('<input></input>').addClass('form-control').attr('type','text').attr('placeholder','关键词').appendTo(inputform);
+	var inputbox = $('<input></input>').addClass('form-control')
+	.attr('type','text').attr('id','stateInput').attr('placeholder','关键词').appendTo(inputform);
 	var inputButtonGroup = $('<span></span>').addClass('input-groupp-btn').appendTo(inputform);
 	var inputButton = $('<button></button>').addClass("btn btn-default").attr('type','button').text('确定').appendTo(inputButtonGroup);
+
+	timerCode = setInterval(function(){
+		tNow--;
+		timeUpdate(tNow, tMax);
+	}, 1000)
 }
