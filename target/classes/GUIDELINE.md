@@ -182,7 +182,7 @@ more information
 - for all game:
   - username1
   - username2
-  - result (1:succeeded 0:failed)
+  - result (0:succeeded 1:already is friend 2:failed)
 
 
 

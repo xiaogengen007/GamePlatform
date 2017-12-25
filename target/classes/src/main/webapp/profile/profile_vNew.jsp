@@ -368,9 +368,10 @@
 													<%
 														ArrayList<String> fl = new ArrayList<String>();
 														fl = FriendManager.getFriendList(uname);
+														request.setAttribute("fl", fl);
 													%>
 													<div class="profile-users clearfix">
-														<c:forEach items = "${fl}" var = "fl">
+														<c:forEach items = "${fl}" var = "keyword">
 														<div class="itemdiv memberdiv">
 															<div class="inline position-relative">
 																<div class="user">
@@ -383,7 +384,7 @@
 																	<div class="name">
 																		<a href="#">
 																			<span class="user-status status-online"></span>
-																			<c:out value = "${fl}"> </c:out>
+																			<c:out value = "${keyword}"> </c:out>
 																		</a>
 																	</div>
 																</div>
@@ -392,7 +393,7 @@
 																	<div class="arrow"></div>
 
 																	<div class="popover-content">
-																		<div class="bolder"><c:out value = "${fl}"> </c:out></div>
+																		<div class="bolder"><c:out value = "${keyword}"> </c:out></div>
 
 																		<div class="hr dotted hr-8"></div>
 
@@ -461,120 +462,9 @@
 														<div class="container-fluid">
 															<div class="row-fluid">
 																<div class="span12">
-																	<table class="table">
-																		<colgroup>
-																			<col style = "width:25%">
-																			<col style = "width:45%">
-																			<col style = "width:30%">
-																		</colgroup>
-																		<thead>
-																			<tr>
-																				<th>
-																					名次
-																				</th>
-																				<th>
-																					用户名
-																				</th>
-																				<th>
-																					积分
-																				</th>
-																			</tr>
-																		</thead>
-																		<tbody>
-																			<tr>
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-yellow">1</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar.png" alt="Jennifer Doe's avatar" />
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							${totalRanklist['key1']};
-																							</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					${totalRanklist['value1']};
-																				</td>
-																			</tr>
-																			<tr class="success">
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-success">2</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar3.png" alt="Jim Doe's avatar"/>
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							World Number Two
-																							</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					98706
-																				</td>
-																			</tr>
-																			<tr class="error">
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-purple">3</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar3.png" alt="Jim Doe's avatar"/>
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							World Number Three
-																						</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					70146
-																				</td>
-																			</tr>
-																			<tr class="warning">
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-warning">4</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							Regional 1
-																						</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					58901
-																				</td>
-																			</tr>
-																			<tr class="info">
-																				<td style = 'vertical-align : middle'>
-																					<span class="badge badge-info">5</span>
-																				</td>
-																				<td>
-																					<div class="user">
-																							<img src="assets/avatars/avatar3.png" alt="Jim Doe's avatar"/>
-																							&#12288
-																							<span class="user-status status-offline"></span>
-																							<a href="#">
-																							National 2
-																						</a>
-																					</div>
-																				</td>
-																				<td style = 'vertical-align : middle'>
-																					12300
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																	<br>
-																	<% Map<String, Integer> totalRanklist = PlayerManager.sortPoint();
+																	<% 
+																	Map<String, Integer> totalRanklist = PlayerManager.sortPoint();
+																	request.setAttribute("totalRanklist", totalRanklist);
 																	%>
 																	<table class="table">
 																		<colgroup>
@@ -592,9 +482,22 @@
 																		<tbody>
 																			<c:forEach var = "item" items = "${totalRanklist}" varStatus = "status"> 
 																				<tr>
-																					<td> ${status.index + 1} </td>
-																					<td> <c:out value = "${item.key}"> </c:out> </td>
-																					<td> ${item.value} </td>
+																					<td style = 'vertical-align : middle'> 
+																					${status.index + 1} 
+																					</td>
+																					<td> 
+																						<div class="user">
+																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
+																							&#12288
+																							<span class="user-status status-offline"></span>
+																							<a href="#">
+																							${item.key} 
+																							</a>
+																						</div>
+																					</td>
+																					<td style = 'vertical-align : middle'>
+																					${item.value}
+																					</td>
 																				</tr>
 																			</c:forEach>
 																		</tbody>
@@ -609,6 +512,10 @@
 														<div class="container-fluid">
 															<div class="row-fluid">
 																<div class="span12">
+																	<% 
+																	Map<String, Integer> friendRanklist = FriendManager.sortFriendPoint(uname);
+																	request.setAttribute("friendRanklist", friendRanklist);
+																	%>
 																	<table class="table">
 																		<colgroup>
 																			<col style = "width:25%">
@@ -639,12 +546,12 @@
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																								Novakchen
+																								${friendRanklist['key1']}
 																							</a>
 																					</div>
 																				</td>
 																				<td style = 'vertical-align : middle'>
-																					10720
+																					${friendRanklist['value1']}
 																				</td>
 																			</tr>
 																			<tr class="success">
@@ -657,12 +564,12 @@
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							ZacLv
+																							${friendRanklist['key2']}
 																							</a>
 																					</div>
 																				</td>
 																				<td style = 'vertical-align : middle'>
-																					2780
+																					${friendRanklist['value2']}
 																				</td>
 																			</tr>
 																			<tr class="error">
@@ -675,12 +582,12 @@
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							WayneQian
+																							${friendRanklist['key3']}
 																						</a>
 																					</div>
 																				</td>
 																				<td style = 'vertical-align : middle'>
-																					2012
+																					${friendRanklist['value3']}
 																				</td>
 																			</tr>
 																			<tr class="warning">
@@ -693,12 +600,12 @@
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							BillGao
+																							${friendRanklist['key4']}
 																						</a>
 																					</div>
 																				</td>
 																				<td style = 'vertical-align : middle'>
-																					1890
+																					${friendRanklist['value4']}
 																				</td>
 																			</tr>
 																			<tr class="info">
@@ -711,14 +618,51 @@
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							LiZhe
+																							${friendRanklist['key5']}
 																						</a>
 																					</div>
 																				</td>
 																				<td style = 'vertical-align : middle'>
-																					1230
+																					${friendRanklist['value5']}
 																				</td>
 																			</tr>
+																		</tbody>
+																	</table>
+																	<br>
+																	<table class="table">
+																		<colgroup>
+																			<col style = "width:25%">
+																			<col style = "width:45%">
+																			<col style = "width:30%">
+																		</colgroup>
+																		<thead>
+																			<tr>
+																				<th> 名次 </th>
+																				<th> 用户名 </th>
+																				<th> 积分 </th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<c:forEach var = "item" items = "${friendRanklist}" varStatus = "status"> 
+																				<tr>
+																					<td style = 'vertical-align : middle'>
+																					${status.index + 1} 
+																					</td>
+																					<td> 
+																						<div class="user">
+																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
+																							&#12288
+																							<span class="user-status status-offline"></span>
+																							<a href="#">
+																							${item.key} 
+																							</a>
+																						</div>
+																					</td>
+																					<td style = 'vertical-align : middle'> 
+																					${item.value} 
+																					</td>
+																				</tr>
+																			</c:forEach>
 																		</tbody>
 																	</table>
 																</div>

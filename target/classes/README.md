@@ -26,4 +26,6 @@ to test the program more effectively, you might need to set some parameters, her
 
 ## 4. init your database profile
 
-Before using this program for sever and database, you need to create a folder **D:/resource/datebase/** to save for your database.
+Before using this program for sever and database, you need to create a folder **C:/resource/database/** to save for your database.
+
+note that the database has changed format in the 2017.12.22 itachi4869(Li Boyao)'s commit (https://github.com/chuzhumin98/GamePlatform/commit/b493334c76e172709dd0ce75491b5de7690ea362 to see the specific changes), please delete the old database and let it automatically rebuild.
