@@ -117,6 +117,7 @@ websocket.onmessage = function (event) {
             		else{
                         audio_explode.play(); // 播放爆炸音效
             			$("#"+i+"-"+j).addClass("num").text('✸');
+                        //setTimeout("pause()",3000);
             		}
             	}
                 
