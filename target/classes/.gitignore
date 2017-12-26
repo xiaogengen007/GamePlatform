@@ -2,14 +2,4 @@
 /.metadata/
 /.settings/
 /lib/
-/.DS_Store
-/.classpath
-/.project
-/GUIDELINE.md
-/GUIDELINE_DB.md
-/JavaWebSocket.iml
-/LICENSE
-/README.md
-/pom.xml
-/src/
 /target/

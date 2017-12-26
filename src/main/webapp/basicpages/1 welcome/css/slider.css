@@ -42,22 +42,22 @@
     -webkit-transition: .3s;
 }
 .y_rot div#i1 {
-    -webkit-transform: rotateY(0deg) translateZ(200px);
+    -webkit-transform: rotateY(0deg) translateZ(204px);
 }
 .y_rot div#i2 {
-    -webkit-transform: rotateY(60deg) translateZ(200px);
+    -webkit-transform: rotateY(60deg) translateZ(204px);
 }
 .y_rot div#i3 {
-    -webkit-transform: rotateY(120deg) translateZ(200px);
+    -webkit-transform: rotateY(120deg) translateZ(204px);
 }
 .y_rot div#i4 {
-    -webkit-transform: rotateY(180deg) translateZ(200px);
+    -webkit-transform: rotateY(180deg) translateZ(204px);
 }
 .y_rot div#i5 {
-    -webkit-transform: rotateY(240deg) translateZ(200px);
+    -webkit-transform: rotateY(240deg) translateZ(204px);
 }
 .y_rot div#i6 {
-    -webkit-transform: rotateY(300deg) translateZ(200px);
+    -webkit-transform: rotateY(300deg) translateZ(204px);
 }
 .y_rot div img {
     height:235px;
