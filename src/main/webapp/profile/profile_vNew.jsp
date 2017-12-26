@@ -1,5 +1,5 @@
 <%@ page language = "java" contentType = "text/html; charset = utf-8" pageEncoding = "utf-8" isELIgnored = "false" %>
-<%@ page import = "db.*, java.sql.*, java.util.*" %>
+<%@ page import = "db.*, java.sql.*, java.util.*, java.text.*" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -54,6 +54,10 @@
 		<script src="assets/js/html5shiv.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
+		<script src = "js/pnglib.js"> 
+		</script>
+		<script src = "js/identicon.js">
+		</script>
 	</head>
 		<!-- head部分结束 -->
 
@@ -199,16 +203,12 @@
 
 				<div class="main-content">
 					<div class="page-content">
-						
-
 						<div class="row">
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
 								<div>
 									<div id="user-profile-2" class="user-profile">
 										<div class="tabbable">
-
-
 											<div class="tab-content no-border padding-24">
 												<div id="home" class="tab-pane in active">
 													<div class="page-header">
@@ -224,7 +224,14 @@
 													<div class="row">
 														<div class="col-xs-12 col-sm-3 center">
 															<span class="profile-picture">
+																<script> 
+																var thumbnail = new Identicon(user.hashcode, 200).toString();
+																thumbnail = 'data:image/png;base64,' + thumbnail;
+																$('#yourimgid').attr('src',thumbnail);
+																</script>
+															<!--
 																<img class="editable img-responsive" alt="Alex's Avatar" id="avatar2" src="assets/avatars/profile-pic.jpg" />
+															-->
 															</span>
 
 															<div class="space space-4"></div>
@@ -261,7 +268,7 @@
 																	<div class="profile-info-name"> 游戏局数 </div>
 
 																	<div class="profile-info-value">
-																		<span>N.A.</span>
+																		<span>暂未开发</span>
 																	</div>
 																</div>
 															</div>
@@ -368,12 +375,19 @@
 													<div class="profile-users clearfix">
 													<c:choose>
 													<c:when test = "${!empty fl}">
-														<c:forEach items = "${fl}" var = "keyword">
+														<c:forEach items = "${fl}" var = "fl">
 														<div class="itemdiv memberdiv">
 															<div class="inline position-relative">
 																<div class="user">
 																	<a href="#">
+																	<script> 
+																		var thumbnail = new Identicon({fl}.hashcode, 200).toString();
+																		thumbnail = 'data:image/png;base64,' + thumbnail;
+																		$('#yourimgid').attr('src',thumbnail);
+																	</script>
+																	<!--
 																		<img src="assets/avatars/avatar4.png" alt="Bob Doe's avatar" />
+																	-->
 																	</a>
 																</div>
 
@@ -381,7 +395,7 @@
 																	<div class="name">
 																		<a href="#">
 																			<span class="user-status status-online"></span>
-																			<c:out value = "${keyword}"> </c:out>
+																			<c:out value = "${fl}"> </c:out>
 																		</a>
 																	</div>
 																</div>
@@ -390,7 +404,7 @@
 																	<div class="arrow"></div>
 
 																	<div class="popover-content">
-																		<div class="bolder"><c:out value = "${keyword}"> </c:out></div>
+																		<div class="bolder"><c:out value = "${fl}"> </c:out></div>
 
 																		<div class="hr dotted hr-8"></div>
 
@@ -501,7 +515,14 @@
 																					</td>
 																					<td> 
 																						<div class="user">
+																							<script> 
+																								var thumbnail = new Identicon({item.key}.hashcode, 200).toString();
+																								thumbnail = 'data:image/png;base64,' + thumbnail;
+																								$('#yourimgid').attr('src',thumbnail);
+																							</script>
+																							<!--
 																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
+																							-->
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
@@ -687,7 +708,14 @@
 																					</td>
 																					<td> 
 																						<div class="user">
+																							<script> 
+																								var thumbnail = new Identicon({item.key}.hashcode, 200).toString();
+																								thumbnail = 'data:image/png;base64,' + thumbnail;
+																								$('#yourimgid').attr('src',thumbnail);
+																							</script>
+																							<!--
 																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
+																							-->
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
