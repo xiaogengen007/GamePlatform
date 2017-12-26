@@ -59,24 +59,18 @@
 
 	<body>
 		<%
-			//if(session.getAttribute("user") == null)  
-		    //{  
-		    //    out.println("<script>alert('请先登陆');window.location.href='sign.jsp'</script>");  
-		    //    return;  
-		    //}  
-		  	//response.setHeader( "Cache-Control", "no-cache,no-store");//HTTP 1.1
-		  	//response.setDateHeader( "Expires", 0 ); //prevent caching at the proxy server
-		  	//response.setHeader( "Pragma", "no-cache" );  //HTTP 1.0  
-		    //out.println("<script>function gotoMineSweeper(){window.location.href='game.html?game=1&username="+ session.getAttribute("user")  +"'};</script>");
-		    //out.println("<script>function gotoWhoIsUnderCover(){window.location.href='game.html?game=2&username="+ session.getAttribute("user")  +"'};</script>");
-		  	//out.println("<script>username = '" + session.getAttribute("user")+ "';</script>");
+			/*	
+			if(session.getAttribute("user") == null)  
+		    {  
+		        out.println("<script>alert('请先登陆');window.location.href='sign.jsp'</script>");  
+		        return;  
+		    }
+			*/
 		  	String uname = (String)session.getAttribute("user");
 		  	int outputID = PlayerManager.getId(uname);
    			int outputPoint = PlayerManager.getPoint(uname);
-   			//Map<String, Integer> totalRanklist = PlayerManager.sortPoint();
-   			//request.getSession().setAttribute("totalRanklist",totalRanklist);
+   			//String headpic = String.valueOf(session.getAttribute("user").hashCode());
 		%> 
-
 
 		<div class="navbar navbar-default" id="navbar">
 			<script type="text/javascript">
@@ -291,7 +285,7 @@
 																			<div class="progress">
 																				<div class="progress-bar" style="width:70%">
 																					<span class="pull-left">扫雷大作战</span>
-																					<span class="pull-right">50%</span>
+																					<span class="pull-right">N.A.</span>
 																				</div>
 																			</div>
 																			<br>
@@ -299,7 +293,7 @@
 																				<div class="progress-bar progress-bar-purple" style="width:40%">
 																					<span class="pull-left">谁是卧底</span>
 
-																					<span class="pull-right">20%</span>
+																					<span class="pull-right">N.A.</span>
 																				</div>
 																			</div>
 																		</div>
@@ -320,7 +314,7 @@
 																		<div class="clearfix">
 																			<div class="grid3 center">
 																				<div class="easy-pie-chart percentage" data-percent="45" data-color="#CA5952">
-																					<span class="percent">45</span>%
+																					<span class="percent">N.A.</span>
 																				</div>
 
 																				<div class="space-2"></div>
@@ -329,7 +323,7 @@
 																			
 																			<div class="grid3 center">
 																				<div class="center easy-pie-chart percentage" data-percent="80" data-color="#9585BF">
-																					<span class="percent">80</span>%
+																					<span class="percent">N.A.</span>
 																				</div>
 
 																				<div class="space-2"></div>
@@ -516,6 +510,7 @@
 																	Map<String, Integer> friendRanklist = FriendManager.sortFriendPoint(uname);
 																	request.setAttribute("friendRanklist", friendRanklist);
 																	%>
+																	<!--
 																	<table class="table">
 																		<colgroup>
 																			<col style = "width:25%">
@@ -629,6 +624,7 @@
 																		</tbody>
 																	</table>
 																	<br>
+																	-->
 																	<table class="table">
 																		<colgroup>
 																			<col style = "width:25%">
