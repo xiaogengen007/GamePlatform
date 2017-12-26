@@ -70,7 +70,7 @@ websocket.onmessage = function (event) {
 			for (i=0; i<json1.preMessage.length; i++) {
 				for (var j=0; j<playerArray.length; j++) {
 					if (json1.preMessage[i].username == playerArray[j].username) {
-						$('#popmessage' + (i+1)).attr('data-content', json1.preMessage[i].message).popover('show');
+						$('#popmessage' + (j+1)).attr('data-content', json1.preMessage[i].message).popover('show');
 					} 
 				}	
 			}
