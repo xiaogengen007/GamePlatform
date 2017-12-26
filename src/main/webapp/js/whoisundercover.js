@@ -36,8 +36,8 @@ websocket.onmessage = function (event) {
 		} 
 		if (json1.start == 1) {
 			//游戏正在进行
-			tMaxState = maxTime;
-			tMaxVote = maxVoteTime;
+			tMaxState = json1.maxTime;
+			tMaxVote = json1.maxVoteTime;
 			tMax = tMaxState;
 			startGame();
 			//playerNum = json1.players.length;
