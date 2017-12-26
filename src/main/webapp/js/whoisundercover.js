@@ -70,8 +70,7 @@ websocket.onmessage = function (event) {
 			for (i=0; i<json1.preMessage.length; i++) {
 				for (var j=0; j<playerArray.length; j++) {
 					if (json1.preMessage[i].username == playerArray[j].username) {
-						var tmp = $('#popmessage' + i).attr('data-content', json1.preMessage[i].message);
-						tmp.popover('show');
+						$('#popmessage' + (i+1)).attr('data-content', json1.preMessage[i].message).popover('show');
 					} 
 				}	
 			}
@@ -83,7 +82,7 @@ websocket.onmessage = function (event) {
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		if (json1.resultType == 1) { //1 for can get the die player
-			for (i=0; i<playerArray.length; i++) {
+			for (i=1; i<=playerArray.length; i++) {
 				$('#popmessage' + i).popover('hide');
 			}
 			isVoting = 0;
