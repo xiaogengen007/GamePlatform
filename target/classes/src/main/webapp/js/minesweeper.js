@@ -72,7 +72,7 @@ websocket.onmessage = function (event) {
         if (json1.finished == 1) {
             audio_select.play(); // 播放选择音效
             //setMessageInnerHTML("You have finished this turn click, now complete "+json1.finishNum+" of "+json1.playerNum);
-            setMessageInnerHTML("您已完成当前轮次");
+            setMessageInnerHTML("您已完成当前轮次，请等待:"+json1.finishNum+" / "+json1.playerNum);
         } else {
             //setMessageInnerHTML("Please click for this turn, now complete "+json1.finishNum+" of "+json1.playerNum);
             setMessageInnerHTML("请点击进行扫雷");

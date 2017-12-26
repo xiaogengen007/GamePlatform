@@ -1,5 +1,5 @@
 <%@ page language = "java" contentType = "text/html; charset = utf-8" pageEncoding = "utf-8" isELIgnored = "false" %>
-<%@ page import = "db.*, java.sql.*, java.util.*, java.text.*" %>
+<%@ page import = "db.*, player.*, java.sql.*, java.util.*, java.text.*" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -92,16 +92,13 @@
 				</div><!-- /.navbar-header -->
 
 				<div class="navbar-header pull-right" role="navigation">
-					<ul class="nav ace-nav">
-						<!-- 右上角紫红色的“通知”板块 -->	
+					<ul class="nav ace-nav">	
 						<li class="purple">
 							<a href="../gamepage.jsp">
 								<i class="icon-bell-alt icon-animated-bell"></i>
 									游戏大厅
 							</a>
 						</li>
-
-						<!-- 右上角绿色的“消息”板块 -->	
 						<li class="green">
 							<a href="../profile/profile_vNew.jsp">
 								<i class="icon-envelope icon-animated-vertical"></i>
@@ -224,6 +221,10 @@
 													<div class="row">
 														<div class="col-xs-12 col-sm-3 center">
 															<span class="profile-picture">
+																<%
+																	//Player pl = null;
+																	//pl.username = uname;
+																%>
 																<script> 
 																var thumbnail = new Identicon(user.hashcode, 200).toString();
 																thumbnail = 'data:image/png;base64,' + thumbnail;
@@ -371,7 +372,6 @@
 														fl = FriendManager.getFriendList(uname);
 														request.setAttribute("fl", fl);
 													%>
-												
 													<div class="profile-users clearfix">
 													<c:choose>
 													<c:when test = "${!empty fl}">
@@ -380,8 +380,13 @@
 															<div class="inline position-relative">
 																<div class="user">
 																	<a href="#">
+																	<%
+																		Player pl0 = null;
+																		pl0.username = "${fl}";
+																		pl0.setupHashCode();
+																	%>
 																	<script> 
-																		var thumbnail = new Identicon({fl}.hashcode, 200).toString();
+																		var thumbnail = new Identicon(pl0.hashcode, 200).toString();
 																		thumbnail = 'data:image/png;base64,' + thumbnail;
 																		$('#yourimgid').attr('src',thumbnail);
 																	</script>
@@ -424,7 +429,7 @@
 																	</div>
 																</div>
 															</div>
-														</div>
+														</div>			
 													</c:forEach>
 													</c:when>
 													<c:otherwise>
@@ -436,7 +441,7 @@
 															<i class="icon-remove"></i>
 															暂无好友信息！
 															</strong>
-															快开始游戏并添加好友吧！
+															快点击右上方“游戏大厅”开始游戏并添加好友吧！
 															<br />
 														</div>
 													</c:otherwise>
@@ -515,8 +520,13 @@
 																					</td>
 																					<td> 
 																						<div class="user">
+																							<%
+																								Player pl1 = null;
+																								pl1.username = "${item.key}";
+																								pl1.setupHashCode();
+																							%>
 																							<script> 
-																								var thumbnail = new Identicon({item.key}.hashcode, 200).toString();
+																								var thumbnail = new Identicon(pl1.hashcode, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
 																								$('#yourimgid').attr('src',thumbnail);
 																							</script>
@@ -708,8 +718,13 @@
 																					</td>
 																					<td> 
 																						<div class="user">
+																							<%
+																								Player pl2 = null;
+																								pl2.username = "${item.key}";
+																								pl2.setupHashCode();
+																							%>
 																							<script> 
-																								var thumbnail = new Identicon({item.key}.hashcode, 200).toString();
+																								var thumbnail = new Identicon(pl2.hashcode, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
 																								$('#yourimgid').attr('src',thumbnail);
 																							</script>
@@ -746,7 +761,7 @@
 																			<i class="icon-remove"></i>
 																			暂无排名数据！
 																			</strong>
-																			快添加好友并点击右上方“游戏大厅”开始游戏吧！
+																			快点击右上方“游戏大厅”开始游戏并添加好友吧！
 																			<br />
 																		</div>
 																	</c:otherwise>
