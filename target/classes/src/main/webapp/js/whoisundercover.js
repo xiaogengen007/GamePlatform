@@ -1,7 +1,7 @@
 //var playerNum = 4;
 var isVoting = 0; //初始时不是投票环节
 var state = new Array(8); //多生成一些防止不够用
-var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
+//var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
 var canVoted = new Array(8); //记录各玩家能否被投票
 //var playerName = new Array(8);
 var tMaxState;
@@ -27,6 +27,7 @@ websocket.onmessage = function (event) {
 		}
 		*/
 		for(var i = playerArray.length; i < json1.players.length; i++ ){
+			json1.players[i].alive = 1;
     		addPlayer(json1.players[i]);
     	}
 		
@@ -64,13 +65,19 @@ websocket.onmessage = function (event) {
 		}
 	}
 	if (json1.action == 3) { //游戏进行状态通讯
-		var messages = JSON.stringify(json1);
-		setMessageInnerHTML(messages);
+		//var messages = JSON.stringify(json1);
+		//setMessageInnerHTML(messages);
 		if (json1.finished != 0) { //不是为非完成的用户(已完成用户)
 			for (i=0; i<json1.preMessage.length; i++) {
 				for (var j=0; j<playerArray.length; j++) {
 					if (json1.preMessage[i].username == playerArray[j].username) {
-						$('#popmessage' + (j+1)).attr('data-content', json1.preMessage[i].message).popover('show');
+						var m = json1.preMessage[i].message;
+						if(m.length == 0){
+							$('#popmessage' + (j+1)).attr('data-content', ' ').popover('show');
+						}
+						else{
+							$('#popmessage' + (j+1)).attr('data-content', json1.preMessage[i].message).popover('show');
+						}
 					} 
 				}	
 			}
@@ -79,8 +86,8 @@ websocket.onmessage = function (event) {
 	}
 	if (json1.action == 4) { //游戏该轮完成后通讯
 		//document.getElementById('message').innerHTML = "";
-		var messages = JSON.stringify(json1);
-		setMessageInnerHTML(messages);
+		//var messages = JSON.stringify(json1);
+		//setMessageInnerHTML(messages);
 		if (json1.resultType == 1) { //1 for can get the die player
 			for (i=1; i<=playerArray.length; i++) {
 				$('#popmessage' + i).popover('hide');
@@ -90,16 +97,25 @@ websocket.onmessage = function (event) {
 			tNow = tMaxState;
 			tMax = tMaxState;
 	        timeUpdate(tNow, tMax);
-	        /*
-	        timerCode = setInterval(function(){
-	    		tNow--;
-	    		timeUpdate(tNow, tMax);
-	    	}, 1000)*/
+	        for(var i = 0; i < playerArray.length; i++){
+	        	if(playerArray[i].username == json1.diePlayer){
+	        		playerArray[i].alive = 0;
+	        		$('#thumbnailGame' + (i+1)).css('opacity','0.4');
+	        	}
+	        	if(user == json1.diePlayer){
+	        		$('#inputform').empty()
+	        	}
+	        }
+	        
+	        setMessageInnerHTML(json1.diePlayer + "死亡")
+	        setMessageInnerHTML("该轮结束");
+	        
 		} else { //否则则继续进行投票
 			//clearInterval(timerCode);
 			tNow = tMaxVote;
 			tMax = tMaxVote
 	        timeUpdate(tNow, tMax);
+			setMessageInnerHTML("继续投票");
 			/*
 			timerCode = setInterval(function(){
 	    		tNow--;
@@ -121,8 +137,9 @@ websocket.onmessage = function (event) {
 	if (json1.action == 6) { //游戏结束时的通讯
 		clearInterval(timerCode);
 		timeUpdate(1,1);
-		var messages = JSON.stringify(json1);
-		setMessageInnerHTML(messages);
+		//var messages = JSON.stringify(json1);
+		//setMessageInnerHTML(messages);
+		setMessageInnerHTML("游戏结束");
 	}
 	if (json1.action == 7) { //游戏状态的额外传输
 		var keywords = json1.keyword;
@@ -136,13 +153,14 @@ websocket.onmessage = function (event) {
 		tMax = tMaxVote
         timeUpdate(tNow, tMax);
 		
-		var messages = JSON.stringify(json1);
-		setMessageInnerHTML(messages);
+		//var messages = JSON.stringify(json1);
+		//setMessageInnerHTML(messages);
+		setMessageInnerHTML("开始投票");
 		for (i=0; i<playerArray.length; i++) {
 			state[i] = ""; //初始化
 		}
 		for (i=0; i<json1.alive.length; i++) {
-			alive[i] = json1.alive[i];
+			//alive[i] = json1.alive[i];
 		}
 		for (i=0; i<json1.messages.length; i++) {
 			for (var j=0; j<playerArray.length; j++) {
@@ -163,6 +181,7 @@ websocket.onmessage = function (event) {
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		for (i=0; i<playerArray.length; i++) {
+			//TODO:
 			alive[i] = json1.baseInfo[i].alive;
 		}
 		if (json1.gameProcess == 1) { //在投票阶段需要根据情况来绘制投票器
@@ -248,7 +267,7 @@ function startGame(){
 		var popMessage = $('<div></div>').attr('data-container','body').attr('data-toggle','popover')
 		.attr('data-placement','top').attr('data-content','word').attr('id','popmessage' + i);
 		var img = $('<img></img>').addClass("img-responsive")
-		.attr('src',playerArray[i-1].thumbnail)
+		.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
 		var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
@@ -275,7 +294,7 @@ function startGame(){
 	var div2 = $('<div></div>').addClass("col-md-6 col-md-offset-3 col-sm-12" )
 	.attr('align','center').appendTo(div1);
 	$('<h2></h>').text('请输入关键词').attr('id','keyword').appendTo(div2);
-	var inputform = $('<div></div>').addClass('input-group').appendTo(div2);
+	var inputform = $('<div></div>').addClass('input-group').attr('id','inputform').appendTo(div2);
 	var inputbox = $('<input></input>').addClass('form-control')
 	.attr('type','text').attr('id','stateInput').attr('placeholder','关键词').appendTo(inputform);
 	var inputButtonGroup = $('<span></span>').addClass('input-groupp-btn').appendTo(inputform);
