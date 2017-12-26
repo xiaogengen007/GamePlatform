@@ -86,13 +86,25 @@ websocket.onmessage = function (event) {
 				$('#popmessage' + i).popover('hide');
 			}
 			isVoting = 0;
+			//clearInterval(timerCode);
 			tNow = tMaxState;
 			tMax = tMaxState;
 	        timeUpdate(tNow, tMax);
+	        /*
+	        timerCode = setInterval(function(){
+	    		tNow--;
+	    		timeUpdate(tNow, tMax);
+	    	}, 1000)*/
 		} else { //否则则继续进行投票
+			//clearInterval(timerCode);
 			tNow = tMaxVote;
 			tMax = tMaxVote
 	        timeUpdate(tNow, tMax);
+			/*
+			timerCode = setInterval(function(){
+	    		tNow--;
+	    		timeUpdate(tNow, tMax);
+	    	}, 1000)*/
 			for (i=0; i<playerArray.length; i++) {
 				canVoted[i] = 0;
 			}
@@ -118,6 +130,12 @@ websocket.onmessage = function (event) {
 	}
 	if (json1.action == 8) { //发言阶段结束时的发言记录
 		isVoting = 1; //进入投票环节
+		
+		// TODO
+		tNow = tMaxVote;
+		tMax = tMaxVote
+        timeUpdate(tNow, tMax);
+		
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		for (i=0; i<playerArray.length; i++) {
