@@ -364,7 +364,10 @@
 														fl = FriendManager.getFriendList(uname);
 														request.setAttribute("fl", fl);
 													%>
+												
 													<div class="profile-users clearfix">
+													<c:choose>
+													<c:when test = "${!empty fl}">
 														<c:forEach items = "${fl}" var = "keyword">
 														<div class="itemdiv memberdiv">
 															<div class="inline position-relative">
@@ -409,6 +412,21 @@
 															</div>
 														</div>
 													</c:forEach>
+													</c:when>
+													<c:otherwise>
+														<div class="alert alert-danger">
+															<button type="button" class="close" data-dismiss="alert">
+															<i class="icon-remove"></i>
+															</button>
+															<strong>
+															<i class="icon-remove"></i>
+															暂无好友信息！
+															</strong>
+															快开始游戏并添加好友吧！
+															<br />
+														</div>
+													</c:otherwise>
+													</c:choose>
 													</div>
 
 													<div class="hr hr10 hr-double"></div>
@@ -460,6 +478,8 @@
 																	Map<String, Integer> totalRanklist = PlayerManager.sortPoint();
 																	request.setAttribute("totalRanklist", totalRanklist);
 																	%>
+																	<c:choose>
+																	<c:when test = "${!empty totalRanklist}">
 																	<table class="table">
 																		<colgroup>
 																			<col style = "width:25%">
@@ -496,6 +516,25 @@
 																			</c:forEach>
 																		</tbody>
 																	</table>
+																	</c:when>
+																	<c:otherwise>
+																		<h3 class="header smaller lighter green">
+																		<i class="icon-bullhorn"></i>
+																		提示
+																		</h3>
+																		<div class="alert alert-danger">
+																			<button type="button" class="close" data-dismiss="alert">
+																			<i class="icon-remove"></i>
+																			</button>
+																			<strong>
+																			<i class="icon-remove"></i>
+																			暂无排名数据！
+																			</strong>
+																			快点击右上方“游戏大厅”开始游戏吧！
+																			<br />
+																		</div>
+																	</c:otherwise>
+																	</c:choose>
 																</div>
 															</div>
 														</div>
@@ -625,6 +664,8 @@
 																	</table>
 																	<br>
 																	-->
+																	<c:choose>
+																	<c:when test = "${!empty friendRanklist}">
 																	<table class="table">
 																		<colgroup>
 																			<col style = "width:25%">
@@ -661,6 +702,27 @@
 																			</c:forEach>
 																		</tbody>
 																	</table>
+																	</c:when>
+																	<c:otherwise>
+																	<h3 class="row header smaller lighter orange">
+																		<span class="col-sm-8">
+																		<i class="icon-bell-alt"></i>
+																		提示
+																		</span><!-- /span -->
+																	</h3>
+																		<div class="alert alert-warning">
+																			<button type="button" class="close" data-dismiss="alert">
+																			<i class="icon-remove"></i>
+																			</button>
+																			<strong>
+																			<i class="icon-remove"></i>
+																			暂无排名数据！
+																			</strong>
+																			快添加好友并点击右上方“游戏大厅”开始游戏吧！
+																			<br />
+																		</div>
+																	</c:otherwise>
+																	</c:choose>
 																</div>
 															</div>
 														</div>
