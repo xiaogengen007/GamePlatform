@@ -25,7 +25,7 @@
     <!-- Custom styles for HELP button -->
     <!--<link rel="stylesheet" type="text/css" href="gameElements/help/css/default.css" />-->
     <link rel="stylesheet" type="text/css" href="gameElements/help/css/component.css" />
-    
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     
 </head>
 
@@ -169,15 +169,29 @@
     <div class="md-modal md-effect-11" id="modal-11">
         <div class="md-content">
             <h3>帮 助 文 档</h3>
-            <div>
-                <p>多人扫雷游戏规则：</p>
+            
+            <div id="div1" style="display:block;">
+                <p><h4>多人扫雷游戏规则：</h4></p>
                 <ul>
-                    <li><strong>左键点击:</strong> 打开该方块。如果该处无地雷，显示周围九宫格内的总雷数，加x分；如果不幸触雷，显示地雷，扣y分。</li>
-                    <li><strong>右键点击:</strong> 标记地雷。标记正确，加x分；错误，扣y分</li>
+                    <li><strong>左键点击:</strong> 打开该方块。如果该处无地雷，显示周围九宫格内的总雷数，得6分；如果不幸触雷，显示地雷，不得分。</li>
+                    <li><strong>右键点击:</strong> 标记地雷。标记正确，得6分；错误，不得分</li>
                     <li><strong>游戏进度:</strong> 每一轮选择时间为n秒，若时间到未选择，则由系统随机进行动作。</li>
                 </ul>
-                <button class="md-close">Close me!</button>
+                <input type="button" class="btn btn-default btn-lg btn-block" onclick="showAndHidden();" value="切&nbsp;&nbsp;&nbsp;换" />
+                <!--<button class="md-close">切 换</button>-->
             </div>
+
+            <div id="div2" style="display:none;">
+                <p><h4>谁是卧底游戏规则：</h4></p>
+                <ul>
+                    <li>每人每轮只能说一句话描述自己拿到的词语（不能直接说出来那个词语），与不能让卧底发现，也要给同胞以暗示。 </li>
+                    <li>每轮描述完毕，7人投票选出怀疑是卧底的那个人，得票数最多的人出局，俩个人一样多的话，待定（就是保留）。</li>
+                    <li>若有卧底撑到剩下最后三人，则卧底获胜，反之，则大部队获胜。</li>
+                </ul>
+                <input type="button" class="btn btn-default btn-lg btn-block" onclick="showAndHidden();" value="切&nbsp;&nbsp;&nbsp;换" />
+                <!--<button class="md-close">切 换</button>-->
+            </div>
+
         </div>
     </div><!-- end HELP button pop-up page-->
     
@@ -221,7 +235,19 @@
         var polyfilter_scriptpath = '/gameElements/help/js/';
     </script>
     <script src="gameElements/help/js/cssParser.js"></script>
-    <script src="gameElements/help/js/css-filters-polyfill.js"></script><!-- end HELP button pop-up page-->
+    <script src="gameElements/help/js/css-filters-polyfill.js"></script>
+
+
+    <script type="text/javascript">  
+    function showAndHidden(){  
+      var div1=document.getElementById("div1");  
+      var div2=document.getElementById("div2");  
+      if(div1.style.display=='block') div1.style.display='none';  
+      else div1.style.display='block';  
+      if(div2.style.display=='block') div2.style.display='none';  
+      else div2.style.display='block';  
+    }  </script>
+    <!-- end HELP button pop-up page-->
 
 
     

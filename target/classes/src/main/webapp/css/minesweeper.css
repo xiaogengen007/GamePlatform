@@ -59,11 +59,11 @@
     color: #fff;
 }
 .flagbox{
-    width: 120px;
+    width: 160px;
     height: 40px;
     padding: 5px;
     background: url(hongqi.jpg) no-repeat;
-    border: 1px solid red;
+    border: 4px solid red;
     position: absolute;
     right: 20px;
     top: 120px;
