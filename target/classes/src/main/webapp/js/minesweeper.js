@@ -117,7 +117,6 @@ websocket.onmessage = function (event) {
             		else{
                         audio_explode.play(); // 播放爆炸音效
             			$("#"+i+"-"+j).addClass("num").text('✸');
-                        setTimeout("pause()",3000);
             		}
             	}
                 
@@ -126,7 +125,8 @@ websocket.onmessage = function (event) {
         scoreUpdate(json1.players);
         //setMessageInnerHTML("End of this turn, please select for next turn.");
         setMessageInnerHTML("当前轮次结束，请点击进行扫雷...");
-        audio_start.play(); // 播放开始音效
+        //audio_start.play(); 
+        setTimeout("audio_start.play()",1000); // 播放开始提示音音效 延时以错开爆炸声
         tNow = tMax;
         timeUpdate(tNow, tMax);
         actionArray.splice(0, actionArray.length);

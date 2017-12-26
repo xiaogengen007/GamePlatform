@@ -72,7 +72,7 @@ websocket.onmessage = function (event) {
         if (json1.finished == 1) {
             audio_select.play(); // 播放选择音效
             //setMessageInnerHTML("You have finished this turn click, now complete "+json1.finishNum+" of "+json1.playerNum);
-            setMessageInnerHTML("您已完成当前轮次");
+            setMessageInnerHTML("您已完成当前轮次，请等待:"+json1.finishNum+" / "+json1.playerNum);
         } else {
             //setMessageInnerHTML("Please click for this turn, now complete "+json1.finishNum+" of "+json1.playerNum);
             setMessageInnerHTML("请点击进行扫雷");
@@ -117,7 +117,6 @@ websocket.onmessage = function (event) {
             		else{
                         audio_explode.play(); // 播放爆炸音效
             			$("#"+i+"-"+j).addClass("num").text('✸');
-                        //setTimeout("pause()",3000);
             		}
             	}
                 
@@ -126,7 +125,8 @@ websocket.onmessage = function (event) {
         scoreUpdate(json1.players);
         //setMessageInnerHTML("End of this turn, please select for next turn.");
         setMessageInnerHTML("当前轮次结束，请点击进行扫雷...");
-        audio_start.play(); // 播放开始音效
+        //audio_start.play(); 
+        setTimeout("audio_start.play()",1000); // 播放开始提示音音效 延时以错开爆炸声
         tNow = tMax;
         timeUpdate(tNow, tMax);
         actionArray.splice(0, actionArray.length);
