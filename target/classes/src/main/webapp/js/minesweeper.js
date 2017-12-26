@@ -18,6 +18,7 @@ var audio_start = document.getElementById("audio_start");
 var audio_select = document.getElementById("audio_select");
 var audio_explode = document.getElementById("audio_explode");
 
+
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
     var json1 = JSON.parse(event.data);
@@ -172,6 +173,13 @@ function scoreUpdate(players){
 }
 
 function numMineUpdate(numMine){
+    $("<link>")
+    .attr({ rel: "stylesheet",
+    type: "text/css",
+    href: "http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"
+    })
+    .appendTo("head");
+    $('label label-danger').text('剩余地雷数量: ' + numMine);
 	$('.flagbox').text('剩余地雷数量: ' + numMine);
 }
 
