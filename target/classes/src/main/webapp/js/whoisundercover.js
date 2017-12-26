@@ -262,7 +262,8 @@ function startGame(){
 	var inputbox = $('<input></input>').addClass('form-control')
 	.attr('type','text').attr('id','stateInput').attr('placeholder','关键词').appendTo(inputform);
 	var inputButtonGroup = $('<span></span>').addClass('input-groupp-btn').appendTo(inputform);
-	var inputButton = $('<button></button>').addClass("btn btn-default").attr('type','button').text('确定').appendTo(inputButtonGroup);
+	var inputButton = $('<button></button>').addClass("btn btn-default").attr('type','button')
+	.text('确定').click(send).appendTo(inputButtonGroup);
 
 	timerCode = setInterval(function(){
 		tNow--;
