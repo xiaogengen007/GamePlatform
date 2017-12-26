@@ -173,13 +173,13 @@ function scoreUpdate(players){
 }
 
 function numMineUpdate(numMine){
-    $("<link>")
+    /*$("<link>")
     .attr({ rel: "stylesheet",
     type: "text/css",
     href: "http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"
     })
     .appendTo("head");
-    $('label label-danger').text('剩余地雷数量: ' + numMine);
+    $('label label-danger').text('剩余地雷数量: ' + numMine);*/
 	$('.flagbox').text('剩余地雷数量: ' + numMine);
 }
 
