@@ -21,10 +21,6 @@
     
     <script src="js/pnglib.js"></script>
     <script src="js/identicon.js"></script>
-
-    <!-- Custom styles for HELP button -->
-    <!--<link rel="stylesheet" type="text/css" href="gameElements/help/css/default.css" />-->
-    <link rel="stylesheet" type="text/css" href="gameElements/help/css/component.css" />
     
     
 </head>
@@ -35,7 +31,7 @@
 		    window.location.href='sign.jsp';
 		}
 	</script>
-
+    
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -49,9 +45,8 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <!--<li><a href="#">帮助</a></li>-->
-                    <li class="md-trigger" data-modal="modal-11"><a href="#">帮助</a></li> <!-- HELP button pop-up page-->
-                    <li ><a href="gamepage.jsp">退出</a></li>
+                    <li><a href="#">帮助</a></li>
+                    <li><a href="gamepage.jsp">退出</a></li>
                 </ul>
             </div>
         </div>
@@ -153,24 +148,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
 	</div>
-
-    <!-- HELP button pop-up page-->
-    <div class="md-modal md-effect-11" id="modal-11">
-        <div class="md-content">
-            <h3>帮 助 文 档</h3>
-            <div>
-                <p>多人扫雷游戏规则：</p>
-                <ul>
-                    <li><strong>左键点击:</strong> 打开该方块。如果该处无地雷，显示周围九宫格内的总雷数，加x分；如果不幸触雷，显示地雷，扣y分。</li>
-                    <li><strong>右键点击:</strong> 标记地雷。标记正确，加x分；错误，扣y分</li>
-                    <li><strong>游戏进度:</strong> 每一轮选择时间为n秒，若时间到未选择，则由系统随机进行动作。</li>
-                </ul>
-                <button class="md-close">Close me!</button>
-            </div>
-        </div>
-    </div><!-- end HELP button pop-up page-->
     
-
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -194,25 +172,6 @@
 	<script type="text/javascript">
 		$('#myModal').on('hide.bs.modal', function(){console.log('close modal');});
 	</script>
-
-
-    <!-- HELP button pop-up page-->
-    <div class="md-overlay"></div><!-- the overlay element -->
-
-    <!-- classie.js by @desandro: https://github.com/desandro/classie -->
-    <script src="gameElements/help/js/classie.js"></script>
-    <script src="gameElements/help/js/modalEffects.js"></script>
-
-    <!-- for the blur effect -->
-    <!-- by @derSchepp https://github.com/Schepp/CSS-Filters-Polyfill -->
-    <script>
-        // this is important for IEs
-        var polyfilter_scriptpath = '/gameElements/help/js/';
-    </script>
-    <script src="gameElements/help/js/cssParser.js"></script>
-    <script src="gameElements/help/js/css-filters-polyfill.js"></script><!-- end HELP button pop-up page-->
-
-
     
 </body>
 

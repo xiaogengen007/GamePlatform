@@ -14,6 +14,8 @@ var MessageType = {
 
 var actionArray = Array();
 
+var audio = document.getElementById("bgMusic");
+
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
     var json1 = JSON.parse(event.data);
@@ -66,6 +68,9 @@ websocket.onmessage = function (event) {
 	}
     else if (json1.action == 3) { //游戏进行状态通讯
         if (json1.finished == 1) {
+
+
+            audio.play();
             //setMessageInnerHTML("You have finished this turn click, now complete "+json1.finishNum+" of "+json1.playerNum);
             setMessageInnerHTML("您已完成当前轮次");
         } else {
