@@ -22,7 +22,7 @@
     <script src="js/pnglib.js"></script>
     <script src="js/identicon.js"></script>
 
-    <!-- Custom styles for this the HELP button -->
+    <!-- Custom styles for HELP button -->
     <!--<link rel="stylesheet" type="text/css" href="gameElements/help/css/default.css" />-->
     <link rel="stylesheet" type="text/css" href="gameElements/help/css/component.css" />
     
@@ -36,7 +36,7 @@
 		}
 	</script>
     
-    <!-- Custom styles for this the HELP button -->
+    <!-- HELP button pop-up page-->
     <div class="md-modal md-effect-11" id="modal-11">
         <div class="md-content">
             <h3>Modal Dialog</h3>
@@ -50,7 +50,7 @@
                 <button class="md-close">Close me!</button>
             </div>
         </div>
-    </div>
+    </div><!-- end HELP button pop-up page-->
 
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -67,7 +67,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <!--<li><a href="#">帮助</a></li>-->
-                    <li class="md-trigger" data-modal="modal-11"><a href="#">帮助</a></li>
+                    <li class="md-trigger" data-modal="modal-11"><a href="#">帮助</a></li> <!-- HELP button pop-up page-->
                     <li ><a href="gamepage.jsp">退出</a></li>
                 </ul>
             </div>
@@ -172,9 +172,7 @@
 	</div>
     
 
-
-
-
+    <!-- HELP button pop-up page-->
     <div class="md-overlay"></div><!-- the overlay element -->
 
     <!-- classie.js by @desandro: https://github.com/desandro/classie -->
@@ -188,12 +186,7 @@
         var polyfilter_scriptpath = '/gameElements/help/js/';
     </script>
     <script src="gameElements/help/js/cssParser.js"></script>
-    <script src="gameElements/help/js/css-filters-polyfill.js"></script>
-    <!-- Custom styles for this the HELP button END-->
-
-
-
-
+    <script src="gameElements/help/js/css-filters-polyfill.js"></script><!-- end HELP button pop-up page-->
 
 
     <!-- Bootstrap core JavaScript
@@ -219,8 +212,6 @@
 	<script type="text/javascript">
 		$('#myModal').on('hide.bs.modal', function(){console.log('close modal');});
 	</script>
-
-
 
 
     
