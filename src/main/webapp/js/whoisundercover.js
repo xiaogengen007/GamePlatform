@@ -39,6 +39,7 @@ websocket.onmessage = function (event) {
 			tMaxState = json1.maxTime;
 			tMaxVote = json1.maxVoteTime;
 			tMax = tMaxState;
+			tNow = tMax;
 			startGame();
 			//playerNum = json1.players.length;
 			setMessageInnerHTML("Game has started! Now has "+json1.players.length+" in this room.");
