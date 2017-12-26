@@ -24,9 +24,10 @@ websocket.onmessage = function (event) {
     }
     else if (json1.action == 1) { //游戏状态的通讯
     	//针对退出游戏的情况，要进行修改
-    	for(var i = playerArray.length; i < json1.players.length; i++ ){
-    		addPlayer(json1.players[i]);
-    	}
+    	//for(var i = playerArray.length; i < json1.players.length; i++ ){
+    	//	addPlayer(json1.players[i]);
+    	//}
+    	addPlayer(json1.players);
     	
     	gridLen = json1.gridLen;
         tMax = json1.maxTime;
@@ -35,21 +36,24 @@ websocket.onmessage = function (event) {
     	
         if (json1.start == 0) {
             //游戏还未开始
-            setMessageInnerHTML("Now has "+json1.players.length+" in this room, please wait for game start.");
+            //setMessageInnerHTML("Now has "+json1.players.length+" in this room, please wait for game start.");
+            setMessageInnerHTML("当前房间内有 "+json1.players.length+" 名玩家, 请等待游戏开始...");
         } 
         else if (json1.start == 1) {
             //游戏已经开始
-            setMessageInnerHTML("Game has started! Now has "+json1.players.length+" in this room.");
+            //setMessageInnerHTML("Game has started! Now has "+json1.players.length+" in this room.");
+            setMessageInnerHTML("游戏开始! 当前玩家数："+json1.players.length);
             startGame();
         }
         else if (json1.start == 2) {
-        	setMessageInnerHTML("Game has finished!");
+        	setMessageInnerHTML("游戏结束");
         }
     }
     else if (json1.action == 6) { //游戏结束时的通讯
     	clearInterval(timerCode);
     	timeUpdate(1, 1);
-		setMessageInnerHTML("This game has finished! Following is the rank:");
+		//setMessageInnerHTML("This game has finished! Following is the rank:");
+        setMessageInnerHTML("当前游戏结束，请查看排名");
 		
 		for (i=0; i<json1.players.length; i++) {
 			for(j = 0; j < playerArray.length; j++){
@@ -62,9 +66,11 @@ websocket.onmessage = function (event) {
 	}
     else if (json1.action == 3) { //游戏进行状态通讯
         if (json1.finished == 1) {
-            setMessageInnerHTML("You have finished this turn click, now complete "+json1.finishNum+" of "+json1.playerNum);
+            //setMessageInnerHTML("You have finished this turn click, now complete "+json1.finishNum+" of "+json1.playerNum);
+            setMessageInnerHTML("您已完成当前轮次");
         } else {
-            setMessageInnerHTML("Please click for this turn, now complete "+json1.finishNum+" of "+json1.playerNum);
+            //setMessageInnerHTML("Please click for this turn, now complete "+json1.finishNum+" of "+json1.playerNum);
+            setMessageInnerHTML("请点击进行扫雷");
         }
         tNow = json1.leftTime;
         timeUpdate(tNow, tMax);
@@ -111,7 +117,8 @@ websocket.onmessage = function (event) {
             }
         }
         scoreUpdate(json1.players);
-        setMessageInnerHTML("End of this turn, please select for next turn.");
+        //setMessageInnerHTML("End of this turn, please select for next turn.");
+        setMessageInnerHTML("当前轮次结束，请点击进行扫雷...");
         tNow = tMax;
         timeUpdate(tNow, tMax);
         actionArray.splice(0, actionArray.length);
@@ -157,7 +164,7 @@ function scoreUpdate(players){
 }
 
 function numMineUpdate(numMine){
-	$('.flagbox').text('剩余地雷: ' + numMine);
+	$('.flagbox').text('剩余地雷数量: ' + numMine);
 }
 
 //开始游戏，更新html，引用对应的css

@@ -14,22 +14,12 @@ var timerCode;
 websocket.onmessage = function (event) {
 	var json1 = JSON.parse(event.data);
 	if (json1.action == 1) { //游戏状态的通讯
-		/*处理房间有人离开的情况
-		for(var i = 0; i < json1.players.length; i++){
-			if(json1.players[i].username == playerArray[i].username){
-				continue;
-			}
-			
-			if(i > playerArray.length - 1){
-				addPlayer(json1.players[i]);
-			}
-			
-		}
-		*/
-		for(var i = playerArray.length; i < json1.players.length; i++ ){
-			json1.players[i].alive = 1;
-    		addPlayer(json1.players[i]);
+		
+		for(var i = 0; i < json1.players.length; i++ ){
+			json1.players[i].alive = 1;	
     	}
+		
+		addPlayer(json1.players);
 		
 		if (json1.start == 0) {
 			//游戏还未开始
@@ -100,7 +90,7 @@ websocket.onmessage = function (event) {
 	        for(var i = 0; i < playerArray.length; i++){
 	        	if(playerArray[i].username == json1.diePlayer){
 	        		playerArray[i].alive = 0;
-	        		$('#thumbnailGame' + (i+1)).css('opacity','0.4');
+	        		$('#thumbnailGame' + (i+1)).css('opacity','0.1');
 	        	}
 	        	if(user == json1.diePlayer){
 	        		$('#inputform').empty()

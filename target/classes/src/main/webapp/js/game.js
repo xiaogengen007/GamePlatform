@@ -90,15 +90,45 @@ function sendPlayRequest(gameCode) {
     setMessageInnerHTML("have send play request.");
 }
 
-function addPlayer(player){
+function addPlayer(players){
 	//player.thumbnail = "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
-	player.thumbnail = new Identicon(player.hashcode, 200).toString();
-	player.thumbnail = 'data:image/png;base64,' + player.thumbnail;
-	player.score = 0;
-	playerArray.push(player);
-	$('#player' + playerArray.length + ' > h4').text(player.username);
-	$('#player' + playerArray.length + ' > img').css('opacity','1.0');
-	$('#player' + playerArray.length + ' > img').attr('src',player.thumbnail);
+	var newPlayerArray = Array();
+	var i = 0;
+	for(; i < playerArray.length; i++){
+		if(players.length == i){
+			for(var j = players.length;j < playerArray.length; j++){
+				$('#player' + (j+1) + ' > img').css('opacity','0.0');
+				$('#player' + (j+1) + ' > h4').text('');
+			}
+			break;
+		}
+		else if(playerArray[i].username != players[i].username){
+			players[i].thumbnail = new Identicon(players[i].hashcode, 200).toString();
+			players[i].thumbnail = 'data:image/png;base64,' + players[i].thumbnail;
+			players[i].score = 0;
+			newPlayerArray.push(players[i]);
+			$('#player' + (i+1) + ' > h4').text(players[i].username);
+			$('#player' + (i+1) + ' > img').css('opacity','1.0');
+			$('#player' + (i+1) + ' > img').attr('src',players[i].thumbnail);
+		}
+		else{
+			newPlayerArray.push(playerArray[i]);
+		}
+	}
+	
+	if(i < players.length){
+		for(; i < players.length; i++){
+			players[i].thumbnail = new Identicon(players[i].hashcode, 200).toString();
+			players[i].thumbnail = 'data:image/png;base64,' + players[i].thumbnail;
+			players[i].score = 0;
+			newPlayerArray.push(players[i]);
+			$('#player' + (i+1) + ' > h4').text(players[i].username);
+			$('#player' + (i+1) + ' > img').css('opacity','1.0');
+			$('#player' + (i+1) + ' > img').attr('src',players[i].thumbnail);
+		}
+	}
+	
+	playerArray = newPlayerArray;
 }
 
 function addRank(player, rank){
