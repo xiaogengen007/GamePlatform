@@ -120,7 +120,7 @@
 							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 
 								<li>
-									<a href="../welcome.html">
+									<a href="../logout.jsp">
 										<i class="icon-off"></i>
 										登出
 									</a>

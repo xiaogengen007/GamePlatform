@@ -45,6 +45,7 @@
 		    out.println("<script>function gotoMineSweeper(){window.location.href='game.html?game=1&username="+ session.getAttribute("user")  +"'};</script>");
 		    out.println("<script>function gotoWhoIsUnderCover(){window.location.href='game.html?game=2&username="+ session.getAttribute("user")  +"'};</script>");
 		  	//out.println("<script>username = '" + session.getAttribute("user")+ "';</script>");
+		  	String uname = (String)session.getAttribute("user");
 		%>  
 
 		<!--header-->
@@ -75,7 +76,7 @@
 
 						<!-- 右上角绿色的“消息”板块 -->	
 						<li class="green">
-							<a href="profile/profile_v6.html">
+							<a href="profile/profile_vNew.jsp">
 								<i class="icon-envelope icon-animated-vertical"></i>
 									个人资料
 							</a>
@@ -87,7 +88,7 @@
 
 								<span class="user-info">
 									<small>Welcome,</small>
-									Friend
+									<%=uname%>
 								</span>
 
 								<i class="icon-caret-down"></i>
