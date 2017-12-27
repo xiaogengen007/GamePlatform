@@ -184,6 +184,17 @@ websocket.onmessage = function (event) {
 			writeAfterSpeechProcess();
 		}
 	}
+	if (json1.action == 12){
+		if(json1.result == 0){
+			setMessageInnerHTML("添加好友成功");
+		}
+		else if(json1.result == 1){
+			setMessageInnerHTML("你们已经是好友了，无法重复添加");
+		}
+		else if(json1.result == 1){
+			setMessageInnerHTML("添加失败");
+		}
+	}
 }
 
 //在非投票时更新界面

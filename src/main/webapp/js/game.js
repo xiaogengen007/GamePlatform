@@ -33,21 +33,6 @@ window.onbeforeunload = function () {
     closeWebSocket();
 }
 
-websocket.onmessage = function (event) {
-	var json1 = JSON.parse(event.data);
-	if (json1.action == 12){
-		if(result == 0){
-			setMessageInnerHTML("添加好友成功");
-		}
-		else if(result == 1){
-			setMessageInnerHTML("你们已经是好友了，无法重复添加");
-		}
-		else if(result == 1){
-			setMessageInnerHTML("添加失败");
-		}
-	}
-}
-
 function addMessage(){
 	json1 = {};
 	json1.action = 5; //5表示游戏过程中聊天
@@ -109,10 +94,10 @@ function sendAddFriend(num){
 	var json1 = {};
 	json1.action = 8;
 	json1.username1 = user;
-	json1.username2 = playerArray[num];
+	json1.username2 = playerArray[num].username;
 	var messages = JSON.stringify(json1);
 	websocket.send(messages);
-    setMessageInnerHTML("正在添加" + playerArray[num] + "为好友");
+    setMessageInnerHTML("正在添加" + playerArray[num].username + "为好友");
 }
 
 function addPlayer(players){
