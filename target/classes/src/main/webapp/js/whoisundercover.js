@@ -3,7 +3,6 @@ var isVoting = 0; //初始时不是投票环节
 var state = new Array(8); //多生成一些防止不够用
 //var alive = new Array(8); //记录各玩家是否还活着,0表示已经死了，1表示还活着
 var canVoted = new Array(8); //记录各玩家能否被投票
-//var playerName = new Array(8);
 var tMaxState;
 var tMax;
 var tNow;
@@ -138,7 +137,6 @@ websocket.onmessage = function (event) {
 	if (json1.action == 8) { //发言阶段结束时的发言记录
 		isVoting = 1; //进入投票环节
 		
-		// TODO
 		tNow = tMaxVote;
 		tMax = tMaxVote
         timeUpdate(tNow, tMax);
@@ -171,8 +169,7 @@ websocket.onmessage = function (event) {
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		for (i=0; i<playerArray.length; i++) {
-			//TODO:
-			alive[i] = json1.baseInfo[i].alive;
+			playerArray[i].alive = json1.baseInfo[i].alive;
 		}
 		if (json1.gameProcess == 1) { //在投票阶段需要根据情况来绘制投票器
 			for (i = 0; i<playerArray.length; i++) {
@@ -228,12 +225,14 @@ function send() {
 
 //发送投票信息
 function sendVote(num) {
-	var json1 = {};
-	json1.action = 7; //7表示发送投票信息
-	json1.vote = num; //num从0~playerNum-1,且只能投给活着的人
-	var messages = JSON.stringify(json1);
-	websocket.send(messages);
-	//alert("succeed vote "+playerName[num]);
+	if(isVoting && canVoted[num]){
+		var json1 = {};
+		json1.action = 7; //7表示发送投票信息
+		json1.vote = num; //num从0~playerNum-1,且只能投给活着的人
+		var messages = JSON.stringify(json1);
+		websocket.send(messages);
+		setMessageInnerHTML("你投了" + playerArray[num].username);
+	}
 }
 
 function timeUpdate(timeNow, timeMax){
@@ -258,7 +257,8 @@ function startGame(){
 		.attr('data-placement','top').attr('data-content','word').attr('id','popmessage' + i);
 		var img = $('<img></img>').addClass("img-responsive")
 		.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
-		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
+		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+		.click(function(){sendVote(i-1)});
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
 		var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		var classList;
