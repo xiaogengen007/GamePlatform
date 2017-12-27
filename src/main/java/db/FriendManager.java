@@ -50,7 +50,7 @@ public class FriendManager {
 		}
 	}
 	
-	public static Map<String, Integer> sortFriendPoint(String plyName) { //获取用户好友的积分排行榜（取前5名）
+	public static Map<String, Integer> sortFriendPoint(String plyName) { //获取用户好友的积分排行榜
 		Connection c = null;
 		Statement stmt = null;
 		try {
@@ -67,10 +67,10 @@ public class FriendManager {
 					+ " ORDER by p_point DESC;"; //按照积分降序排序
 			
 			ResultSet rs = stmt.executeQuery(sql);
-			int k = 0;
-			while(rs.next() && k < 5) { //取前5名，将昵称和积分存储到map中
+			//int k = 0;
+			while(rs.next()) { //将昵称和积分存储到map中
 				map.put(rs.getString("p_name"), rs.getInt("p_point"));
-				k++;
+				//k++;
 			}
 			stmt.close();
 			c.commit();

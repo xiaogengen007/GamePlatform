@@ -169,7 +169,7 @@ public class PlayerManager {
 		}
 	}
 	
-	public static Map<String, Integer> sortPoint() { //对全体玩家排序取前5名
+	public static Map<String, Integer> sortPoint() { //对全体玩家排序
 		Connection c = null;
 		Statement stmt = null;
 		try {
@@ -181,10 +181,10 @@ public class PlayerManager {
 			Map<String, Integer> map = new LinkedHashMap<String, Integer>();
 			String sql = "SELECT * FROM player ORDER BY p_point DESC"; //按照积分降序排序
 			ResultSet rs = stmt.executeQuery(sql);
-			int k = 0;
-			while(rs.next() && k < 5) { //取前5名，将昵称和积分存储到map中
+			//int k = 0;
+			while(rs.next()) { //将昵称和积分存储到map中
 				map.put(rs.getString("p_name"), rs.getInt("p_point"));
-				k++;
+				//k++;
 			}
 			stmt.close();
 			c.commit();

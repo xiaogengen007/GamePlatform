@@ -223,7 +223,8 @@
 															<span class="profile-picture">
 																<%
 																	//Player pl = null;
-																	//pl.username = uname;
+																	//pl.username = "user";
+																	//pl.setupHashCode();
 																%>
 																<script> 
 																var thumbnail = new Identicon(user.hashcode, 200).toString();
@@ -264,19 +265,12 @@
 																		<span> <%=outputPoint%> </span>
 																	</div>
 																</div>
-
-																<div class="profile-info-row">
-																	<div class="profile-info-name"> 游戏局数 </div>
-
-																	<div class="profile-info-value">
-																		<span>暂未开发</span>
-																	</div>
-																</div>
 															</div>
 
 														</div><!-- /span -->
 													</div><!-- /row-fluid -->
-
+													<br>
+													<br>
 													<div class="space-20"></div>
 
 													<div class="row">
@@ -382,7 +376,7 @@
 																	<a href="#">
 																	<%
 																		Player pl0 = null;
-																		pl0.username = "${fl}";
+																		pl0.username = (String)request.getAttribute("fl");
 																		pl0.setupHashCode();
 																	%>
 																	<script> 
@@ -522,7 +516,7 @@
 																						<div class="user">
 																							<%
 																								Player pl1 = null;
-																								pl1.username = "${item.key}";
+																								pl1.username = (String)request.getAttribute("item.key");
 																								pl1.setupHashCode();
 																							%>
 																							<script> 
@@ -720,7 +714,7 @@
 																						<div class="user">
 																							<%
 																								Player pl2 = null;
-																								pl2.username = "${item.key}";
+																								pl2.username = (String)request.getAttribute("item.key");
 																								pl2.setupHashCode();
 																							%>
 																							<script> 
