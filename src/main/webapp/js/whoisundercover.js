@@ -48,12 +48,12 @@ websocket.onmessage = function (event) {
 			$('#myModal').modal({backdrop: 'static', keyboard: false});
 		}
 	}
-	if (json1.action == 2) { //消息通讯
+	else if (json1.action == 2) { //消息通讯
 		if (json1.message != "惯例发送信息!") {
 			setMessageInnerHTML(json1.message);
 		}
 	}
-	if (json1.action == 3) { //游戏进行状态通讯
+	else if (json1.action == 3) { //游戏进行状态通讯
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
 		if (json1.finished != 0) { //不是为非完成的用户(已完成用户)
@@ -73,7 +73,7 @@ websocket.onmessage = function (event) {
 		}
 		
 	}
-	if (json1.action == 4) { //游戏该轮完成后通讯
+	else if (json1.action == 4) { //游戏该轮完成后通讯
 		//document.getElementById('message').innerHTML = "";
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
@@ -120,21 +120,21 @@ websocket.onmessage = function (event) {
 		}
 		
 	}
-	if (json1.action == 5) { //游戏中进行聊天
+	else if (json1.action == 5) { //游戏中进行聊天
 		setMessageInnerHTML(json1.message);
 	}
-	if (json1.action == 6) { //游戏结束时的通讯
+	else if (json1.action == 6) { //游戏结束时的通讯
 		clearInterval(timerCode);
 		timeUpdate(1,1);
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
 		setMessageInnerHTML("游戏结束");
 	}
-	if (json1.action == 7) { //游戏状态的额外传输
+	else if (json1.action == 7) { //游戏状态的额外传输
 		var keywords = json1.keyword;
 		$("#keyword").text("您的关键词:"+keywords);
 	}
-	if (json1.action == 8) { //发言阶段结束时的发言记录
+	else if (json1.action == 8) { //发言阶段结束时的发言记录
 		isVoting = 1; //进入投票环节
 		
 		tNow = tMaxVote;
@@ -160,12 +160,11 @@ websocket.onmessage = function (event) {
 		}
 		writeAfterSpeechProcess();	
 	}
-	if (json1.action == 9) { //投票环节的中间过程记录
+	else if (json1.action == 9) { //投票环节的中间过程记录
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 	}
-	
-	if (json1.action == 10) { //谁是卧底的额外信息
+	else if (json1.action == 10) { //谁是卧底的额外信息
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		for (i=0; i<playerArray.length; i++) {
@@ -184,7 +183,7 @@ websocket.onmessage = function (event) {
 			writeAfterSpeechProcess();
 		}
 	}
-	if (json1.action == 12){
+	else if (json1.action == 12){
 		if(json1.result == 0){
 			setMessageInnerHTML("添加好友成功");
 		}
