@@ -221,7 +221,7 @@
 													<div class="row">
 														<div class="col-xs-12 col-sm-3 center">
 															<span class="profile-picture">
-															<img class="editable img-responsive" alt="Headpic" id="playerheadpic" />
+															<img class="editable img-responsive" alt="Headpic" id="playerheadpic" width = "130"/>
 																<%
 																	Player pl = new Player();
 																	pl.username = (String)session.getAttribute("user");
@@ -234,7 +234,7 @@
 																	document.getElementById("playerheadpic").src = thumbnail;
 																</script>
 															</span>
-
+															
 															<div class="space space-4"></div>
 
 														</div><!-- /span -->
@@ -242,7 +242,7 @@
 														<div class="col-xs-12 col-sm-9">
 															<h4 class="blue">
 																<span class="middle"><%=uname%></span>
-
+																
 																<span class="label label-purple arrowed-in-right">
 																	<i class="icon-circle smaller-80 align-middle"></i>
 																	online
@@ -276,7 +276,7 @@
 														</div><!-- /span -->
 													</div><!-- /row-fluid -->
 													<div class="space-20"></div>
-
+													<br> <br>
 													<div class="row">
 														<div class="col-xs-12 col-sm-6">
 															<div class="widget-box transparent">
@@ -373,14 +373,15 @@
 													<div class="profile-users clearfix">
 													<c:choose>
 													<c:when test = "${!empty fl}">
+													<% Player pl0 = new Player(); %>
 														<c:forEach items = "${fl}" var = "fl">
 														<div class="itemdiv memberdiv">
 															<div class="inline position-relative">
 																<div class="user">
 																	<a href="#">
-																	<img id = "friendpic" alt="Friendpic" />
+																	<img id = "friendpic" alt="Friendpic" width = "65"/>
 																	<%
-																		Player pl0 = new Player();
+																		//Player pl0 = new Player();
 																		pl0.username = (String)request.getAttribute("fl");
 																		pl0.setupHashCode();
 																		out.println("<script> ph0 = '" + pl0.hashCode + "'; </script>");
@@ -510,6 +511,7 @@
 																			</tr>
 																		</thead>
 																		<tbody>
+																		<% Player pl1 = new Player(); %>
 																			<c:forEach var = "item" items = "${totalRanklist}" varStatus = "status"> 
 																				<tr>
 																					<td style = 'vertical-align : middle'> 
@@ -517,14 +519,14 @@
 																					</td>
 																					<td> 
 																						<div class="user">
-																						<img id = "totalranklistpic" alt="Totalranklistpic"/>
+																						<img id = "totalranklistpic" alt="" width = "40"/>
 																							<%
-																								Player pl1 = new Player();
+																								//Player pl1 = new Player();
 																								pl1.username = (String)request.getAttribute("item.key");
 																								pl1.setupHashCode();
 																								out.println("<script> ph1 = '" + pl1.hashCode + "'; </script>");
 																							%>
-																							<script> 
+																							<script>
 																								var thumbnail = new Identicon(ph1, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
 																								document.getElementById("totalranklistpic").src = thumbnail;
@@ -707,6 +709,7 @@
 																			</tr>
 																		</thead>
 																		<tbody>
+																		<% Player pl2 = new Player(); %>
 																			<c:forEach var = "item" items = "${friendRanklist}" varStatus = "status"> 
 																				<tr>
 																					<td style = 'vertical-align : middle'>
@@ -714,9 +717,9 @@
 																					</td>
 																					<td> 
 																						<div class="user">
-																						<img id = "friendranklistpic" alt="Friendranklistpic"/>
+																						<img id = "friendranklistpic" alt="" width = "40"/>
 																							<%
-																								Player pl2 = new Player();
+																								//Player pl2 = new Player();
 																								pl2.username = (String)request.getAttribute("item.key");
 																								pl2.setupHashCode();
 																								out.println("<script> ph2 = '" + pl2.hashCode + "'; </script>");
