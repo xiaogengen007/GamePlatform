@@ -54,9 +54,9 @@
 		<script src="assets/js/html5shiv.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
-		<script src = "js/pnglib.js"> 
+		<script src = "../js/pnglib.js"> 
 		</script>
-		<script src = "js/identicon.js">
+		<script src = "../js/identicon.js">
 		</script>
 	</head>
 		<!-- head部分结束 -->
@@ -221,6 +221,7 @@
 													<div class="row">
 														<div class="col-xs-12 col-sm-3 center">
 															<span class="profile-picture">
+															<img class="editable img-responsive" alt="Headpic" id="playerheadpic" />
 																<%
 																	Player pl = new Player();
 																	pl.username = (String)session.getAttribute("user");
@@ -230,11 +231,8 @@
 																<script> 
 																	var thumbnail = new Identicon(ph, 200).toString();
 																	thumbnail = 'data:image/png;base64,' + thumbnail;
-																	$('#playerheadpic').attr('src',thumbnail);
+																	document.getElementById("playerheadpic").src = thumbnail;
 																</script>
-															<!--
-																<img class="editable img-responsive" alt="Alex's Avatar" id="avatar2" src="assets/avatars/profile-pic.jpg" />
-															-->
 															</span>
 
 															<div class="space space-4"></div>
@@ -258,6 +256,13 @@
 																		<span><%=outputID%></span>
 																	</div>
 																</div>
+																
+																<div class="profile-info-row">
+																	<div class="profile-info-name"> 用户名 </div>
+																	<div class="profile-info-value">
+																		<span><%=uname%></span>
+																	</div>
+																</div>
 
 																<div class="profile-info-row">
 
@@ -270,8 +275,6 @@
 
 														</div><!-- /span -->
 													</div><!-- /row-fluid -->
-													<br>
-													<br>
 													<div class="space-20"></div>
 
 													<div class="row">
@@ -375,19 +378,18 @@
 															<div class="inline position-relative">
 																<div class="user">
 																	<a href="#">
+																	<img id = "friendpic" alt="Friendpic" />
 																	<%
 																		Player pl0 = new Player();
 																		pl0.username = (String)request.getAttribute("fl");
 																		pl0.setupHashCode();
+																		out.println("<script> ph0 = '" + pl0.hashCode + "'; </script>");
 																	%>
 																	<script> 
-																		var thumbnail = new Identicon(pl0.hashcode, 200).toString();
+																		var thumbnail = new Identicon(ph0, 200).toString();
 																		thumbnail = 'data:image/png;base64,' + thumbnail;
-																		$('#yourimgid').attr('src',thumbnail);
+																		document.getElementById("friendpic").src = thumbnail;
 																	</script>
-																	<!--
-																		<img src="assets/avatars/avatar4.png" alt="Bob Doe's avatar" />
-																	-->
 																	</a>
 																</div>
 
@@ -515,19 +517,18 @@
 																					</td>
 																					<td> 
 																						<div class="user">
+																						<img id = "totalranklistpic" alt="Totalranklistpic"/>
 																							<%
 																								Player pl1 = new Player();
 																								pl1.username = (String)request.getAttribute("item.key");
 																								pl1.setupHashCode();
+																								out.println("<script> ph1 = '" + pl1.hashCode + "'; </script>");
 																							%>
 																							<script> 
-																								var thumbnail = new Identicon(pl1.hashcode, 200).toString();
+																								var thumbnail = new Identicon(ph1, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
-																								$('#yourimgid').attr('src',thumbnail);
+																								document.getElementById("totalranklistpic").src = thumbnail;
 																							</script>
-																							<!--
-																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
-																							-->
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
@@ -713,15 +714,17 @@
 																					</td>
 																					<td> 
 																						<div class="user">
+																						<img id = "friendranklistpic" alt="Friendranklistpic"/>
 																							<%
 																								Player pl2 = new Player();
 																								pl2.username = (String)request.getAttribute("item.key");
 																								pl2.setupHashCode();
+																								out.println("<script> ph2 = '" + pl2.hashCode + "'; </script>");
 																							%>
 																							<script> 
-																								var thumbnail = new Identicon(pl2.hashcode, 200).toString();
+																								var thumbnail = new Identicon(ph2, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
-																								$('#yourimgid').attr('src',thumbnail);
+																								document.getElementById("friendranklistpic").src = thumbnail;
 																							</script>
 																							<!--
 																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
@@ -754,7 +757,7 @@
 																			</button>
 																			<strong>
 																			<i class="icon-remove"></i>
-																			暂无排名数据！
+																			暂无好友数据！
 																			</strong>
 																			快点击右上方“游戏大厅”开始游戏并添加好友吧！
 																			<br />
