@@ -138,7 +138,6 @@ websocket.onmessage = function (event) {
 	if (json1.action == 8) { //发言阶段结束时的发言记录
 		isVoting = 1; //进入投票环节
 		
-		// TODO
 		tNow = tMaxVote;
 		tMax = tMaxVote
         timeUpdate(tNow, tMax);
@@ -228,12 +227,14 @@ function send() {
 
 //发送投票信息
 function sendVote(num) {
-	var json1 = {};
-	json1.action = 7; //7表示发送投票信息
-	json1.vote = num; //num从0~playerNum-1,且只能投给活着的人
-	var messages = JSON.stringify(json1);
-	websocket.send(messages);
-	//alert("succeed vote "+playerName[num]);
+	if(isVoting && canVoted[num]){
+		var json1 = {};
+		json1.action = 7; //7表示发送投票信息
+		json1.vote = num; //num从0~playerNum-1,且只能投给活着的人
+		var messages = JSON.stringify(json1);
+		websocket.send(messages);
+		setMessageInnerHTML("你投了" + playerArray[num].username);
+	}
 }
 
 function timeUpdate(timeNow, timeMax){
@@ -258,7 +259,8 @@ function startGame(){
 		.attr('data-placement','top').attr('data-content','word').attr('id','popmessage' + i);
 		var img = $('<img></img>').addClass("img-responsive")
 		.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
-		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail");
+		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+		.click(function(){sendVote(i-1)});
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
 		var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		var classList;
