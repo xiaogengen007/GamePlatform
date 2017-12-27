@@ -222,14 +222,15 @@
 														<div class="col-xs-12 col-sm-3 center">
 															<span class="profile-picture">
 																<%
-																	//Player pl = null;
-																	//pl.username = "user";
-																	//pl.setupHashCode();
+																	Player pl = new Player();
+																	pl.username = (String)session.getAttribute("user");
+																	pl.setupHashCode();
+																	out.println("<script> ph = '" + pl.hashCode + "'; </script>");
 																%>
 																<script> 
-																var thumbnail = new Identicon(user.hashcode, 200).toString();
-																thumbnail = 'data:image/png;base64,' + thumbnail;
-																$('#yourimgid').attr('src',thumbnail);
+																	var thumbnail = new Identicon(ph, 200).toString();
+																	thumbnail = 'data:image/png;base64,' + thumbnail;
+																	$('#playerheadpic').attr('src',thumbnail);
 																</script>
 															<!--
 																<img class="editable img-responsive" alt="Alex's Avatar" id="avatar2" src="assets/avatars/profile-pic.jpg" />
@@ -375,7 +376,7 @@
 																<div class="user">
 																	<a href="#">
 																	<%
-																		Player pl0 = null;
+																		Player pl0 = new Player();
 																		pl0.username = (String)request.getAttribute("fl");
 																		pl0.setupHashCode();
 																	%>
@@ -515,7 +516,7 @@
 																					<td> 
 																						<div class="user">
 																							<%
-																								Player pl1 = null;
+																								Player pl1 = new Player();
 																								pl1.username = (String)request.getAttribute("item.key");
 																								pl1.setupHashCode();
 																							%>
@@ -713,7 +714,7 @@
 																					<td> 
 																						<div class="user">
 																							<%
-																								Player pl2 = null;
+																								Player pl2 = new Player();
 																								pl2.username = (String)request.getAttribute("item.key");
 																								pl2.setupHashCode();
 																							%>
