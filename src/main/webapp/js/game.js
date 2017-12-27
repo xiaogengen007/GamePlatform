@@ -90,6 +90,16 @@ function sendPlayRequest(gameCode) {
     setMessageInnerHTML("have send play request.");
 }
 
+function sendAddFriend(num){
+	var json1 = {};
+	json1.action = 8;
+	json1.username1 = user;
+	json1.username2 = playerArray[num];
+	var messages = JSON.stringify(json1);
+	websocket.send(messages);
+    setMessageInnerHTML("正在添加" + playerArray[num] + "为好友");
+}
+
 function addPlayer(players){
 	//player.thumbnail = "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
 	var newPlayerArray = Array();
