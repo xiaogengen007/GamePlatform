@@ -156,6 +156,7 @@ more information
   - baseInfo (array, about the basic information of the current process) ,for baseInfo[i]
     - username
     - alive (1 for alive, 0 for not alive)
+  - leftTime
 - (for gameProcess = 1)
   - baseInfo (array, about the basic information of the current process) ,for baseInfo[i]
     - username
@@ -165,6 +166,7 @@ more information
     - votedIndex
   - userVote (array, about the user can vote in this turn), for userVote[i]
     - voteIndex
+  - leftTime
 
 
 

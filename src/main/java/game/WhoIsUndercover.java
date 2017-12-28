@@ -722,6 +722,7 @@ public class WhoIsUndercover extends GameState{
 				jsar1.add(json2);
 			}
 			json1.put("baseInfo", jsar1);
+			json1.put("leftTime", this.leftTime);
 			String messages = json1.toString();
 			try {
 				if (ply.myWebsocket != null) {
@@ -746,6 +747,7 @@ public class WhoIsUndercover extends GameState{
 				jsar1.add(json2);
 			}
 			json1.put("baseInfo", jsar1);
+			json1.put("leftTime", this.leftTime);
 			JSONArray jsar2 = new JSONArray();
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).ucPlayer.canbeVoted) {
