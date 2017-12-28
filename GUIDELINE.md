@@ -110,8 +110,8 @@ more information
   - players(array, send the players' status and key word, for players[i]):
     - username
     - keyword
-    - undercover
-  - result
+    - undercover (1 for is undercover, 0 for is not undercover)
+  - result (1 for friends win, 2 for undercover win)
 
 
 
