@@ -37,14 +37,12 @@ websocket.onmessage = function (event) {
 		if (json1.start == 2) {
 			//游戏已经结束
 			setMessageInnerHTML("Game has finished!");
-			/*
-			for (i=0; i<json1.players.length; i++) {
-				for(j = 0; j < playerArray.length; j++){
-					if(playerArray[j].username == json1.players[i].username){
-						addRank(playerArray[j], json1.players[i].rank);
-					}
-				}
-			}*/
+			if(json1.result == 1){
+				$('<h2></h2>').text('平民胜利').appendTo('#gdt');
+			}
+			else if(json1.result == 2){
+				$('<h2></h2>').text('卧底胜利').appendTo('#gdt');
+			}
 			$('#myModal').modal({backdrop: 'static', keyboard: false});
 		}
 	}
