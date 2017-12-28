@@ -400,7 +400,7 @@
 																	<div class="name">
 																		<a href="#">
 																			<span class="user-status status-online"></span>
-																			<c:out value = "${fl}"> </c:out>
+																			<%= item %>
 																		</a>
 																	</div>
 																</div>
@@ -409,7 +409,7 @@
 																	<div class="arrow"></div>
 
 																	<div class="popover-content">
-																		<div class="bolder"><c:out value = "${fl}"> </c:out></div>
+																		<div class="bolder"><%= item %></div>
 
 																		<div class="hr dotted hr-8"></div>
 
