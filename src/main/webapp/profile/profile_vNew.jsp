@@ -1,5 +1,6 @@
 <%@ page language = "java" contentType = "text/html; charset = utf-8" pageEncoding = "utf-8" isELIgnored = "false" %>
 <%@ page import = "db.*, player.*, java.sql.*, java.util.*, java.text.*" %>
+<%@ page import = "java.util.Map.Entry;" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -513,38 +514,46 @@
 																			</tr>
 																		</thead>
 																		<tbody>
-																		<% Player pl1 = new Player(); %>
-																			<c:forEach var = "item" items = "${totalRanklist}" varStatus = "status"> 
+																		<% Player pl1 = new Player();
+																		int index = 0;
+																		for (Entry<String, Integer> item: totalRanklist.entrySet()) {
+																			index++;
+																		%>
+																		
 																				<tr>
 																					<td style = 'vertical-align : middle'> 
-																					${status.index + 1} 
+																					<%= index %>
 																					</td>
 																					<td> 
 																						<div class="user">
-																						<img id = "totalranklistpic" alt="" width = "40"/>
+																						<%
+																						
+																						String myId = "totalranklistpic"+item.getKey(); %>
+																						<img id = "<%=myId %>" alt="" width = "40"/>
 																							<%
 																								//Player pl1 = new Player();
-																								pl1.username = (String)request.getAttribute("item.key");
+																								pl1.username = item.getKey();
 																								pl1.setupHashCode();
 																								out.println("<script> ph1 = '" + pl1.hashCode + "'; </script>");
 																							%>
 																							<script>
 																								var thumbnail = new Identicon(ph1, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
-																								document.getElementById("totalranklistpic").src = thumbnail;
+																								document.getElementById("<%=myId %>").src = thumbnail;
 																							</script>
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							${item.key} 
+																							<%=item.getKey() %> 
 																							</a>
 																						</div>
 																					</td>
 																					<td style = 'vertical-align : middle'>
-																					${item.value}
+																					<%= item.getValue() %>
 																					</td>
 																				</tr>
-																			</c:forEach>
+																			
+																			<%} %>
 																		</tbody>
 																	</table>
 																	</c:when>

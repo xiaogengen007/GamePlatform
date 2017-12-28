@@ -19,7 +19,6 @@ public class WhoIsUndercover extends GameState{
 	public int maxVotingTime;
 	int[] countVoted;
 	ArrayList<Integer> votedMax = new ArrayList<Integer>();
-	
 	/*
 	 * 构造函数，完成一些基本的参数配置
 	 */
