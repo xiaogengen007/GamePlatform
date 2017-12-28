@@ -129,6 +129,7 @@ websocket.onmessage = function (event) {
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
 		setMessageInnerHTML("游戏结束");
+		$('#myModal').modal({backdrop: 'static', keyboard: false});
 	}
 	else if (json1.action == 7) { //游戏状态的额外传输
 		var keywords = json1.keyword;
@@ -270,7 +271,7 @@ function startGame(){
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
 		.click(function(){sendVote(i-1)});
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
-		var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
+		//var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		var classList;
 		if(i == 1){
 			classList = "col-md-2 col-md-offset-" + (6-playerArray.length) +" placeholder";
@@ -279,7 +280,7 @@ function startGame(){
 			classList = "col-md-2 placeholder";
 		}
 		$('<div></div>').addClass(classList).attr('id','player' + i).append(popMessage)
-		.append(img).append(label).append(scoreLabel).appendTo('#playerlist');
+		.append(img).append(label).appendTo('#playerlist');
 	}
 	
 	$('<div></div>').attr('id','progressbardiv').addClass('progress').appendTo('#mainArea');
