@@ -264,12 +264,13 @@ function startGame(){
 	$('<div></div>').addClass("row placeholders").attr('id','playerlist').appendTo('#mainArea');
 	
 	for(var i = 1; i <= playerArray.length; i++){
+		var num = i-1;
 		var popMessage = $('<div></div>').attr('data-container','body').attr('data-toggle','popover')
 		.attr('data-placement','top').attr('data-content','word').attr('id','popmessage' + i);
 		var img = $('<img></img>').addClass("img-responsive")
 		.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
-		.click(function(){sendVote(i-1)});
+		.click(function(){sendVote(num)});
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
 		//var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		var classList;
