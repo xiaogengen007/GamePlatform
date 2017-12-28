@@ -621,6 +621,7 @@ public class WhoIsUndercover extends GameState{
 	public void sendForMyGameState(JSONObject json) {
 		json.put("maxTime", this.maxTurnTime); //单轮最长时间
 		json.put("maxVoteTime", this.maxVotingTime); //单轮投票最长时间
+		json.put("leftTime", this.leftTime); //当前剩余的时间
 	}
 	
 	/*

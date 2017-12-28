@@ -29,7 +29,7 @@ websocket.onmessage = function (event) {
 			tMaxState = json1.maxTime;
 			tMaxVote = json1.maxVoteTime;
 			tMax = tMaxState;
-			tNow = tMax;
+			tNow = json1.leftTime;
 			startGame();
 			//playerNum = json1.players.length;
 			setMessageInnerHTML("Game has started! Now has "+json1.players.length+" in this room.");
@@ -166,6 +166,7 @@ websocket.onmessage = function (event) {
 	else if (json1.action == 10) { //谁是卧底的额外信息
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
+		tNow = json1.leftTime;
 		for (i=0; i<playerArray.length; i++) {
 			playerArray[i].alive = json1.baseInfo[i].alive;
 		}
