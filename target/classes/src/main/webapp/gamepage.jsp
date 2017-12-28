@@ -210,8 +210,7 @@
 
             </div>
         </main>
-    	<!-- main -->
-    	
+    	<!-- main -->    	
 
 
 		<!--header script-->

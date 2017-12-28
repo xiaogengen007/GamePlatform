@@ -37,23 +37,21 @@ websocket.onmessage = function (event) {
 		if (json1.start == 2) {
 			//游戏已经结束
 			setMessageInnerHTML("Game has finished!");
-			/*
-			for (i=0; i<json1.players.length; i++) {
-				for(j = 0; j < playerArray.length; j++){
-					if(playerArray[j].username == json1.players[i].username){
-						addRank(playerArray[j], json1.players[i].rank);
-					}
-				}
-			}*/
+			if(json1.result == 1){
+				$('<h2></h2>').text('平民胜利').appendTo('#gdt');
+			}
+			else if(json1.result == 2){
+				$('<h2></h2>').text('卧底胜利').appendTo('#gdt');
+			}
 			$('#myModal').modal({backdrop: 'static', keyboard: false});
 		}
 	}
-	if (json1.action == 2) { //消息通讯
+	else if (json1.action == 2) { //消息通讯
 		if (json1.message != "惯例发送信息!") {
 			setMessageInnerHTML(json1.message);
 		}
 	}
-	if (json1.action == 3) { //游戏进行状态通讯
+	else if (json1.action == 3) { //游戏进行状态通讯
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
 		if (json1.finished != 0) { //不是为非完成的用户(已完成用户)
@@ -73,7 +71,7 @@ websocket.onmessage = function (event) {
 		}
 		
 	}
-	if (json1.action == 4) { //游戏该轮完成后通讯
+	else if (json1.action == 4) { //游戏该轮完成后通讯
 		//document.getElementById('message').innerHTML = "";
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
@@ -120,21 +118,22 @@ websocket.onmessage = function (event) {
 		}
 		
 	}
-	if (json1.action == 5) { //游戏中进行聊天
+	else if (json1.action == 5) { //游戏中进行聊天
 		setMessageInnerHTML(json1.message);
 	}
-	if (json1.action == 6) { //游戏结束时的通讯
+	else if (json1.action == 6) { //游戏结束时的通讯
 		clearInterval(timerCode);
 		timeUpdate(1,1);
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
 		setMessageInnerHTML("游戏结束");
+		$('#myModal').modal({backdrop: 'static', keyboard: false});
 	}
-	if (json1.action == 7) { //游戏状态的额外传输
+	else if (json1.action == 7) { //游戏状态的额外传输
 		var keywords = json1.keyword;
 		$("#keyword").text("您的关键词:"+keywords);
 	}
-	if (json1.action == 8) { //发言阶段结束时的发言记录
+	else if (json1.action == 8) { //发言阶段结束时的发言记录
 		isVoting = 1; //进入投票环节
 		
 		tNow = tMaxVote;
@@ -160,12 +159,11 @@ websocket.onmessage = function (event) {
 		}
 		writeAfterSpeechProcess();	
 	}
-	if (json1.action == 9) { //投票环节的中间过程记录
+	else if (json1.action == 9) { //投票环节的中间过程记录
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 	}
-	
-	if (json1.action == 10) { //谁是卧底的额外信息
+	else if (json1.action == 10) { //谁是卧底的额外信息
 		var messages = JSON.stringify(json1);
 		setMessageInnerHTML(messages);
 		for (i=0; i<playerArray.length; i++) {
@@ -182,6 +180,17 @@ websocket.onmessage = function (event) {
 				canVoted[json1.userVoted[i].votedIndex] = 1;
 			}
 			writeAfterSpeechProcess();
+		}
+	}
+	else if (json1.action == 12){
+		if(json1.result == 0){
+			setMessageInnerHTML("添加好友成功");
+		}
+		else if(json1.result == 1){
+			setMessageInnerHTML("你们已经是好友了，无法重复添加");
+		}
+		else if(json1.result == 1){
+			setMessageInnerHTML("添加失败");
 		}
 	}
 }
@@ -253,14 +262,15 @@ function startGame(){
 	$('<div></div>').addClass("row placeholders").attr('id','playerlist').appendTo('#mainArea');
 	
 	for(var i = 1; i <= playerArray.length; i++){
+		var num = i-1;
 		var popMessage = $('<div></div>').attr('data-container','body').attr('data-toggle','popover')
 		.attr('data-placement','top').attr('data-content','word').attr('id','popmessage' + i);
 		var img = $('<img></img>').addClass("img-responsive")
 		.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
 		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
-		.click(function(){sendVote(i-1)});
+		.click(function(){sendVote(num)});
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
-		var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
+		//var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		var classList;
 		if(i == 1){
 			classList = "col-md-2 col-md-offset-" + (6-playerArray.length) +" placeholder";
@@ -269,7 +279,7 @@ function startGame(){
 			classList = "col-md-2 placeholder";
 		}
 		$('<div></div>').addClass(classList).attr('id','player' + i).append(popMessage)
-		.append(img).append(label).append(scoreLabel).appendTo('#playerlist');
+		.append(img).append(label).appendTo('#playerlist');
 	}
 	
 	$('<div></div>').attr('id','progressbardiv').addClass('progress').appendTo('#mainArea');
@@ -284,10 +294,10 @@ function startGame(){
 	var div2 = $('<div></div>').addClass("col-md-6 col-md-offset-3 col-sm-12" )
 	.attr('align','center').appendTo(div1);
 	$('<h2></h>').text('请输入关键词').attr('id','keyword').appendTo(div2);
-	var inputform = $('<div></div>').addClass('input-group').attr('id','inputform').appendTo(div2);
+	var inputform = $('<div></div>').addClass('input-group row').attr('id','inputform').appendTo(div2);
 	var inputbox = $('<input></input>').addClass('form-control')
 	.attr('type','text').attr('id','stateInput').attr('placeholder','关键词').appendTo(inputform);
-	var inputButtonGroup = $('<span></span>').addClass('input-groupp-btn').appendTo(inputform);
+	var inputButtonGroup = $('<span></span>').addClass('input-group-btn').appendTo(inputform);
 	var inputButton = $('<button></button>').addClass("btn btn-default").attr('type','button')
 	.text('确定').click(send).appendTo(inputButtonGroup);
 

@@ -90,6 +90,16 @@ function sendPlayRequest(gameCode) {
     setMessageInnerHTML("have send play request.");
 }
 
+function sendAddFriend(num){
+	var json1 = {};
+	json1.action = 8;
+	json1.username1 = user;
+	json1.username2 = playerArray[num].username;
+	var messages = JSON.stringify(json1);
+	websocket.send(messages);
+    setMessageInnerHTML("正在添加" + playerArray[num].username + "为好友");
+}
+
 function addPlayer(players){
 	//player.thumbnail = "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
 	var newPlayerArray = Array();
@@ -97,7 +107,7 @@ function addPlayer(players){
 	for(; i < playerArray.length; i++){
 		if(players.length == i){
 			for(var j = players.length;j < playerArray.length; j++){
-				$('#player' + (j+1) + ' > img').css('opacity','0.0');
+				$('#player' + (j+1) + ' > img').css('opacity','0.0').attr('data-toggle','');
 				$('#player' + (j+1) + ' > h4').text('');
 			}
 			break;
@@ -108,8 +118,8 @@ function addPlayer(players){
 			players[i].score = 0;
 			newPlayerArray.push(players[i]);
 			$('#player' + (i+1) + ' > h4').text(players[i].username);
-			$('#player' + (i+1) + ' > img').css('opacity','1.0');
-			$('#player' + (i+1) + ' > img').attr('src',players[i].thumbnail);
+			$('#player' + (i+1) + ' > img').css('opacity','1.0')
+			.attr('src',players[i].thumbnail).attr('data-toggle','dropdown');
 		}
 		else{
 			newPlayerArray.push(playerArray[i]);
@@ -123,12 +133,18 @@ function addPlayer(players){
 			players[i].score = 0;
 			newPlayerArray.push(players[i]);
 			$('#player' + (i+1) + ' > h4').text(players[i].username);
-			$('#player' + (i+1) + ' > img').css('opacity','1.0');
-			$('#player' + (i+1) + ' > img').attr('src',players[i].thumbnail);
+			$('#player' + (i+1) + ' > img').css('opacity','1.0')
+			.attr('src',players[i].thumbnail).attr('data-toggle','dropdown');
 		}
 	}
 	
 	playerArray = newPlayerArray;
+	
+	for(var i = 0; i < playerArray.length; i++){
+		if(playerArray[i].username == user){
+			$('#player' + (i+1) + ' > img').attr('data-toggle','');
+		}
+	}
 }
 
 function addRank(player, rank){
