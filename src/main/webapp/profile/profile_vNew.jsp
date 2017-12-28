@@ -720,41 +720,46 @@
 																			</tr>
 																		</thead>
 																		<tbody>
-																		<% Player pl2 = new Player(); %>
-																			<c:forEach var = "item" items = "${friendRanklist}" varStatus = "status"> 
+																		<% Player pl1 = new Player();
+																		int index = 0;
+																		for (Entry<String, Integer> item: friendRanklist.entrySet()) {
+																			index++;
+																		%>
+																		
 																				<tr>
-																					<td style = 'vertical-align : middle'>
-																					${status.index + 1} 
+																					<td style = 'vertical-align : middle'> 
+																					<%= index %>
 																					</td>
 																					<td> 
 																						<div class="user">
-																						<img id = "friendranklistpic" alt="" width = "40"/>
+																						<%
+																						
+																						String myId = "friendranklistpic"+item.getKey(); %>
+																						<img id = "<%=myId %>" alt="" width = "40"/>
 																							<%
-																								//Player pl2 = new Player();
-																								pl2.username = (String)request.getAttribute("item.key");
-																								pl2.setupHashCode();
-																								out.println("<script> ph2 = '" + pl2.hashCode + "'; </script>");
+																								//Player pl1 = new Player();
+																								pl1.username = item.getKey();
+																								pl1.setupHashCode();
+																								out.println("<script> ph1 = '" + pl1.hashCode + "'; </script>");
 																							%>
-																							<script> 
-																								var thumbnail = new Identicon(ph2, 200).toString();
+																							<script>
+																								var thumbnail = new Identicon(ph1, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
-																								document.getElementById("friendranklistpic").src = thumbnail;
+																								document.getElementById("<%=myId %>").src = thumbnail;
 																							</script>
-																							<!--
-																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
-																							-->
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							${item.key} 
+																							<%=item.getKey() %> 
 																							</a>
 																						</div>
 																					</td>
-																					<td style = 'vertical-align : middle'> 
-																					${item.value} 
+																					<td style = 'vertical-align : middle'>
+																					<%= item.getValue() %>
 																					</td>
 																				</tr>
-																			</c:forEach>
+																			
+																			<%} %>
 																		</tbody>
 																	</table>
 																	</c:when>
