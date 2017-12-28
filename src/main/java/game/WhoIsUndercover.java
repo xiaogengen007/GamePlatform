@@ -864,7 +864,7 @@ public class WhoIsUndercover extends GameState{
 					if (gameSign == 2) {
 						deltaPoint = -2;
 					} else {
-						deltaPoint = -2;
+						deltaPoint = 2;
 					}
 				}
 			}
