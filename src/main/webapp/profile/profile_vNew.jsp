@@ -376,13 +376,15 @@
 													<c:when test = "${!empty fl}">
 													<% Player pl0 = new Player(); 
 													ArrayList<String> names = (ArrayList<String>)request.getAttribute("fl");
-													for (String item: names) {%>
+													for (String item: names) {
+													String friendId = "friendpic"+item;
+													%>
 														
 														<div class="itemdiv memberdiv">
 															<div class="inline position-relative">
 																<div class="user">
-																	<a href="#">
-																	<img id = "friendpic" alt="Friendpic" width = "65"/>
+																	<a href="#">							
+																	<img id = "<%= friendId %>" alt="Friendpic" width = "65"/>
 																	<%
 																		//Player pl0 = new Player();
 																		pl0.username = item;
@@ -392,7 +394,7 @@
 																	<script> 
 																		var thumbnail = new Identicon(ph0, 200).toString();
 																		thumbnail = 'data:image/png;base64,' + thumbnail;
-																		document.getElementById("friendpic").src = thumbnail;
+																		document.getElementById("<%= friendId %>").src = thumbnail;
 																	</script>
 																	</a>
 																</div>
