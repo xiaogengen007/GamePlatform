@@ -373,8 +373,10 @@
 													<div class="profile-users clearfix">
 													<c:choose>
 													<c:when test = "${!empty fl}">
-													<% Player pl0 = new Player(); %>
-														<c:forEach items = "${fl}" var = "fl">
+													<% Player pl0 = new Player(); 
+													ArrayList<String> names = (ArrayList<String>)request.getAttribute("fl");
+													for (String item: names) {%>
+														
 														<div class="itemdiv memberdiv">
 															<div class="inline position-relative">
 																<div class="user">
@@ -382,7 +384,7 @@
 																	<img id = "friendpic" alt="Friendpic" width = "65"/>
 																	<%
 																		//Player pl0 = new Player();
-																		pl0.username = (String)request.getAttribute("fl");
+																		pl0.username = item;
 																		pl0.setupHashCode();
 																		out.println("<script> ph0 = '" + pl0.hashCode + "'; </script>");
 																	%>
@@ -428,7 +430,7 @@
 																</div>
 															</div>
 														</div>			
-													</c:forEach>
+													<%} %>
 													</c:when>
 													<c:otherwise>
 														<div class="alert alert-danger">
