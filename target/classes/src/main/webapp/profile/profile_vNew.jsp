@@ -1,5 +1,6 @@
 <%@ page language = "java" contentType = "text/html; charset = utf-8" pageEncoding = "utf-8" isELIgnored = "false" %>
 <%@ page import = "db.*, player.*, java.sql.*, java.util.*, java.text.*" %>
+<%@ page import = "java.util.Map.Entry;" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -400,7 +401,7 @@
 																	<div class="name">
 																		<a href="#">
 																			<span class="user-status status-online"></span>
-																			<c:out value = "${fl}"> </c:out>
+																			<%= item %>
 																		</a>
 																	</div>
 																</div>
@@ -409,7 +410,7 @@
 																	<div class="arrow"></div>
 
 																	<div class="popover-content">
-																		<div class="bolder"><c:out value = "${fl}"> </c:out></div>
+																		<div class="bolder"><%= item %></div>
 
 																		<div class="hr dotted hr-8"></div>
 
@@ -513,38 +514,46 @@
 																			</tr>
 																		</thead>
 																		<tbody>
-																		<% Player pl1 = new Player(); %>
-																			<c:forEach var = "item" items = "${totalRanklist}" varStatus = "status"> 
+																		<% Player pl1 = new Player();
+																		int index = 0;
+																		for (Entry<String, Integer> item: totalRanklist.entrySet()) {
+																			index++;
+																		%>
+																		
 																				<tr>
 																					<td style = 'vertical-align : middle'> 
-																					${status.index + 1} 
+																					<%= index %>
 																					</td>
 																					<td> 
 																						<div class="user">
-																						<img id = "totalranklistpic" alt="" width = "40"/>
+																						<%
+																						
+																						String myId = "totalranklistpic"+item.getKey(); %>
+																						<img id = "<%=myId %>" alt="" width = "40"/>
 																							<%
 																								//Player pl1 = new Player();
-																								pl1.username = (String)request.getAttribute("item.key");
+																								pl1.username = item.getKey();
 																								pl1.setupHashCode();
 																								out.println("<script> ph1 = '" + pl1.hashCode + "'; </script>");
 																							%>
 																							<script>
 																								var thumbnail = new Identicon(ph1, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
-																								document.getElementById("totalranklistpic").src = thumbnail;
+																								document.getElementById("<%=myId %>").src = thumbnail;
 																							</script>
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							${item.key} 
+																							<%=item.getKey() %> 
 																							</a>
 																						</div>
 																					</td>
 																					<td style = 'vertical-align : middle'>
-																					${item.value}
+																					<%= item.getValue() %>
 																					</td>
 																				</tr>
-																			</c:forEach>
+																			
+																			<%} %>
 																		</tbody>
 																	</table>
 																	</c:when>
@@ -711,41 +720,46 @@
 																			</tr>
 																		</thead>
 																		<tbody>
-																		<% Player pl2 = new Player(); %>
-																			<c:forEach var = "item" items = "${friendRanklist}" varStatus = "status"> 
+																		<% Player pl1 = new Player();
+																		int index = 0;
+																		for (Entry<String, Integer> item: friendRanklist.entrySet()) {
+																			index++;
+																		%>
+																		
 																				<tr>
-																					<td style = 'vertical-align : middle'>
-																					${status.index + 1} 
+																					<td style = 'vertical-align : middle'> 
+																					<%= index %>
 																					</td>
 																					<td> 
 																						<div class="user">
-																						<img id = "friendranklistpic" alt="" width = "40"/>
+																						<%
+																						
+																						String myId = "friendranklistpic"+item.getKey(); %>
+																						<img id = "<%=myId %>" alt="" width = "40"/>
 																							<%
-																								//Player pl2 = new Player();
-																								pl2.username = (String)request.getAttribute("item.key");
-																								pl2.setupHashCode();
-																								out.println("<script> ph2 = '" + pl2.hashCode + "'; </script>");
+																								//Player pl1 = new Player();
+																								pl1.username = item.getKey();
+																								pl1.setupHashCode();
+																								out.println("<script> ph1 = '" + pl1.hashCode + "'; </script>");
 																							%>
-																							<script> 
-																								var thumbnail = new Identicon(ph2, 200).toString();
+																							<script>
+																								var thumbnail = new Identicon(ph1, 200).toString();
 																								thumbnail = 'data:image/png;base64,' + thumbnail;
-																								document.getElementById("friendranklistpic").src = thumbnail;
+																								document.getElementById("<%=myId %>").src = thumbnail;
 																							</script>
-																							<!--
-																							<img src="assets/avatars/avatar5.png" alt="Jim Doe's avatar"/>
-																							-->
 																							&#12288
 																							<span class="user-status status-offline"></span>
 																							<a href="#">
-																							${item.key} 
+																							<%=item.getKey() %> 
 																							</a>
 																						</div>
 																					</td>
-																					<td style = 'vertical-align : middle'> 
-																					${item.value} 
+																					<td style = 'vertical-align : middle'>
+																					<%= item.getValue() %>
 																					</td>
 																				</tr>
-																			</c:forEach>
+																			
+																			<%} %>
 																		</tbody>
 																	</table>
 																	</c:when>

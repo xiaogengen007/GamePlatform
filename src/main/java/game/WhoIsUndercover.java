@@ -27,8 +27,8 @@ public class WhoIsUndercover extends GameState{
 		this.gameType = 2; //2表示谁是卧底
 		this.gameNum = 4; //设置玩家数为4人
 		countVoted = new int [this.gameNum];
-		this.maxTurnTime = 10;
-		this.maxVotingTime = 5; //设置投票环节最长时间为15秒
+		this.maxTurnTime = 30;
+		this.maxVotingTime = 15; //设置投票环节最长时间为15秒
 		this.leftTime = new Integer(this.maxTurnTime);
 		String[] words = this.getWords();
 		this.friendString = words[0];
