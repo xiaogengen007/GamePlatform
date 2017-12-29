@@ -47,6 +47,8 @@ websocket.onmessage = function (event) {
 	else if (json1.action == 3) { //游戏进行状态通讯
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
+		tNow = json1.leftTime;
+		timeUpdate(tNow, tMax);
 		if (json1.finished != 0) { //不是为非完成的用户(已完成用户)
 			for (i=0; i<json1.preMessage.length; i++) {
 				for (var j=0; j<playerArray.length; j++) {
