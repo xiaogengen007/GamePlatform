@@ -148,9 +148,11 @@
                                     <h5>START</h5>
                                 </figcaption>
                             </figure>
+                        	</a>
                         </section>
 
                         <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        	<a href="#" style="text-decoration: none; color:inherit">
                         	<figure>
                             	<img src="basicpages/3 gamepage/images/3.png" class="img-responsive"/>
                             	<figcaption>

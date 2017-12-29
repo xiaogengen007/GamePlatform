@@ -1,2 +1,13 @@
+/.idea/
+/.metadata/
+/.settings/
+/lib/
+/.project
+/GUIDELINE.md
+/GUIDELINE_DB.md
+/JavaWebSocket.iml
+/LICENSE
+/README.md
+/pom.xml
 /src/
 /target/
