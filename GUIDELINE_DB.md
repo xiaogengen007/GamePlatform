@@ -12,7 +12,8 @@
 | :--------- | :---------- | :--------------------------------------- |
 | ***p_id*** | INT         | player's id number (auto increment according to the order of register) |
 | p_name     | VARCHAR(15) | player's name                            |
-| p_key      | VARCHAR(12) | player's password                        |
+| p_key      | CHAR(64)    | player's cipher password                 |
+| p_salt     | CHAR(10)    | password's support text used for encryption |
 | p_point    | INT         | player's point                           |
 
 
