@@ -91,19 +91,23 @@ public class Encrypt
     	  saltChar[i] = (char) (random.nextInt(75)+'0');
       }
       strings[1] = String.valueOf(saltChar);
-      System.out.println(strings[1]);
-      System.out.println(strings[1].length());
+      System.out.println("the salt:"+strings[1]);
+      //System.out.println(strings[1].length());
       String newPass = passInit + strings[1]; //对原密码先进行加盐处理
       strings[0] = this.SHA256(newPass);
-      System.out.println(strings[0]);
-      System.out.println(strings[0].length());
+      System.out.println("stored password:"+strings[0]);
+      //System.out.println(strings[0].length());
       return strings;
   }
   
   public static void main(String[] args) {
 	  Encrypt en = new Encrypt();
-	  System.out.println(en.SHA256("123456"));
-	  System.out.println(en.SHA256("1234").length());
-	  en.getPassword("112");
+	  String initPass = "123456";
+	  System.out.println("initial password:"+initPass);
+	  String[] passes = en.getPassword(initPass);
+	  
+	  System.out.println("\nanother turn,");
+	  System.out.println("initial password:"+initPass);
+	  passes = en.getPassword(initPass);
   }
 }  
