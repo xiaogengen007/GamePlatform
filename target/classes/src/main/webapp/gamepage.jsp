@@ -125,42 +125,41 @@
 
                     	<section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
                     		<a onclick = "gotoMineSweeper()" style="text-decoration: none; color:inherit" >
-                        	<figure>
-                            	<img src="basicpages/3 gamepage/images/1.png" class="img-responsive"/>
-                            	<figcaption>
-                                	<h3>Let's explode</h3>
-                                	<br>
-                                    <h5>START</h5>
-
-                                </figcaption>
-                            	
-                            </figure>
-                        </a>
+	                        	<figure>
+	                            	<img src="basicpages/3 gamepage/images/1.png" class="img-responsive"/>
+	                            	<figcaption>
+	                                	<h3>Let's explode</h3>
+	                                	<br>
+	                                    <h5>START</h5>
+	                                </figcaption>	
+	                            </figure>
+	                        </a>
                         </section>
 
                         <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
                         	<a onclick = "gotoWhoIsUnderCover()" style="text-decoration: none; color:inherit" >
-                        	<figure>
-                            	<img src="basicpages/3 gamepage/images/2.png" class="img-responsive"/>
-                            	<figcaption>
-                                    <h3>Who am I</h3>
-                                    <br>
-                                    <h5>START</h5>
-                                </figcaption>
-                            </figure>
+	                        	<figure>
+	                            	<img src="basicpages/3 gamepage/images/2.png" class="img-responsive"/>
+	                            	<figcaption>
+	                                    <h3>Who am I</h3>
+	                                    <br>
+	                                    <h5>START</h5>
+	                                </figcaption>
+	                            </figure>
                         	</a>
                         </section>
 
                         <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
                         	<a href="#" style="text-decoration: none; color:inherit">
-                        	<figure>
-                            	<img src="basicpages/3 gamepage/images/3.png" class="img-responsive"/>
-                            	<figcaption>
-                                    <h3>Guess what</h3>
-                                    <br>
-                                    <h5>START</h5>
-                                </figcaption>
-                            </figure>
+	                        	<figure>
+	                            	<img src="basicpages/3 gamepage/images/3.png" class="img-responsive"/>
+	                            	<figcaption>
+	                                    <h3>Guess what</h3>
+	                                    <br>
+	                                    <h5>START</h5>
+	                                </figcaption>
+	                            </figure>
+                        	</a>
                         </section>
                     </div>
 
@@ -174,28 +173,33 @@
                     <div class="thumbnails-pan">
 
                         <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                            <figure>
-                                <img src="basicpages/3 gamepage/images/4.png" class="img-responsive"/>
-                                <figcaption>
-                                    <h3>Am I lying</h3>
-                                    <br>
-                                    <h5>START</h5>
-                                </figcaption>
-                            </figure>
+                        	<a href="#" style="text-decoration: none; color:inherit">
+	                            <figure>
+	                                <img src="basicpages/3 gamepage/images/4.png" class="img-responsive"/>
+	                                <figcaption>
+	                                    <h3>Am I lying</h3>
+	                                    <br>
+	                                    <h5>START</h5>
+	                                </figcaption>
+	                            </figure>
+                        	</a>
                         </section>
 
                         <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                            <figure>
-                                <img src="basicpages/3 gamepage/images/5.png" class="img-responsive"/>
-                                <figcaption>
-                                    <h3>Yummy</h3>
-                                    <br>
-                                    <h5>START</h5>
-                                </figcaption>
-                            </figure>
-
+                        	<a href="#" style="text-decoration: none; color:inherit">
+	                            <figure>
+	                                <img src="basicpages/3 gamepage/images/5.png" class="img-responsive"/>
+	                                <figcaption>
+	                                    <h3>Yummy</h3>
+	                                    <br>
+	                                    <h5>START</h5>
+	                                </figcaption>
+	                            </figure>
+                        	</a>
                         </section>
+                        
                         <section class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        	<a href="#" style="text-decoration: none; color:inherit">
                             <figure>
                                 <img src="basicpages/3 gamepage/images/6.png" class="img-responsive"/>
                                 <figcaption>
@@ -204,6 +208,7 @@
                                     <h5>START</h5>
                                 </figcaption>
                             </figure>
+                            </a>
                         </section>
 
                     </div>
