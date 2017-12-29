@@ -159,8 +159,10 @@ websocket.onmessage = function (event) {
 		writeAfterSpeechProcess();	
 	}
 	else if (json1.action == 9) { //投票环节的中间过程记录
-		var messages = JSON.stringify(json1);
-		setMessageInnerHTML(messages);
+		tNow = json1.leftTime;
+		timeUpdate(tNow, tMax);
+		//var messages = JSON.stringify(json1);
+		//setMessageInnerHTML(messages);
 	}
 	else if (json1.action == 10) { //谁是卧底的额外信息
 		var messages = JSON.stringify(json1);
