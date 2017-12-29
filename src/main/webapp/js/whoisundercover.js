@@ -37,13 +37,6 @@ websocket.onmessage = function (event) {
 		if (json1.start == 2) {
 			//游戏已经结束
 			setMessageInnerHTML("Game has finished!");
-			if(json1.result == 1){
-				$('<h2></h2>').text('平民胜利').appendTo('#gdt');
-			}
-			else if(json1.result == 2){
-				$('<h2></h2>').text('卧底胜利').appendTo('#gdt');
-			}
-			$('#myModal').modal({backdrop: 'static', keyboard: false});
 		}
 	}
 	else if (json1.action == 2) { //消息通讯
@@ -127,6 +120,12 @@ websocket.onmessage = function (event) {
 		//var messages = JSON.stringify(json1);
 		//setMessageInnerHTML(messages);
 		setMessageInnerHTML("游戏结束");
+		if(json1.result == 1){
+			$('<h2></h2>').text('平民胜利').appendTo('#gdt');
+		}
+		else if(json1.result == 2){
+			$('<h2></h2>').text('卧底胜利').appendTo('#gdt');
+		}
 		$('#myModal').modal({backdrop: 'static', keyboard: false});
 	}
 	else if (json1.action == 7) { //游戏状态的额外传输

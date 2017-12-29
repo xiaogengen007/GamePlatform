@@ -44,6 +44,7 @@ more information
 
   - maxTime
   - maxVoteTime
+  - leftTime
 
   ​
 
