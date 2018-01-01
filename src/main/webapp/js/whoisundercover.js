@@ -138,7 +138,7 @@ websocket.onmessage = function (event) {
 		isVoting = 1; //进入投票环节
 		
 		tNow = tMaxVote;
-		tMax = tMaxVote;
+		tMax = tMaxVote
         timeUpdate(tNow, tMax);
 		
 		//var messages = JSON.stringify(json1);
@@ -174,7 +174,6 @@ websocket.onmessage = function (event) {
 			playerArray[i].alive = json1.baseInfo[i].alive;
 		}
 		if (json1.gameProcess == 1) { //在投票阶段需要根据情况来绘制投票器
-			tMax = tMaxVote;
 			for (i = 0; i<playerArray.length; i++) {
 				state[i] = json1.baseInfo[i].message;
 			}
@@ -186,10 +185,6 @@ websocket.onmessage = function (event) {
 			}
 			writeAfterSpeechProcess();
 		}
-		else{
-			tMax = tMaxState;
-		}
-		timeUpdate(tNow, tMax);
 	}
 	else if (json1.action == 12){
 		if(json1.result == 0){
@@ -243,6 +238,7 @@ function send() {
 
 //发送投票信息
 function sendVote(num) {
+	console.log(num);
 	if(isVoting && canVoted[num]){
 		var json1 = {};
 		json1.action = 7; //7表示发送投票信息
@@ -272,12 +268,30 @@ function startGame(){
 	
 	for(var i = 1; i <= playerArray.length; i++){
 		var num = i-1;
+		console.log(num);
 		var popMessage = $('<div></div>').attr('data-container','body').attr('data-toggle','popover')
 		.attr('data-placement','top').attr('data-content','word').attr('id','popmessage' + i);
-		var img = $('<img></img>').addClass("img-responsive")
-		.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
-		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
-		.click(function(){sendVote(num)});
+		if (num == 0) {
+			var img = $('<img></img>').addClass("img-responsive")
+			.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
+			.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+			.click(function(){sendVote(0)});
+		} else if (num == 1) {
+			var img = $('<img></img>').addClass("img-responsive")
+			.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
+			.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+			.click(function(){sendVote(1)});
+		} else if (num == 2) {
+			var img = $('<img></img>').addClass("img-responsive")
+			.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
+			.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+			.click(function(){sendVote(2)});
+		} else if (num == 3) {
+			var img = $('<img></img>').addClass("img-responsive")
+			.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
+			.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+			.click(function(){sendVote(3)});
+		}
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
 		//var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		var classList;

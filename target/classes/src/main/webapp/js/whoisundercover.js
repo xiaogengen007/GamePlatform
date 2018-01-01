@@ -138,7 +138,7 @@ websocket.onmessage = function (event) {
 		isVoting = 1; //进入投票环节
 		
 		tNow = tMaxVote;
-		tMax = tMaxVote;
+		tMax = tMaxVote
         timeUpdate(tNow, tMax);
 		
 		//var messages = JSON.stringify(json1);
@@ -174,7 +174,6 @@ websocket.onmessage = function (event) {
 			playerArray[i].alive = json1.baseInfo[i].alive;
 		}
 		if (json1.gameProcess == 1) { //在投票阶段需要根据情况来绘制投票器
-			tMax = tMaxVote;
 			for (i = 0; i<playerArray.length; i++) {
 				state[i] = json1.baseInfo[i].message;
 			}
@@ -186,10 +185,6 @@ websocket.onmessage = function (event) {
 			}
 			writeAfterSpeechProcess();
 		}
-		else{
-			tMax = tMaxState;
-		}
-		timeUpdate(tNow, tMax);
 	}
 	else if (json1.action == 12){
 		if(json1.result == 0){

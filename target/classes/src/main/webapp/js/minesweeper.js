@@ -17,7 +17,7 @@ var actionArray = Array();
 var audio_start = document.getElementById("audio_start");
 var audio_select = document.getElementById("audio_select");
 var audio_explode = document.getElementById("audio_explode");
-
+var bombNumOld = 0;
 
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
@@ -102,7 +102,9 @@ websocket.onmessage = function (event) {
     	for(var i = 0; i < actionArray.length; i++){
     		$("#"+actionArray[i].clickX+"-"+actionArray[i].clickY).empty();
     	}
+
     	
+        var bombNum = 0; 
         for(var i = 0; i < gridLen; i++){
             for(var j = 0; j < gridLen; j++){
             	if(json1.state[i][j] >= 0){
@@ -116,13 +118,21 @@ websocket.onmessage = function (event) {
             			$("#"+i+"-"+j).addClass("num").text('△');
             		}
             		else{
-                        audio_explode.play(); // 播放爆炸音效
+                        //audio_explode.play(); // 播放爆炸音效
             			$("#"+i+"-"+j).addClass("num").text('✸');
+                        bombNum = bombNum+1;
             		}
             	}
-                
             }
         }
+        setMessageInnerHTML(bombNum);
+        setMessageInnerHTML(bombNumOld);
+        if( bombNumOld != bombNum ) {
+            audio_explode.play(); // 播放爆炸音效
+        }
+        bombNumOld = bombNum;
+
+
         scoreUpdate(json1.players);
         //setMessageInnerHTML("End of this turn, please select for next turn.");
         setMessageInnerHTML("当前轮次结束，请点击进行扫雷...");
