@@ -451,7 +451,7 @@ public class DeminGame extends GameState{
 		json.put("maxTime", this.maxTurnTime); //单轮最长时间
 	}
 	
-	/*
+	/**
 	 * 设置游戏结束时的分数变化，并传送给前端
 	 * (non-Javadoc)
 	 * @see game.GameState#setPointChange()

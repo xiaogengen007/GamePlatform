@@ -600,7 +600,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 发送在一轮游戏当中的投票环节进度
 	 */
-	private void sendForVotingProcess() {
+	public void sendForVotingProcess() {
 		JSONObject json1 = new JSONObject();
 		JSONArray jsar1 = new JSONArray();
 		for (Player item: players) {
