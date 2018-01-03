@@ -13,12 +13,13 @@ import player.Player.UndercoverPlayer;
 import websocket.WebSocket;
 
 public class WhoIsUndercover extends GameState{
-	String friendString = ""; //友方的词汇
-	String undercoverString = ""; //卧底的词汇
-	int gameProcess; //游戏当前的进程，0表示发言环节，1表示投票环节
-	public int maxVotingTime;
-	int[] countVoted;
-	ArrayList<Integer> votedMax = new ArrayList<Integer>();
+	private String friendString = ""; //友方的词汇
+	private String undercoverString = ""; //卧底的词汇
+	private int gameProcess; //游戏当前的进程，0表示发言环节，1表示投票环节
+	public int maxVotingTime; //最长的投票时间
+	private int[] countVoted; //记录能够被投票的玩家
+	private ArrayList<Integer> votedMax = new ArrayList<Integer>(); //记录投票中得票最多的用户
+	
 	/*
 	 * 构造函数，完成一些基本的参数配置
 	 */
