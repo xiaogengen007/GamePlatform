@@ -192,7 +192,7 @@ public class WhoIsUndercover extends GameState{
 	 * 2表示游戏结束，且卧底获胜
 	 */
 	private int gameOver() { 
-		/*
+		/**
 		 * 四人局中1人为卧底
 		 * 卧底如果亡了，则平民胜
 		 * 卧底如果能坚持到只剩下两人，则平民败
@@ -856,7 +856,7 @@ public class WhoIsUndercover extends GameState{
 				return;
 			}
 		}
-		/*
+		/**
 		 * 每个人的分数依据平均分进行变化，目标是使得所有人总的分数变化之和大于0
 		 */
 		int gameSign = this.gameOver(); //记录游戏状态

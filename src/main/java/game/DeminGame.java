@@ -481,7 +481,7 @@ public class DeminGame extends GameState{
 			averageScore += item.deminPlayer.score;
 		}
 		averageScore /= this.gameNum;
-		/*
+		/**
 		 * 每个人的分数依据平均分进行变化，目标是使得所有人总的分数变化之和大于0
 		 */
 		JSONObject json1 = new JSONObject();
