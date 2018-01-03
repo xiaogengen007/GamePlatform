@@ -2,8 +2,6 @@ package game;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
-
 import db.FriendManager;
 import db.SetupDatabase;
 import net.sf.json.JSONArray;
@@ -11,7 +9,6 @@ import net.sf.json.JSONObject;
 
 import websocket.WebSocket;
 import player.Player;
-import player.Player.DeminPlayer;
 
 public class GameState {
 	public static ArrayList<GameState> games = new ArrayList<GameState>(); //建立一个静态的存储游戏状态的数组

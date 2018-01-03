@@ -9,7 +9,6 @@ import player.Player;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
-import db.FriendManager;
 import db.SetupDatabase;
 import game.GameState;
 import game.Timer;
@@ -28,7 +27,6 @@ public class WebSocket {
 
 	//与某个客户端的连接会话，需要通过它来给客户端发送数据
 	public Session session;
-	private static boolean startedthread = false;
 	public Player myPlayer = null; //存储该用户的相关信息
 
 	public WebSocket() {
