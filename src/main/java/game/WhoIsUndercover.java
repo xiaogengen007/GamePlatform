@@ -23,11 +23,11 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 构造函数，完成一些基本的参数配置
 	 */
-	WhoIsUndercover() {
+	public WhoIsUndercover() {
 		super();
 		this.gameType = 2; //2表示谁是卧底
 		this.gameNum = 4; //设置玩家数为4人
-		countVoted = new int [this.gameNum];
+		this.countVoted = new int [this.gameNum];
 		this.maxTurnTime = 30;
 		this.maxVotingTime = 15; //设置投票环节最长时间为15秒
 		this.leftTime = new Integer(this.maxTurnTime);
@@ -40,7 +40,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 获取一组词汇，第一个为好友词，第二个为卧底词
 	 */
-	public String[] getWords() {
+	private String[] getWords() {
 		ReadTxt rt = ReadTxt.getInstance();
 		String string = rt.getRandomConent();
 		String[] splits = string.split(" ");
@@ -69,13 +69,21 @@ public class WhoIsUndercover extends GameState{
 		this.initFinishTurn();
 	}
 	
-	public void initFinishTurn() { //初始化为都未完成该轮游戏
+	/*
+	 * 初始化为都未完成该轮游戏
+	 */
+	private void initFinishTurn() { 
 		for (int i = 0; i < this.players.size(); i++) {
 			players.get(i).ucPlayer.isSubmit = false;
 		}
 	}
 	
-	protected void initPlayers() { //初始化玩家的操作
+	/*
+	 * 初始化玩家的操作
+	 * (non-Javadoc)
+	 * @see game.GameState#initPlayers()
+	 */
+	protected void initPlayers() { 
 		for (Player item: players) {
 			item.ucPlayer.setPlayer();
 		}
@@ -84,7 +92,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 在投票之前初始化，让大家都还没投票
 	 */
-	public void initBeforeVoting() {
+	private void initBeforeVoting() {
 		for (Player item: players) {
 			item.ucPlayer.hasVoted = false;
 			if (item.ucPlayer.isAlive) {
@@ -100,7 +108,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 获取当前存活的玩家数
 	 */
-	public int getAliveNum() {
+	private int getAliveNum() {
 		int countAlive = 0;
 		for (Player item: players) {
 			if (item.ucPlayer.isAlive) {
@@ -113,7 +121,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 获取当前已经投票的玩家数（对投票阶段适用）
 	 */
-	public int getVotedNum() {
+	private int getVotedNum() {
 		int countVoted = 0;
 		for (Player item: players) {
 			if (item.ucPlayer.hasVoted && item.ucPlayer.isAlive && item.ucPlayer.canVote) {
@@ -126,7 +134,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 获取当前可以被投票的玩家数（对投票阶段适用）
 	 */
-	public int getCanBeVotedNum() {
+	private int getCanBeVotedNum() {
 		int countCanBeVoted = 0;
 		for (Player item: players) {
 			if (item.ucPlayer.isAlive && item.ucPlayer.canbeVoted) {
@@ -139,7 +147,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 判断当前投票是否已经完成
 	 */
-	public boolean finishVote() {
+	private boolean finishVote() {
 		boolean hasVoted = true;
 		for (Player item: players) {
 			if (item.ucPlayer.isAlive && !item.ucPlayer.hasVoted && item.ucPlayer.canVote) {
@@ -152,7 +160,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 获取本轮完成发送消息的玩家数
 	 */
-	public int getSubmitNum() {
+	private int getSubmitNum() {
 		int countAlive = 0;
 		for (Player item: players) {
 			if (item.ucPlayer.isAlive && item.ucPlayer.isSubmit) {
@@ -165,7 +173,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 判断大家是否都完成该轮发言
 	 */
-	public boolean finishThisTurn() {
+	private boolean finishThisTurn() {
 		boolean hasFinished = true;
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).ucPlayer.isAlive 
@@ -183,7 +191,7 @@ public class WhoIsUndercover extends GameState{
 	 * 1表示游戏结束，且盟军获胜
 	 * 2表示游戏结束，且卧底获胜
 	 */
-	public int gameOver() { 
+	private int gameOver() { 
 		/*
 		 * 四人局中1人为卧底
 		 * 卧底如果亡了，则平民胜
