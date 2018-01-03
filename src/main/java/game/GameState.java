@@ -25,7 +25,7 @@ public class GameState {
 		this.gameStatus = 0; //初始时游戏还未开始
 	}
 	
-	/*
+	/**
 	 * 判断该局游戏中是否可以再加玩家
 	 */
 	private boolean canAddPlayer() { 
@@ -36,7 +36,7 @@ public class GameState {
 		}
 	}
 	
-	/*
+	/**
 	 * 将该玩家ply加入该局游戏中
 	 */
 	private void addPlayer(Player ply) { 
@@ -54,7 +54,7 @@ public class GameState {
 		sendForGameState();		
 	}
 	
-	/*
+	/**
 	 * 将该玩家退出该局游戏
 	 */
 	public boolean deletePlayer(Player ply) { 
@@ -67,6 +67,11 @@ public class GameState {
 		}
 	}
 	
+	/**
+	 * 为玩家分配房间
+	 * @param ply
+	 * @param gameType
+	 */
 	public static void distributeRoom(Player ply, int gameType) { //为玩家分配房间
 		if (ply == null || ply.nowGame != null) return; //之前已经在一个房间里，则不用分配
 		GameState flow = null;
@@ -86,7 +91,12 @@ public class GameState {
 		flow.addPlayer(ply);
 		ply.nowGame = flow;
 	}
-
+	
+	/**
+	 * 通过用户名搜索用户是否在游戏列表中
+	 * @param username
+	 * @return
+	 */
 	public static Player searchFromName(String username) { //通过用户名搜索用户是否在游戏列表中
 		for (GameState gs: games) {
 			for (Player ply: gs.players) {
@@ -101,7 +111,8 @@ public class GameState {
 		return null; //否则返回空
 	}
 	
-	/*
+	/**
+	 * 
 	 * 将游戏状态发送给玩家（未开始-开始-已结束）
 	 */
 	public void sendForGameState() {
@@ -134,7 +145,7 @@ public class GameState {
 		}
 	}
 	
-	/*
+	/**
 	 * 更新游戏时间
 	 */
 	public void refreshTime() { 
@@ -148,7 +159,7 @@ public class GameState {
 		}
 	}
 	
-	/*
+	/**
 	 * 解决用户在游戏中聊天的功能
 	 */
 	public void handleForChating(String message) {
@@ -168,7 +179,7 @@ public class GameState {
 		}
 	}
 	
-	/*
+	/**
 	 * 在房间里加好友
 	 */
 	public void addFriendInRoom(String username1, String username2) {

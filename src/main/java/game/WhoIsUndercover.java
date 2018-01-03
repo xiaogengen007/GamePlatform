@@ -20,7 +20,7 @@ public class WhoIsUndercover extends GameState{
 	private int[] countVoted; //记录能够被投票的玩家
 	private ArrayList<Integer> votedMax = new ArrayList<Integer>(); //记录投票中得票最多的用户
 	
-	/*
+	/**
 	 * 构造函数，完成一些基本的参数配置
 	 */
 	public WhoIsUndercover() {
@@ -37,7 +37,7 @@ public class WhoIsUndercover extends GameState{
 		this.gameProcess = 0; //初始化为发言阶段
 	}
 	
-	/*
+	/**
 	 * 获取一组词汇，第一个为好友词，第二个为卧底词
 	 */
 	private String[] getWords() {
@@ -48,7 +48,7 @@ public class WhoIsUndercover extends GameState{
 		return splits;
 	}
 	
-	/*
+	/**
 	 * 初始化游戏
 	 */
 	protected void initGame() { 
@@ -69,7 +69,7 @@ public class WhoIsUndercover extends GameState{
 		this.initFinishTurn();
 	}
 	
-	/*
+	/**
 	 * 初始化为都未完成该轮游戏
 	 */
 	private void initFinishTurn() { 
@@ -78,7 +78,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 初始化玩家的操作
 	 * (non-Javadoc)
 	 * @see game.GameState#initPlayers()
@@ -89,7 +89,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 在投票之前初始化，让大家都还没投票
 	 */
 	private void initBeforeVoting() {
@@ -105,7 +105,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 获取当前存活的玩家数
 	 */
 	private int getAliveNum() {
@@ -118,7 +118,7 @@ public class WhoIsUndercover extends GameState{
 		return countAlive;
 	}
 	
-	/*
+	/**
 	 * 获取当前已经投票的玩家数（对投票阶段适用）
 	 */
 	private int getVotedNum() {
@@ -131,7 +131,7 @@ public class WhoIsUndercover extends GameState{
 		return countVoted;
 	}
 	
-	/*
+	/**
 	 * 获取当前可以被投票的玩家数（对投票阶段适用）
 	 */
 	private int getCanBeVotedNum() {
@@ -144,7 +144,7 @@ public class WhoIsUndercover extends GameState{
 		return countCanBeVoted;
 	}
 	
-	/*
+	/**
 	 * 判断当前投票是否已经完成
 	 */
 	private boolean finishVote() {
@@ -157,7 +157,7 @@ public class WhoIsUndercover extends GameState{
 		return hasVoted;
 	}
 	
-	/*
+	/**
 	 * 获取本轮完成发送消息的玩家数
 	 */
 	private int getSubmitNum() {
@@ -170,7 +170,7 @@ public class WhoIsUndercover extends GameState{
 		return countAlive;
 	}
 	
-	/*
+	/**
 	 * 判断大家是否都完成该轮发言
 	 */
 	private boolean finishThisTurn() {
@@ -185,7 +185,7 @@ public class WhoIsUndercover extends GameState{
 		return hasFinished;
 	}
 	
-	/*
+	/**
 	 * 判断游戏是否已经结束
 	 * 0表示游戏还未结束
 	 * 1表示游戏结束，且盟军获胜
@@ -216,7 +216,7 @@ public class WhoIsUndercover extends GameState{
 		return flag;
 	}
 	
-	/*
+	/**
 	 * 过滤用户的发言，去掉其中关键字
 	 */
 	private String filterString(String message) {
@@ -233,7 +233,7 @@ public class WhoIsUndercover extends GameState{
 		return filterMessage;
 	}
 	
-	/*
+	/**
 	 * 完成谁是卧底中的游戏响应,在非投票阶段
 	 * (non-Javadoc)
 	 * @see game.GameState#handleUndercover(java.lang.String, websocket.WebSocket)
@@ -267,7 +267,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 完成投票阶段谁是卧底中的游戏响应
 	 * (non-Javadoc)
 	 * @see game.GameState#handleUndercoverVoting(java.lang.String, websocket.WebSocket)
@@ -288,7 +288,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	} 
 	
-	/*
+	/**
 	 * 当前轮结束时进行批处理(从发言阶段->投票阶段)
 	 */
 	private void batchHandleTurn() { 
@@ -297,7 +297,7 @@ public class WhoIsUndercover extends GameState{
 		this.initBeforeVoting(); //在投票前完成相关初始化工作
 	}
 	
-	/*
+	/**
 	 * 当前投票轮结束时进行批处理(从投票阶段->发言阶段（或投票阶段）)
 	 */
 	private void batchHandleVoteTurn() { 
@@ -352,7 +352,7 @@ public class WhoIsUndercover extends GameState{
 				this.leftTime = this.maxTurnTime;
 			}		
 		} else {
-			/*
+			/**
 			 * 在进入下一轮投票前先做好初始化工作
 			 * 设定好可以投票和可以被投票的人选
 			 */
@@ -387,7 +387,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
 	private void sendEndOfVoteForNextTurn() {
@@ -420,7 +420,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 该轮游戏发言阶段结束之后向某个玩家发送消息
 	 */
 	private void sendEndOfVoteForNextTurn(Player player) {
@@ -451,7 +451,7 @@ public class WhoIsUndercover extends GameState{
 		}	
 	}
 	
-	/*
+	/**
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
 	private void sendEndOfVoteForNextVoting() {
@@ -501,7 +501,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
 	private void sendEndOfThisTurn() {
@@ -548,7 +548,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 发送在一轮游戏当中的进度
 	 */
 	private void sendForGameProcess() {
@@ -597,7 +597,7 @@ public class WhoIsUndercover extends GameState{
 		}	
 	}
 	
-	/*
+	/**
 	 * 发送在一轮游戏当中的投票环节进度
 	 */
 	private void sendForVotingProcess() {
