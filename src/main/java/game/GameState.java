@@ -27,7 +27,11 @@ public class GameState {
 		games.add(this); //将该游戏加载入游戏数组中
 		this.gameStatus = 0; //初始时游戏还未开始
 	}
-	public boolean canAddPlayer() { //判断该局游戏中是否可以再加玩家
+	
+	/*
+	 * 判断该局游戏中是否可以再加玩家
+	 */
+	private boolean canAddPlayer() { 
 		if (players.size() < this.gameNum) {
 			return true;
 		} else {
@@ -38,7 +42,7 @@ public class GameState {
 	/*
 	 * 将该玩家ply加入该局游戏中
 	 */
-	public void addPlayer(Player ply) { 
+	private void addPlayer(Player ply) { 
 		if (players.size() < this.gameNum) { //判断是否可以开始游戏
 			players.add(ply);
 		} else {
@@ -52,7 +56,11 @@ public class GameState {
 		}
 		sendForGameState();		
 	}
-	public boolean deletePlayer(Player ply) { //将该玩家退出该局游戏
+	
+	/*
+	 * 将该玩家退出该局游戏
+	 */
+	public boolean deletePlayer(Player ply) { 
 		if (this.gameStatus == 0) { //游戏还未开始时可退出游戏
 			players.remove(ply);
 			this.sendForGameState();
@@ -61,6 +69,7 @@ public class GameState {
 			return false;
 		}
 	}
+	
 	public static void distributeRoom(Player ply, int gameType) { //为玩家分配房间
 		if (ply == null || ply.nowGame != null) return; //之前已经在一个房间里，则不用分配
 		GameState flow = null;
@@ -95,6 +104,9 @@ public class GameState {
 		return null; //否则返回空
 	}
 	
+	/*
+	 * 将游戏状态发送给玩家（未开始-开始-已结束）
+	 */
 	public void sendForGameState() {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 1); //1表示发送游戏是否已经开始
@@ -125,7 +137,10 @@ public class GameState {
 		}
 	}
 	
-	public void refreshTime() { //更新游戏时间
+	/*
+	 * 更新游戏时间
+	 */
+	public void refreshTime() { 
 		synchronized (this.leftTime) { //对时间加上互斥锁
 			if (this.leftTime > 0) {
 				this.leftTime--; //还有时间时减一秒
@@ -136,6 +151,9 @@ public class GameState {
 		}
 	}
 	
+	/*
+	 * 解决用户在游戏中聊天的功能
+	 */
 	public void handleForChating(String message) {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 5); //5表示游戏中聊天
@@ -185,8 +203,8 @@ public class GameState {
 	public void handleUndercoverVoting(int userindex, WebSocket ws) {} //完成投票阶段谁是卧底中的游戏响应
 	public void revisiting(Player ply) {} //处理用户重新进入游戏
 	public void handleLeftTimeZero() {} //解决时间为零的情况
-	public void sendForMyGameState(JSONObject json) {} //发送每个游戏状态特殊的部分
-	public void sendElseGameState() {} //在游戏开始时还需发送的其他部分（个性化处理）
+	protected void sendForMyGameState(JSONObject json) {} //发送每个游戏状态特殊的部分
+	protected void sendElseGameState() {} //在游戏开始时还需发送的其他部分（个性化处理）
 	public void sendAfterGame() {} //游戏后返回玩家游戏结果
 	public void initPlayers() {} //初始化玩家的信息
 	public void initGame() {} //初始化游戏

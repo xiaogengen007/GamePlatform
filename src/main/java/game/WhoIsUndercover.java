@@ -618,7 +618,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	public void sendForMyGameState(JSONObject json) {
+	protected void sendForMyGameState(JSONObject json) {
 		json.put("maxTime", this.maxTurnTime); //单轮最长时间
 		json.put("maxVoteTime", this.maxVotingTime); //单轮投票最长时间
 		json.put("leftTime", this.leftTime); //当前剩余的时间
@@ -627,7 +627,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 在游戏开始时还需发送的其他部分（个性化处理）,这里指每个人的关键词
 	 */
-	public void sendElseGameState() { 
+	protected void sendElseGameState() { 
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 7); //7为输出游戏中的额外状态传输
 		json1.put("keyword", this.friendString);
