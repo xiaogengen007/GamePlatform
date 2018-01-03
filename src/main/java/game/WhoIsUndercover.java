@@ -291,7 +291,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 当前轮结束时进行批处理(从发言阶段->投票阶段)
 	 */
-	public void batchHandleTurn() { 
+	private void batchHandleTurn() { 
 		this.gameProcess = 1; //1表示进入投票环节
 		this.leftTime = this.maxVotingTime;
 		this.initBeforeVoting(); //在投票前完成相关初始化工作
@@ -300,7 +300,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 当前投票轮结束时进行批处理(从投票阶段->发言阶段（或投票阶段）)
 	 */
-	public void batchHandleVoteTurn() { 
+	private void batchHandleVoteTurn() { 
 		this.leftTime = this.maxVotingTime;
 		for (int i = 0; i < this.gameNum; i++) {
 			countVoted[i] = 0;
@@ -390,7 +390,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
-	public void sendEndOfVoteForNextTurn() {
+	private void sendEndOfVoteForNextTurn() {
 		int maxIndex = this.votedMax.get(0);
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
@@ -423,7 +423,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 该轮游戏发言阶段结束之后向某个玩家发送消息
 	 */
-	public void sendEndOfVoteForNextTurn(Player player) {
+	private void sendEndOfVoteForNextTurn(Player player) {
 		int maxIndex = this.votedMax.get(0);
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
@@ -454,7 +454,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
-	public void sendEndOfVoteForNextVoting() {
+	private void sendEndOfVoteForNextVoting() {
 		System.out.println("has send for next vote turn");
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
@@ -504,7 +504,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 该轮游戏发言阶段结束之后向玩家们发送消息
 	 */
-	public void sendEndOfThisTurn() {
+	private void sendEndOfThisTurn() {
 		System.out.println("have send after this speech turn for undercover game.");
 		JSONObject json1 = new JSONObject();
 		JSONArray jsar1 = new JSONArray();
@@ -551,7 +551,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 发送在一轮游戏当中的进度
 	 */
-	public void sendForGameProcess() {
+	private void sendForGameProcess() {
 		JSONObject json1 = new JSONObject();
 		if (this.gameProcess == 0) {
 			System.out.println("has send game process for undercover");
@@ -600,7 +600,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 发送在一轮游戏当中的投票环节进度
 	 */
-	public void sendForVotingProcess() {
+	private void sendForVotingProcess() {
 		JSONObject json1 = new JSONObject();
 		JSONArray jsar1 = new JSONArray();
 		for (Player item: players) {
