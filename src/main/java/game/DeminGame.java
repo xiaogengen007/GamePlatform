@@ -36,7 +36,7 @@ public class DeminGame extends GameState{
 		this.generatingMine();
 	}
 	
-	/*
+	/**
 	 * 初始化生成游戏中的雷
 	 */
 	private void generatingMine() { 
@@ -85,13 +85,16 @@ public class DeminGame extends GameState{
 		}
 	}
 	
+	/**
+	 * 初始化玩家操作
+	 */
 	protected void initPlayers() { //初始化玩家的操作
 		for (Player item: players) {
 			item.deminPlayer.setPlayer();
 		}
 	}
 	
-	/*
+	/**
 	 * 判断现在游戏是否已经结束
 	 */
 	private boolean gameOver() { 
@@ -102,7 +105,7 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 判断用户这次点击是不是正确
 	 */
 	private boolean clickRight(Player ply) { 
@@ -114,7 +117,7 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 计算剩余的雷数
 	 */
 	private int calculateLeftMine() { 
@@ -129,7 +132,7 @@ public class DeminGame extends GameState{
 		return count;
 	}
 	
-	/*
+	/**
 	 * 在该轮之前还未被点击方格的个数
 	 */
 	private int leftNoneClicked() { 
@@ -144,7 +147,7 @@ public class DeminGame extends GameState{
 		return count;
 	}
 	
-	/*
+	/**
 	 * 完成扫雷游戏中的用户响应
 	 * (non-Javadoc)
 	 * @see game.GameState#handleDemin(int, int, int, websocket.WebSocket)
@@ -176,7 +179,7 @@ public class DeminGame extends GameState{
 		}	
 	}
 	
-	/*
+	/**
 	 * 发送在一轮游戏当中的进度
 	 */
 	private void sendForGameProcess() {
@@ -223,7 +226,7 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 当前轮结束时进行批处理
 	 */
 	private void batchHandleTurn() { 
@@ -291,7 +294,7 @@ public class DeminGame extends GameState{
 		if (this.gameStatus == 2) { //游戏结束之后，将游戏结果返回给玩家
 			this.setPointChange(); //将分数变化单独发过去
 			sendAfterGame();
-			/*
+			/**
 			 * 同时将该游戏房间玩家清空
 			 */
 			for (Player item: players) {
@@ -311,7 +314,7 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 游戏后返回玩家游戏结果(包括排名，积分变化等)
 	 * (non-Javadoc)
 	 * @see game.GameState#sendAfterGame()
@@ -346,7 +349,7 @@ public class DeminGame extends GameState{
 		}
 	}
 
-	/*
+	/**
 	 * 该轮游戏结束之后向玩家们发送消息
 	 */
 	@SuppressWarnings("rawtypes")
@@ -389,7 +392,10 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	public void revisiting(Player ply) { //处理有玩家回到游戏中的情况
+	/**
+	 * 处理有玩家回到游戏中的情况
+	 */
+	public void revisiting(Player ply) { 
 		if (this.gameStatus == 0) return; //游戏还没开始时忽略请求
 		for (Player item: this.players) {
 			if (item.username.equals(ply.username)) {
@@ -403,7 +409,10 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	public void handleLeftTimeZero() { //解决时间为零的情况
+	/**
+	 * 解决时间为零的情况
+	 */
+	public void handleLeftTimeZero() { 
 		if (this.gameStatus != 1) {
 			return; //游戏为处在进行状态时直接跳过
 		}
@@ -445,6 +454,9 @@ public class DeminGame extends GameState{
 		this.batchHandleTurn();
 	}
 	
+	/**
+	 * 游戏中需要传入游戏所独特的信息
+	 */
 	protected void sendForMyGameState(JSONObject json) {
 		json.put("totalMine", this.totalMine); //需要额外发送总地雷数
 		json.put("gridLen", DeminGame.gridLen); //雷区的大小
@@ -509,14 +521,14 @@ public class DeminGame extends GameState{
 			this.gridY = Y;
 		}
 		
-		/*
+		/**
 		 * 获取X坐标
 		 */
 		public int getGridX() {
 			return this.girdX;
 		}
 		
-		/*
+		/**
 		 * 获取Y坐标
 		 */
 		public int getGridY() {

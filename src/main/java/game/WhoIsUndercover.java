@@ -627,13 +627,16 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
+	/**
+	 * 游戏开始时还需要传入的一些新的参数
+	 */
 	protected void sendForMyGameState(JSONObject json) {
 		json.put("maxTime", this.maxTurnTime); //单轮最长时间
 		json.put("maxVoteTime", this.maxVotingTime); //单轮投票最长时间
 		json.put("leftTime", this.leftTime); //当前剩余的时间
 	}
 	
-	/*
+	/**
 	 * 在游戏开始时还需发送的其他部分（个性化处理）,这里指每个人的关键词
 	 */
 	protected void sendElseGameState() { 
@@ -670,7 +673,7 @@ public class WhoIsUndercover extends GameState{
 		System.out.println("has send keywords for undercover game!");
 	}
 	
-	/*
+	/**
 	 * 游戏后返回玩家游戏结果(包括结果，积分变化等)
 	 * (non-Javadoc)
 	 * @see game.GameState#sendAfterGame()
@@ -707,7 +710,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * (non-Javadoc)
 	 * @see game.GameState#revisiting(player.Player)
 	 * 处理有玩家重新进入的情况
@@ -789,7 +792,7 @@ public class WhoIsUndercover extends GameState{
 		}		
 	}
 	
-	/*
+	/**
 	 * (non-Javadoc)
 	 * @see game.GameState#handleLeftTimeZero()
 	 * 解决时间为零的情况,发言阶段则什么都不说，投票阶段则随机投一个人
@@ -840,7 +843,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	/*
+	/**
 	 * 设置游戏结束时的分数变化，并传送给前端
 	 * (non-Javadoc)
 	 * @see game.GameState#setPointChange()
