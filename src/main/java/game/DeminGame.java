@@ -94,7 +94,7 @@ public class DeminGame extends GameState{
 	/*
 	 * 判断现在游戏是否已经结束
 	 */
-	boolean gameOver() { 
+	private boolean gameOver() { 
 		if (leftNoneClicked() == 0) {
 			return true;
 		} else {
@@ -102,7 +102,10 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	boolean clickRight(Player ply) { //判断用户这次点击是不是正确
+	/*
+	 * 判断用户这次点击是不是正确
+	 */
+	private boolean clickRight(Player ply) { 
 		if ((ply.deminPlayer.clickType && !this.isMine[ply.deminPlayer.clickX+1][ply.deminPlayer.clickY+1]) || 
 				(!ply.deminPlayer.clickType && this.isMine[ply.deminPlayer.clickX+1][ply.deminPlayer.clickY+1])) {
 			return true;
@@ -111,7 +114,10 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	boolean clickRight(boolean clickType, int clickX, int clickY) { //判断用户这次点击是不是正确（重载）
+	/*
+	 * 判断用户这次点击是不是正确（重载）
+	 */
+	private boolean clickRight(boolean clickType, int clickX, int clickY) { 
 		if ((clickType && !this.isMine[clickX+1][clickY+1]) || 
 				(!clickType && this.isMine[clickX+1][clickY+1])) {
 			return true;
@@ -120,7 +126,10 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	int calculateLeftMine() { //计算剩余的雷数
+	/*
+	 * 计算剩余的雷数
+	 */
+	private int calculateLeftMine() { 
 		int count = 0;
 		for (int i = 1; i < this.gridLen+1; i++) {
 			for (int j = 1; j < this.gridLen+1; j++) {
