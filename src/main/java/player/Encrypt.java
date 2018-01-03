@@ -70,35 +70,35 @@ public class Encrypt {
 		return strResult;  
 	}  
   
-  /*
-   * 传进来一个password,进行加盐哈希加密处理，返回一个数组
-   * 第一个为SHA256的密码，第二个为盐值
-   */
-  public String[] getPassword(String passInit) {
-	  String[] strings = new String [2];
-      SecureRandom random = new SecureRandom();
-      char[] saltChar = new char [SALT_SIZE];
-      for (int i = 0; i < SALT_SIZE; i++) {
-    	  saltChar[i] = (char) (random.nextInt(75)+'0');
-      }
-      strings[1] = String.valueOf(saltChar);
-      System.out.println("the salt:"+strings[1]);
-      //System.out.println(strings[1].length());
-      String newPass = passInit + strings[1]; //对原密码先进行加盐处理
-      strings[0] = this.SHA256(newPass);
-      System.out.println("stored password:"+strings[0]);
-      //System.out.println(strings[0].length());
-      return strings;
-  }
+	/*
+	 * 传进来一个password,进行加盐哈希加密处理，返回一个数组
+	 * 第一个为SHA256的密码，第二个为盐值
+	 */
+	public String[] getPassword(String passInit) {
+		String[] strings = new String [2];
+		SecureRandom random = new SecureRandom();
+		char[] saltChar = new char [SALT_SIZE];
+		for (int i = 0; i < SALT_SIZE; i++) {
+			saltChar[i] = (char) (random.nextInt(75)+'0');
+		}
+		strings[1] = String.valueOf(saltChar);
+		System.out.println("the salt:"+strings[1]);
+		//System.out.println(strings[1].length());
+		String newPass = passInit + strings[1]; //对原密码先进行加盐处理
+		strings[0] = this.SHA256(newPass);
+		System.out.println("stored password:"+strings[0]);
+		//System.out.println(strings[0].length());
+		return strings;
+	}
   
-  public static void main(String[] args) {
-	  Encrypt en = new Encrypt();
-	  String initPass = "123456";
-	  System.out.println("initial password:"+initPass);
-	  String[] passes = en.getPassword(initPass);
-	  
-	  System.out.println("\nanother turn,");
-	  System.out.println("initial password:"+initPass);
-	  passes = en.getPassword(initPass);
-  }
+	public static void main(String[] args) {
+		Encrypt en = new Encrypt();
+		String initPass = "123456";
+		System.out.println("initial password:"+initPass);
+		String[] passes = en.getPassword(initPass);
+		
+		System.out.println("\nanother turn,");
+		System.out.println("initial password:"+initPass);
+		passes = en.getPassword(initPass);
+	}
 }  
