@@ -6,6 +6,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FriendManager {
+	
+	/**
+	 * return 0; 成功添加好友关系，返回0
+	 * return 1; 错误类型1：好友已经存在
+	 * return 2; 错误类型2：记录好友关系失败
+	 * 
+	 * @param plyName_1
+	 * @param plyName_2
+	 * @return
+	 */
 	public static int recordFriend(String plyName_1, String plyName_2) { //记录新的朋友关系
 		Connection c = null;
 		Statement stmt = null;
@@ -50,6 +60,12 @@ public class FriendManager {
 		}
 	}
 	
+	/**
+	 * 获取用户好友的积分排行榜，返回一个username-积分对应的哈希表
+	 * 
+	 * @param plyName
+	 * @return
+	 */
 	public static Map<String, Integer> sortFriendPoint(String plyName) { //获取用户好友的积分排行榜
 		Connection c = null;
 		Statement stmt = null;
@@ -84,6 +100,12 @@ public class FriendManager {
 		}
 	}
 	
+	/**
+	 * 获取好友列表,返回一个好友的username列表
+	 * 
+	 * @param plyName
+	 * @return
+	 */
 	public static ArrayList<String> getFriendList(String plyName) { //获取好友列表
 		Connection c = null;
 		Statement stmt = null;
