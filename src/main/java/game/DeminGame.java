@@ -361,7 +361,7 @@ public class DeminGame extends GameState{
 	/*
 	 * 该轮游戏结束之后向玩家们发送消息
 	 */
-	public void sendEndOfThisTurn() {	
+	private void sendEndOfThisTurn() {	
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 4); //4表示扫雷该轮已经结束
 		ArrayList<ArrayList> arr = new ArrayList<ArrayList>(); //记录棋局形态
@@ -515,6 +515,28 @@ public class DeminGame extends GameState{
 		public int girdX; //1~gridLen
 		public int gridY; //1~gridLen
 		public GridPosition(int X, int Y) {
+			this.girdX = X;
+			this.gridY = Y;
+		}
+		
+		/*
+		 * 获取X坐标
+		 */
+		public int getGridX() {
+			return this.girdX;
+		}
+		
+		/*
+		 * 获取Y坐标
+		 */
+		public int getGridY() {
+			return this.gridY;
+		}
+		
+		/*
+		 * 设置坐标
+		 */
+		public void setGridX(int X, int Y) {
 			this.girdX = X;
 			this.gridY = Y;
 		}
