@@ -277,8 +277,8 @@ public class DeminGame extends GameState{
 				break; //无法拓展时，停止搜索
 			}
 			GridPosition gptmp = zeroList.remove(0); //取出第一个元素进行处理
-			int x = gptmp.girdX;
-			int y = gptmp.gridY;
+			int x = gptmp.getGridX();
+			int y = gptmp.getGridY();
 			for (int i = x-1; i <= x+1; i++) {
 				for (int j = y-1; j <= y+1; j++) {
 					if (i > 0 && i <= this.gridLen && j > 0 && j <= this.gridLen) {
@@ -511,9 +511,10 @@ public class DeminGame extends GameState{
 		}
 	} 
 	
-	class GridPosition {
-		public int girdX; //1~gridLen
-		public int gridY; //1~gridLen
+	private class GridPosition {
+		private int girdX; //1~gridLen
+		private int gridY; //1~gridLen
+		
 		public GridPosition(int X, int Y) {
 			this.girdX = X;
 			this.gridY = Y;
