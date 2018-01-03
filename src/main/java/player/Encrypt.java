@@ -95,10 +95,10 @@ public class Encrypt {
 		Encrypt en = new Encrypt();
 		String initPass = "123456";
 		System.out.println("initial password:"+initPass);
-		String[] passes = en.getPassword(initPass);
+		en.getPassword(initPass);
 		
 		System.out.println("\nanother turn,");
 		System.out.println("initial password:"+initPass);
-		passes = en.getPassword(initPass);
+		en.getPassword(initPass);
 	}
 }  

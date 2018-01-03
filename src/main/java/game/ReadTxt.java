@@ -11,11 +11,12 @@ public class ReadTxt {
 	public static ReadTxt myRead = null;
 	private static String filePath = Thread.currentThread().getContextClassLoader().getResource("").getPath()
 			+"wordsForUndercover.txt";
-	ReadTxt() {
+	
+	public ReadTxt() {
 		this.readTxtFile();
 	}
 	
-	/*
+	/**
 	 * 单子模式，获取一个实体
 	 */
 	public static ReadTxt getInstance() {
@@ -28,6 +29,11 @@ public class ReadTxt {
 		return myRead;
 	}
 	
+	/**
+	 * 读取Txt文件
+	 * 
+	 * @return
+	 */
 	private Vector<String> readTxtFile() {
 		Vector<String> vv = new Vector<String>();
 		try {
@@ -51,6 +57,11 @@ public class ReadTxt {
 		return vv;
 	}
 
+	/**
+	 * 获取一组随机的词汇
+	 * 
+	 * @return
+	 */
 	public String getRandomConent() {
 		Vector<String> vv = readTxtFile();
 		int len = vv.size();
