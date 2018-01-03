@@ -206,7 +206,7 @@ public class GameState {
 	protected void sendForMyGameState(JSONObject json) {} //发送每个游戏状态特殊的部分
 	protected void sendElseGameState() {} //在游戏开始时还需发送的其他部分（个性化处理）
 	public void sendAfterGame() {} //游戏后返回玩家游戏结果
-	public void initPlayers() {} //初始化玩家的信息
-	public void initGame() {} //初始化游戏
+	protected void initPlayers() {} //初始化玩家的信息
+	protected void initGame() {} //初始化游戏
 	public void setPointChange() {} //设置游戏结束时的分数变化，并传送给前端
 }

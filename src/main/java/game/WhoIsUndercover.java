@@ -50,7 +50,7 @@ public class WhoIsUndercover extends GameState{
 	/*
 	 * 初始化游戏
 	 */
-	public void initGame() { 
+	protected void initGame() { 
 		Random random = new Random();
 		int index = Math.abs(random.nextInt()) % this.gameNum;
 		for (int i = 0; i < this.gameNum; i++) {
@@ -74,7 +74,7 @@ public class WhoIsUndercover extends GameState{
 		}
 	}
 	
-	public void initPlayers() { //初始化玩家的操作
+	protected void initPlayers() { //初始化玩家的操作
 		for (Player item: players) {
 			item.ucPlayer.setPlayer();
 		}

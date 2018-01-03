@@ -81,7 +81,7 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	public void initPlayers() { //初始化玩家的操作
+	protected void initPlayers() { //初始化玩家的操作
 		for (Player item: players) {
 			item.deminPlayer.setPlayer();
 		}
