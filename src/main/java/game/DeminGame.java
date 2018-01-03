@@ -141,7 +141,10 @@ public class DeminGame extends GameState{
 		return count;
 	}
 	
-	int leftNoneClicked() { //在该轮之前还未被点击方格的个数
+	/*
+	 * 在该轮之前还未被点击方格的个数
+	 */
+	private int leftNoneClicked() { 
 		int count = 0;
 		for (int i = 1; i < this.gridLen+1; i++) {
 			for (int j = 1; j < this.gridLen+1; j++) {
@@ -153,7 +156,12 @@ public class DeminGame extends GameState{
 		return count;
 	}
 	
-	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) { //完成扫雷游戏中的用户响应
+	/*
+	 * 完成扫雷游戏中的用户响应
+	 * (non-Javadoc)
+	 * @see game.GameState#handleDemin(int, int, int, websocket.WebSocket)
+	 */
+	public void handleDemin(int clickX, int clickY, int clickType, WebSocket ws) { 
 		//System.out.println("leftTime: "+ this.leftTime);
 		if (this.gameStatus == 1 && !ws.myPlayer.deminPlayer.hasClicked && this.gridClicked[clickX+1][clickY+1] != 1 && this.gridClicked[clickX+1][clickY+1] != 2) { //该方格还未选过时响应该次选方格
 			synchronized (ws.myPlayer) {
@@ -183,7 +191,7 @@ public class DeminGame extends GameState{
 	/*
 	 * 发送在一轮游戏当中的进度
 	 */
-	public void sendForGameProcess() {
+	private void sendForGameProcess() {
 		JSONObject json1 = new JSONObject();
 		json1.put("action", 3); //3表示扫雷该轮仍处于进行状态
 		json1.put("finished", 0); //0表示还未完成
@@ -230,7 +238,7 @@ public class DeminGame extends GameState{
 	/*
 	 * 当前轮结束时进行批处理
 	 */
-	public void batchHandleTurn() { 
+	private void batchHandleTurn() { 
 		ArrayList<GridPosition> zeroList = new ArrayList<GridPosition>(); //记录周边雷数为0的非雷格点的位置
 		for (Player item : players) {
 			int type = 2;
