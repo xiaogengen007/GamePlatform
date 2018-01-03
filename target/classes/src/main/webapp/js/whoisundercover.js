@@ -238,6 +238,7 @@ function send() {
 
 //发送投票信息
 function sendVote(num) {
+	console.log(num);
 	if(isVoting && canVoted[num]){
 		var json1 = {};
 		json1.action = 7; //7表示发送投票信息
@@ -267,12 +268,30 @@ function startGame(){
 	
 	for(var i = 1; i <= playerArray.length; i++){
 		var num = i-1;
+		console.log(num);
 		var popMessage = $('<div></div>').attr('data-container','body').attr('data-toggle','popover')
 		.attr('data-placement','top').attr('data-content','word').attr('id','popmessage' + i);
-		var img = $('<img></img>').addClass("img-responsive")
-		.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
-		.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
-		.click(function(){sendVote(num)});
+		if (num == 0) {
+			var img = $('<img></img>').addClass("img-responsive")
+			.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
+			.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+			.click(function(){sendVote(0)});
+		} else if (num == 1) {
+			var img = $('<img></img>').addClass("img-responsive")
+			.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
+			.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+			.click(function(){sendVote(1)});
+		} else if (num == 2) {
+			var img = $('<img></img>').addClass("img-responsive")
+			.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
+			.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+			.click(function(){sendVote(2)});
+		} else if (num == 3) {
+			var img = $('<img></img>').addClass("img-responsive")
+			.attr('src',playerArray[i-1].thumbnail).attr('id','thumbnailGame' + i)
+			.attr('height','200').attr('width','200').attr('alt',"Generic placeholder thumbnail")
+			.click(function(){sendVote(3)});
+		}
 		var label = $('<h6></h6>').text(playerArray[i-1].username);
 		//var scoreLabel = $('<h6></h6>').attr('id','score' + i).text(playerArray[i-1].score).css('color', '#F00');
 		var classList;

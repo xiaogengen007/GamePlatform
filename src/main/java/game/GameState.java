@@ -15,13 +15,13 @@ import player.Player.DeminPlayer;
 
 public class GameState {
 	public static ArrayList<GameState> games = new ArrayList<GameState>(); //建立一个静态的存储游戏状态的数组
-	ArrayList<Player> players = new ArrayList<Player>(); //存储该局游戏的用户信息
-	int gameStatus; //记录该局游戏的状态（0为未开始，1为游戏中，2为已结束）
-	int gameNum = 3; //游戏中的玩家数
-	int finishedNum = 0; //完成本轮操作的人数
-	int gameType; //游戏类型（1为扫雷,2为谁是卧底）
-	int maxTurnTime; //单轮游戏所允许的最长时间
-	Integer leftTime; //本轮游戏还剩余的游戏时间
+	protected ArrayList<Player> players = new ArrayList<Player>(); //存储该局游戏的用户信息
+	protected int gameStatus; //记录该局游戏的状态（0为未开始，1为游戏中，2为已结束）
+	protected int gameNum = 3; //游戏中的玩家数
+	protected int finishedNum = 0; //完成本轮操作的人数
+	protected int gameType; //游戏类型（1为扫雷,2为谁是卧底）
+	protected int maxTurnTime; //单轮游戏所允许的最长时间
+	protected Integer leftTime; //本轮游戏还剩余的游戏时间
 	
 	public GameState() {
 		games.add(this); //将该游戏加载入游戏数组中
