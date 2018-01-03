@@ -15,12 +15,13 @@ import player.Player;
 public class DeminGame extends GameState{
 	private static final int gridLen = 8; //雷区的大小
 	private static final int scorePerGrid = 6; //每轮单格的加分
-	int[][] gridClicked = new int [gridLen+2][gridLen+2]; //0表示还未有人选中，1表示左键，2表示右键
-	boolean[][] isMine = new boolean [gridLen+2][gridLen+2]; //每个格子是否为地雷
-	int[][] gridState = new int [gridLen+2][gridLen+2];  //0~8为地雷数，9为标红雷，10为误踩雷
-	int totalMine; //地雷总数
-	int leftMine; //剩余地雷数
-	DeminGame() {
+	private int[][] gridClicked = new int [gridLen+2][gridLen+2]; //0表示还未有人选中，1表示左键，2表示右键
+	private boolean[][] isMine = new boolean [gridLen+2][gridLen+2]; //每个格子是否为地雷
+	private int[][] gridState = new int [gridLen+2][gridLen+2];  //0~8为地雷数，9为标红雷，10为误踩雷
+	private int totalMine; //地雷总数
+	private int leftMine; //剩余地雷数
+	
+	public DeminGame() {
 		super();
 		this.gameType = 1; //扫雷为类型1
 		this.maxTurnTime = 8; //扫雷游戏设置的一轮游戏时间为20s
@@ -35,7 +36,10 @@ public class DeminGame extends GameState{
 		this.generatingMine();
 	}
 	
-	public void generatingMine() { //初始化生成游戏中的雷
+	/*
+	 * 初始化生成游戏中的雷
+	 */
+	private void generatingMine() { 
 		int low_bound = (int)(gridLen*gridLen*0.25); //设置雷数的最低值
 		int high_bound = (int)(gridLen*gridLen*0.46); //设置雷数的最高值
 		int possible = high_bound - low_bound + 1; //设置雷数的区间大小
@@ -87,7 +91,10 @@ public class DeminGame extends GameState{
 		}
 	}
 	
-	boolean gameOver() { //判断现在游戏是否已经结束
+	/*
+	 * 判断现在游戏是否已经结束
+	 */
+	boolean gameOver() { 
 		if (leftNoneClicked() == 0) {
 			return true;
 		} else {
