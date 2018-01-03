@@ -5,6 +5,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PlayerManager {
+	
+	/**
+	 * 记录一名新的玩家
+	 * 
+	 * return 0; 成功添加该用户，返回0
+	 * return 1; 错误类型1：该用户名已经存在
+	 * return 2; 错误类型2：数据库异常，注册失败
+	 * 
+	 * @param plyName
+	 * @param plyKey
+	 * @param plySalt
+	 * @return
+	 */
 	public static int recordPlayer(String plyName, String plyKey, String plySalt) { //记录新的玩家
 		Connection c = null; //与数据库的连接
 		Statement stmt = null; //SQL语句环境
@@ -41,6 +54,13 @@ public class PlayerManager {
 		}
 	}
 	
+	/**
+	 * 检查用户登录，返回一个字符串数组，string[0]为他的密码，string[1]为他的盐值
+	 * 错误则返回null
+	 * 
+	 * @param plyName
+	 * @return
+	 */
 	public static String[] checkLogin(String plyName) { //检查登录
 		Connection c = null;
 		Statement stmt = null;
@@ -76,6 +96,12 @@ public class PlayerManager {
 		}
 	}
 	
+	/**
+	 * 获取用户积分
+	 * 
+	 * @param plyName
+	 * @return
+	 */
 	public static int getPoint(String plyName) { //获取用户积分
 		Connection c = null;
 		Statement stmt = null;
@@ -108,6 +134,13 @@ public class PlayerManager {
 		}
 	}
 	
+	/**
+	 * 修改用户积分，将修改成功与否结果返回
+	 * 
+	 * @param plyName
+	 * @param deltaPoint
+	 * @return
+	 */
 	public static boolean modifyPoint(String plyName, int deltaPoint) { //修改用户积分
 		Connection c = null;
 		Statement stmt = null;
@@ -138,6 +171,12 @@ public class PlayerManager {
 		}
 	}
 	
+	/**
+	 * 根据username获取用户的id
+	 * 
+	 * @param plyName
+	 * @return
+	 */
 	public static int getId(String plyName) {//获取用户id
 		Connection c = null;
 		Statement stmt = null;
@@ -169,6 +208,12 @@ public class PlayerManager {
 		}
 	}
 	
+	/**
+	 * 对全体玩家按照积分排序
+	 * 输出一个排完序的姓名-积分对应哈希表
+	 * 
+	 * @return
+	 */
 	public static Map<String, Integer> sortPoint() { //对全体玩家排序
 		Connection c = null;
 		Statement stmt = null;

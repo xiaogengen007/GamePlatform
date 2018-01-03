@@ -4,6 +4,12 @@ import java.sql.*;
 
 public class SetupDatabase {
 	public static boolean hasSet = false; //记录数据库是否已经建立
+	
+	/**
+	 * 数据库的建立
+	 * 
+	 * @return
+	 */
 	public static boolean Setup() {
 		hasSet = true; //调用Setup方法即意味着数据库已经建立
 		Connection c = null;
@@ -56,6 +62,7 @@ public class SetupDatabase {
 			return false;
 		}
 	}
+	
 	public static void main(String[] args) {
 		System.out.println("isOK");
 	}
