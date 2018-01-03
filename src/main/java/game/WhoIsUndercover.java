@@ -119,19 +119,6 @@ public class WhoIsUndercover extends GameState{
 	}
 	
 	/**
-	 * 获取当前已经投票的玩家数（对投票阶段适用）
-	 */
-	private int getVotedNum() {
-		int countVoted = 0;
-		for (Player item: players) {
-			if (item.ucPlayer.hasVoted && item.ucPlayer.isAlive && item.ucPlayer.canVote) {
-				countVoted++;
-			}
-		}
-		return countVoted;
-	}
-	
-	/**
 	 * 获取当前可以被投票的玩家数（对投票阶段适用）
 	 */
 	private int getCanBeVotedNum() {
@@ -333,7 +320,7 @@ public class WhoIsUndercover extends GameState{
 				this.gameStatus = 2; //标识游戏结束
 				this.setPointChange();
 				this.sendAfterGame();
-				/*
+				/**
 				 * 同时将该游戏房间玩家清空
 				 */
 				for (Player item: players) {
@@ -418,37 +405,6 @@ public class WhoIsUndercover extends GameState{
 				}
 			}
 		}
-	}
-	
-	/**
-	 * 该轮游戏发言阶段结束之后向某个玩家发送消息
-	 */
-	private void sendEndOfVoteForNextTurn(Player player) {
-		int maxIndex = this.votedMax.get(0);
-		JSONObject json1 = new JSONObject();
-		json1.put("action", 4); //4表示该轮游戏（投票）结束时发送的消息
-		JSONArray jsar1 = new JSONArray();
-		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).ucPlayer.canbeVoted) {
-				JSONObject json2 = new JSONObject();
-				json2.put("votedName", players.get(i).username);
-				json2.put("votedNum", countVoted[i]);
-				jsar1.add(json2);
-			}
-		}
-		json1.put("voteResult", jsar1);
-		json1.put("diePlayer", players.get(maxIndex).username);
-		json1.put("resultType", 1); //在分出胜负时type为1
-		String msg = json1.toString();
-		System.out.println("send voting message:"+msg);
-		if (player.myWebsocket != null) {
-			try {
-				player.myWebsocket.session.getBasicRemote().sendText(msg);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}	
 	}
 	
 	/**
