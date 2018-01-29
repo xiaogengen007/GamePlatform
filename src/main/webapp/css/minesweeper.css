@@ -1,0 +1,80 @@
+.gamearea{
+    height: 100%;
+    transform-style:preserve-3d;
+    overflow: hidden;
+}
+.fullheight{
+    height: 100%;
+}
+.game{
+	/*
+    background: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512533239313&di=42adae3828c15d8eb01cb7c48d7f7157&imgtype=0&src=http%3A%2F%2Fdl.bizhi.sogou.com%2Fimages%2F2012%2F05%2F3%2F6990.jpg) no-repeat;
+    */
+    border: 1px solid #ddd;
+}
+
+.box{
+    transform:perspective(800px) rotatex(30deg);
+    width: 400px;
+    height:400px;
+    margin: -30px auto 20px auto;
+    border-top: 1px solid #B25F27;
+    border-left: 1px solid #B25F27;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+}
+.block{
+    width: 49px;
+    height: 49px;
+    border-right:1px solid #B25F27;
+    border-bottom:1px solid #B25F27;
+    float: left;
+    box-shadow: 0 0 4px #333 inset;  /*内阴�?/
+    /*background:  url(cao.jpg);*/
+    
+}
+.show{
+    background:url(dilei.jpg) no-repeat;
+}
+.num{
+    background: #ECD0A1;
+    font-size: 18px;
+    /*color: #fff;*/
+    font-weight: bold;
+    text-align: center;
+    line-height: 49px;
+}
+.time{
+    width: 50px;
+    height: 50px;
+    border: 1px solid red;
+    text-align: center;
+    line-height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "微软雅黑";
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    background: url(shizhong.jpg) no-repeat;
+    color: #fff;
+}
+.flagbox{
+    width: 160px;
+    height: 40px;
+    padding: 5px;
+    background: url(hongqi.jpg) no-repeat;
+    border: 2px solid red;
+    position: absolute;
+    right: 20px;
+    top: 120px;
+    text-align:center;
+    line-height: 50px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: "微软雅黑";
+    
+}
+
+.flag{
+    background: url(hongqi.jpg) no-repeat;
+}

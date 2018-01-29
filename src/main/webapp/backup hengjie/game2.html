@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Room</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/wait.css" rel="stylesheet">
+    <link href="css/ranklist.css" rel="stylesheet">
+    
+    <script src="js/pnglib.js"></script>
+    <script src="js/identicon.js"></script>
+
+    <!-- Custom styles for HELP button -->
+    <!--<link rel="stylesheet" type="text/css" href="gameElements/help/css/default.css" />-->
+    <link rel="stylesheet" type="text/css" href="gameElements/help/css/component.css" />
+    
+    
+</head>
+
+<body onload="align()">
+	<script type="text/javascript">
+		if(document.referrer===''){
+		    window.location.href='sign.jsp';
+		}
+	</script>
+
+    <!-- audio effect for minesweeping-->
+    <audio id="audio_start">
+        <source = src="audios/start.ogg" type="audio/ogg">
+    </audio>
+    <audio id="audio_select">
+        <source = src="audios/select.ogg" type="audio/ogg">
+    </audio>
+    <audio id="audio_explode">
+        <source = src="audios/explode.ogg" type="audio/ogg">
+    </audio><!-- audio end-->
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" id="roomtitle" href="#">游戏房间</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <!--<li><a href="#">帮助</a></li>-->
+                    <li class="md-trigger" data-modal="modal-11"><a href="#">帮助</a></li> <!-- HELP button pop-up page-->
+                    <li ><a href="gamepage.jsp">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8 col-md-8 main" id="players">
+                <!--<h1 class="page-header">Dashboard</h1>-->
+                
+                <div class="row placeholders">
+                
+                    <div class="col-xs-6 col-md-3 placeholder" id="player1">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" style="opacity:0.0;">
+                        <h4> </h4>
+                        <span class="text-muted"></span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-md-3 placeholder" id="player2">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" style="opacity:0.0;">
+                        <h4> </h4>
+                        <span class="text-muted"></span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-md-3 placeholder" id="player3">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" style="opacity:0.0;">
+                        <h4> </h4>
+                        <span class="text-muted"></span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-md-3 placeholder" id="player4">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" style="opacity:0.0;">
+                        <h4> </h4>
+                        <span class="text-muted"></span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-md-3 placeholder" id="player5">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" style="opacity:0.0;">
+                        <h4> </h4>
+                        <span class="text-muted"></span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-md-3 placeholder" id="player6">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" style="opacity:0.0;">
+                        <h4> </h4>
+                        <span class="text-muted"></span>
+                    </div>
+                    <!--  
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player7">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" style="opacity:0.0;">
+                        <h4> </h4>
+                        <span class="text-muted"></span>
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3 placeholder" id="player8">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" style="opacity:0.0;">
+                        <h4> </h4>
+                        <span class="text-muted"></span>
+                    </div>
+                	-->
+                    
+                </div>
+                
+            </div>
+            
+            <div class="col-sm-4 col-md-4" id="messages">
+                <div style="border:1px solid #808080; margin: 5px auto; padding: 5px; border-radius: 5px;" id="messagebox">
+                    <p>
+                    	聊天区
+                    </p>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="" id="testinput">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" onclick="addMessage()">发送</button>
+                    </span>
+                </div><!-- /input-group -->
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <article id="rankList">
+                        <span id="myRank">游戏结束</span>
+                        <div id="gdt">
+                            
+                        </div>
+                        <div class="buttons"> 
+                                <a href="gamepage.jsp">再来一局</a>
+                                <a href="gamepage.jsp">返回大厅</a>
+                        </div>
+                    </article>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+	</div>
+
+    <!-- HELP button pop-up page-->
+    <div class="md-modal md-effect-11" id="modal-11">
+        <div class="md-content">
+            <h3>帮 助 文 档</h3>
+            <div>
+                <p>多人扫雷游戏规则：</p>
+                <ul>
+                    <li><strong>左键点击:</strong> 打开该方块。如果该处无地雷，显示周围九宫格内的总雷数，加x分；如果不幸触雷，显示地雷，扣y分。</li>
+                    <li><strong>右键点击:</strong> 标记地雷。标记正确，加x分；错误，扣y分</li>
+                    <li><strong>游戏进度:</strong> 每一轮选择时间为n秒，若时间到未选择，则由系统随机进行动作。</li>
+                </ul>
+                <button class="md-close">Close me!</button>
+            </div>
+        </div>
+    </div><!-- end HELP button pop-up page-->
+    
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <!--script src="../../assets/js/vendor/holder.min.js"></script>-->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+    <script>
+        document.oncontextmenu = function(){return false;} //禁止右键展开菜单项
+        function align(){
+        	$('#messagebox').height($('#players').height() - $('.input-group').height());
+        }
+    </script>
+
+    <script type="text/javascript" src="js/out.js"></script>
+    
+    <script type="text/javascript" src="js/game.js"></script>
+    	
+	<script type="text/javascript">
+		$('#myModal').on('hide.bs.modal', function(){console.log('close modal');});
+	</script>
+
+
+    <!-- HELP button pop-up page-->
+    <div class="md-overlay"></div><!-- the overlay element -->
+
+    <!-- classie.js by @desandro: https://github.com/desandro/classie -->
+    <script src="gameElements/help/js/classie.js"></script>
+    <script src="gameElements/help/js/modalEffects.js"></script>
+
+    <!-- for the blur effect -->
+    <!-- by @derSchepp https://github.com/Schepp/CSS-Filters-Polyfill -->
+    <script>
+        // this is important for IEs
+        var polyfilter_scriptpath = '/gameElements/help/js/';
+    </script>
+    <script src="gameElements/help/js/cssParser.js"></script>
+    <script src="gameElements/help/js/css-filters-polyfill.js"></script><!-- end HELP button pop-up page-->
+
+
+    
+</body>
+
+</html>
+    

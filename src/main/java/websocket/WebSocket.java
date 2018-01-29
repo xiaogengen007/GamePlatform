@@ -9,6 +9,7 @@ import player.Player;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
+import db.SetupDatabase;
 import game.GameState;
 import game.Timer;
 
@@ -26,14 +27,13 @@ public class WebSocket {
 
 	//与某个客户端的连接会话，需要通过它来给客户端发送数据
 	public Session session;
-	private static boolean startedthread = false;
 	public Player myPlayer = null; //存储该用户的相关信息
 
 	public WebSocket() {
-		if (!this.startedthread) {
+/*		if (!this.startedthread) {
 			new Thread(new SendMessage(this)).start();
 			this.startedthread = true;
-		}
+		} */
 	}
 	/**
 	 * 连接建立成功调用的方法
@@ -41,7 +41,8 @@ public class WebSocket {
 	 */
 	@OnOpen
 	public void onOpen(Session session){
-		
+		String encoding = System.getProperty("file.encoding");
+		System.out.println(encoding);
 		this.session = session;
 		if (!Timer.hasSet) { //当第一个用户连接时即开始计时器线程
 			new Thread(new Timer()).start();
@@ -57,8 +58,12 @@ public class WebSocket {
 	 */
 	@OnClose
 	public void onClose(){
-		boolean isSuccess = this.myPlayer.nowGame.deletePlayer(this.myPlayer); //试图删除在房间中记录
-		if (!isSuccess) { //未成功时将引用置为空
+		boolean isSuccess = false;
+		if (this.myPlayer != null && this.myPlayer.nowGame != null) {
+			isSuccess = this.myPlayer.nowGame.deletePlayer(this.myPlayer); //试图删除在房间中记录
+		}
+
+		if (!isSuccess && this.myPlayer != null) { //未成功时将引用置为空
 			this.myPlayer.myWebsocket = null;
 		}
 		webSocketSet.remove(this);  //从set中删除
@@ -79,13 +84,14 @@ public class WebSocket {
 		if (json1.getInt("action") == 1) { //1为登录或注册
 			String name = (String) json1.getString("username");
 			try {
-				if (name.length() > 5) {
+				if (name.length() > 15 || name.length() <= 0) {
 					this.sendMessage("");
 				} else {
-					this.myPlayer = GameState.SearchFromName(name);
+					this.myPlayer = GameState.searchFromName(name);
 					if (myPlayer == null) {
 						myPlayer = new Player(); //存储该用户的相关信息
 						this.myPlayer.username = name;
+						this.myPlayer.setupHashCode();
 						this.myPlayer.myWebsocket = this; //建立player与websocket的双向连接
 						//System.out.println("I'm not create new!");
 					} else {
@@ -113,24 +119,49 @@ public class WebSocket {
 			}
 		}
 		if (json1.getInt("action") == 3) { //3为玩扫雷时发消息
-			if (!this.myPlayer.hasClicked) {
+			if (!this.myPlayer.deminPlayer.hasClicked) {
 				int clickX = json1.getInt("clickX"); //用户点击的X值(1-8)
 				int clickY = json1.getInt("clickY"); //用户点击的Y值(1-8)
 				int clickType = json1.getInt("clickType"); //点击类型，0表示左键，2表示右键
-				this.myPlayer.nowGame.handleDemin(clickX, clickY, clickType, this);
+				if (this.myPlayer.nowGame != null) {
+					this.myPlayer.nowGame.handleDemin(clickX, clickY, clickType, this);
+				}
 			}		
 		}
 		if (json1.getInt("action") == 4) { //4为游戏进入请求
 			int requestNum = json1.getInt("type");
-			if (requestNum == 1) {
-				GameState.distributeRoom(this.myPlayer);
+			if (requestNum == 1 || requestNum == 2) {
+				GameState.distributeRoom(this.myPlayer, requestNum);
 			}
 		}
 		if (json1.getInt("action") == 5) { //5为游戏中聊天
 			if (this.myPlayer.nowGame != null) {
-				String messages = this.myPlayer.username+":"+json1.getString("message");
+				String messages = this.myPlayer.username+": "+json1.getString("message");
 				this.myPlayer.nowGame.handleForChating(messages);
 			}
+		}
+		if (json1.getInt("action") == 6) { //6表示谁是卧底游戏中发送本轮发言
+			if (this.myPlayer.nowGame != null) {
+				String messages = json1.getString("message");
+				this.myPlayer.nowGame.handleUndercover(messages, this);
+			}
+		}
+		if (json1.getInt("action") == 7) {
+			if (this.myPlayer.nowGame != null) {
+				int userindex = json1.getInt("vote");
+				this.myPlayer.nowGame.handleUndercoverVoting(userindex, this);
+			}
+		}
+		if (json1.getInt("action") == 8) { //加好友请求
+			String username1 = json1.getString("username1");
+			String username2 = json1.getString("username2");
+			if (!SetupDatabase.hasSet) {
+				SetupDatabase.Setup();
+			}
+			if (this.myPlayer != null && this.myPlayer.nowGame != null) {
+				this.myPlayer.nowGame.addFriendInRoom(username1, username2);
+			}
+			
 		}
 	}
 
